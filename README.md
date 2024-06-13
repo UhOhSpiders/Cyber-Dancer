@@ -15,4 +15,5 @@
 - Event listener logic for note hit/note miss
 - Bind animations to note hit/note miss
 - Scoring
-    - If we're sticking with threejs note blocks, the score could be based off of the note block's world position when a player hits a key relative to the world position when the note is actually played by the midi track. 
+    - If we're sticking with threejs note blocks, the score could be based off of the note block's world position when a player hits a key relative to the world position when the note is actually played by the midi track.
+- Figure out anti-spam logic
