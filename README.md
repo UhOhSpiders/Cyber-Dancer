@@ -1,4 +1,4 @@
-#DDR Clone To-dos
+# DDR Clone To-dos
 
 ## Animation logic:
 - figure out responsive fall-speed of notes based on height of container
