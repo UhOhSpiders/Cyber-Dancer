@@ -4,7 +4,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let camera, scene, renderer, mixer, clock, light;
 let geometry, material, playedMaterial, fleshMaterial, mesh;
-let fallingGroup, leftHandAction, rightHandAction;
+let fallingGroup, fallSpeed, leftHandAction, rightHandAction;
 init();
 
 function init() {
@@ -16,29 +16,29 @@ function init() {
   geometry = new THREE.BoxGeometry(0.02, 0.02, 0.02);
   material = new THREE.MeshBasicMaterial({ color: "red" });
   playedMaterial = new THREE.MeshBasicMaterial({ color: "green" });
-  fleshMaterial = new THREE.MeshBasicMaterial({color:"darkorange"})
+  fleshMaterial = new THREE.MeshPhongMaterial({ color: "darkorange" });
   mesh = new THREE.Mesh(geometry, material);
   fallingGroup = new THREE.Group();
   fallingGroup.add(mesh);
   scene.add(fallingGroup);
-  light = new THREE.PointLight( 0x404040,900 )
-  scene.add(light)
-  mixer = new THREE.AnimationMixer(scene)
-  clock = new THREE.Clock()
+  light = new THREE.PointLight(0x404040, 400);
+  scene.add(light);
+  mixer = new THREE.AnimationMixer(scene);
+  clock = new THREE.Clock();
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setAnimationLoop(animation);
-  
+  fallSpeed = 0.3 
   const loader = new GLTFLoader();
 
   loader.load(
     "/ddrman.gltf",
     function (gltf) {
-      gltf.scene.name = "drrman"
-      gltf.scene.material = fleshMaterial
-      gltf.scene.position.z = -4
-      gltf.scene.position.y = -2
-      gltf.scene.position.x = -1
-      gltf.scene.animations = gltf.animations
+      gltf.scene.name = "drrman";
+      gltf.scene.children[0].children[0].material = fleshMaterial;
+      gltf.scene.position.z = -5;
+      gltf.scene.position.y = -2;
+      gltf.scene.position.x = -1;
+      gltf.scene.animations = gltf.animations;
       const idleClip = THREE.AnimationClip.findByName(
         gltf.scenes[0].animations,
         "idle"
@@ -47,17 +47,18 @@ function init() {
         gltf.scenes[0].animations,
         "left_hand"
       );
-      const rightHandClip = THREE.AnimationClip.findByName(gltf.scenes[0].animations,"right_hand")
-      const idleAction = mixer.clipAction(idleClip)
-      leftHandAction = mixer.clipAction(leftHandClip)
-      rightHandAction = mixer.clipAction(rightHandClip)
-      leftHandAction.setLoop(THREE.LoopOnce)
-      rightHandAction.setLoop(THREE.LoopOnce)
-      idleAction.loop = THREE.LoopPingPong
-
+      const rightHandClip = THREE.AnimationClip.findByName(
+        gltf.scenes[0].animations,
+        "right_hand"
+      );
+      const idleAction = mixer.clipAction(idleClip);
+      leftHandAction = mixer.clipAction(leftHandClip);
+      rightHandAction = mixer.clipAction(rightHandClip);
+      leftHandAction.setLoop(THREE.LoopOnce);
+      rightHandAction.setLoop(THREE.LoopOnce);
+      idleAction.loop = THREE.LoopPingPong;
       scene.add(gltf.scenes[0]);
-      
-      idleAction.play()
+      idleAction.play();
     },
     undefined,
     function (error) {
@@ -74,26 +75,33 @@ function getNewCubeXPosition(noteName) {
 
 export function addCube(noteName, noteTime) {
   let newCube = mesh.clone();
-  let position = getNewCubeXPosition(noteName);
-  newCube.position.set(position, 0.4, 0);
+  let Xposition = getNewCubeXPosition(noteName);
+  let Yposition = 0.4 - fallingGroup.position.y
+  newCube.position.set(Xposition, Yposition, 0);
+  
   newCube.name = noteName + noteTime;
+  newCube.timeCreated = clock.elapsedTime;
   fallingGroup.add(newCube);
+  // console.log(newCube)
 }
 
-export function dance(noteName){
-  if(noteName.includes("#")||noteName.includes("A")){
-leftHandAction.stop()
-leftHandAction.play()
-  }else{
-  rightHandAction.stop()
-  rightHandAction.play()
-}
+export function dance(noteName) {
+  if (noteName.includes("#") || noteName.includes("A")) {
+    leftHandAction.stop();
+    leftHandAction.play();
+  } else {
+    rightHandAction.stop();
+    rightHandAction.play();
+  }
 }
 
 export function changeColor(noteName, noteTime) {
   let objectName = noteName + noteTime;
   let noteToChange = scene.getObjectByName(objectName);
   noteToChange.material = playedMaterial;
+  console.log("life of cube: "+ (clock.elapsedTime - noteToChange.timeCreated ))
+  let worldPosition = noteToChange.getWorldPosition(new THREE.Vector3)
+  console.log(worldPosition)
 }
 
 export function deleteNote() {
@@ -104,10 +112,10 @@ function animation(time) {
   // do not render if not in DOM:
 
   if (!renderer.domElement.parentNode) return;
-  for (let i = 0; i < fallingGroup.children.length; i++) {
-    fallingGroup.children[i].position.y -= 0.004;
-  }
-  mixer.update(clock.getDelta())
+  let delta = clock.getDelta()
+  fallingGroup.position.y -= fallSpeed * delta
+
+  mixer.update(delta);
   renderer.render(scene, camera);
 }
 
