@@ -141,13 +141,13 @@ function hitKey(e) {
       noteAttempt.material = noteBlockPlayedMaterial;
       console.log("hit!" + KeyWNotesToHit[0] + "at" + noteAttemptWorldPosition.y);
       dance(KeyWNotesToHit[0]);
+      KeyWNotesToHit = KeyWNotesToHit.filter((e) => e !== noteAttempt.name);
     }else{
     console.log("miss!");
     noteAttempt.material = noteBlockMissedMaterial;
     KeyWNotesToHit = KeyWNotesToHit.filter((e) => e !== noteAttempt.name);
     }
   }
-  // KeyWNotesToHit.shift();
 }
 
 export function deleteNote(noteName) {
