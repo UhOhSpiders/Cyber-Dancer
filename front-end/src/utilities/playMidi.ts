@@ -26,20 +26,20 @@ export default function playMidi(midiTrack) {
                 note.velocity
             );
             // create cascading note visual ahead of time (offset time is now + note.time - (container height /350))
-            Tone.Draw.schedule(function () {
+            Tone.getDraw().schedule(function () {
                 if (track.name == "ACOU BASS") {
                     addCube(note.name, note.time)
                 }
-            }, now + note.time - (window.innerHeight / 350))
+            }, now + note.time - 2)
             // hit note now
-            Tone.Draw.schedule(function () {
+            Tone.getDraw().schedule(function () {
                 if (track.name == "ACOU BASS") {
                     changeColor(note.name, note.time)
                     dance(note.name)
                 }
             }, now + note.time)
             // dispose of object
-            Tone.Draw.schedule(function () {
+            Tone.getDraw().schedule(function () {
                 if (track.name == "ACOU BASS") {
                     deleteNote()
                 }
