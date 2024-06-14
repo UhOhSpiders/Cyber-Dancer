@@ -1,8 +1,8 @@
 import * as Tone from "tone";
-import { addCube, changeColor, deleteNote, dance } from "../ThreeJsScene/3d";
+import { addCube, playNote, deleteNote, dance } from "../ThreeJsScene/3d";
 
 export default function playMidi(midiTrack) {
-
+    console.log(midiTrack)
     const synths = [];
 
     const now = Tone.now()
@@ -26,29 +26,29 @@ export default function playMidi(midiTrack) {
                 note.velocity
             );
             // create cascading note visual ahead of time (offset time is now + note.time - (container height /350))
-            Tone.getDraw().schedule(function () {
-                if (track.name == "ACOU BASS") {
+            Tone.Draw.schedule(function () {
+                if (track.name == 'SLAPBASS 1') {
                     addCube(note.name, note.time)
                 }
-            }, now + note.time - 2)
+            }, now + note.time - (window.innerHeight / 350))
             // hit note now
-            Tone.getDraw().schedule(function () {
-                if (track.name == "ACOU BASS") {
-                    changeColor(note.name, note.time)
-                    dance(note.name)
+            Tone.Draw.schedule(function () {
+                if (track.name == 'SLAPBASS 1') {
+                    playNote(note.name, note.time)
+                    // dance(note.name)
                 }
             }, now + note.time)
             // dispose of object
-            Tone.getDraw().schedule(function () {
-                if (track.name == "ACOU BASS") {
-                    deleteNote()
+            Tone.Draw.schedule(function () {
+                if (track.name == 'SLAPBASS 1') {
+                    deleteNote(note.name + note.time)
                 }
-            }, now + note.time + 0.5)
+            }, now + note.time + 0.1)
         });
     });
     // Tone.Transport.scheduleRepeat(function () {
     //     console.log("toot")
     // }, "1n");
-
+    // Tone.getTransport().bpm.value = 60
     Tone.getTransport().start()
 }

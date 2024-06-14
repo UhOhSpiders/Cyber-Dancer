@@ -3,7 +3,7 @@ import playMidi from "./utilities/playMidi";
 import ThreeJsScene from "./ThreeJsScene";
 import { addCube } from "./ThreeJsScene/3d";
 
-const midi = await Midi.fromUrl("../ghostbusters.mid");
+const midi = await Midi.fromUrl("../ghostbusters_edit.midi");
 
 function App() {
   const handleClick = async () => {
