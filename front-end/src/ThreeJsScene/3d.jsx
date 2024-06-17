@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import * as TWEEN from "@tweenjs/tween.js";
 import { MIDI_SCALE_X_POSITIONS } from "../constants/constants";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
@@ -35,6 +36,7 @@ function init() {
   noteBlockMesh = new THREE.Mesh(noteBlockGeometry, noteBlockMaterial);
   fallingGroup = new THREE.Group();
   fallingGroup.add(noteBlockMesh);
+  fallingGroup.position.set(0, 0, 0);
   scene.add(fallingGroup);
 
   fleshMaterial = new THREE.MeshPhongMaterial({ color: "darkorange" });
@@ -104,12 +106,27 @@ export function addCube(noteName, noteTime) {
   let Xposition = getNewCubeXPosition(noteName);
   let Yposition = 0.4 - fallingGroup.position.y;
   newNoteBlock.position.set(Xposition, Yposition, 0);
-
   newNoteBlock.name = noteName + noteTime;
   newNoteBlock.timeCreated = clock.elapsedTime;
-
   fallingGroup.add(newNoteBlock);
   KeyWNotesToHit.push(newNoteBlock.name);
+
+  // animate fall
+  const targetPosition = new THREE.Vector3(Xposition, -0.25, 0);
+  // for smooth exit the y coordinate of the exit position must be the same distance from the target as the note's initial position
+  const exitPosition = new THREE.Vector3(Xposition, -0.9, 0);
+  const fallTween = new TWEEN.Tween(newNoteBlock.position)
+    .to(targetPosition, 2000)
+    .onUpdate(function (newPostion) {
+      newNoteBlock.position.set(newPostion.x, newPostion.y, newPostion.z);
+    });
+  const exitTween = new TWEEN.Tween(newNoteBlock.position)
+    .to(exitPosition, 2000)
+    .onUpdate(function (newPostion) {
+      newNoteBlock.position.set(newPostion.x, newPostion.y, newPostion.z);
+    });
+  fallTween.chain(exitTween)
+  fallTween.start();
 }
 
 export function dance(noteName) {
@@ -124,8 +141,9 @@ export function dance(noteName) {
 
 export function playNote(noteName, noteTime) {
   let objectName = noteName + noteTime;
-  let noteToChange = scene.getObjectByName(objectName);
-  let worldPosition = noteToChange.getWorldPosition(new THREE.Vector3());
+  // let noteToChange = scene.getObjectByName(objectName);
+  // let worldPosition = noteToChange.getWorldPosition(new THREE.Vector3());
+  // console.log(worldPosition.y)
 }
 
 function hitKey(e) {
@@ -139,13 +157,15 @@ function hitKey(e) {
       noteAttemptWorldPosition.y > -0.6
     ) {
       noteAttempt.material = noteBlockPlayedMaterial;
-      console.log("hit!" + KeyWNotesToHit[0] + "at" + noteAttemptWorldPosition.y);
+      console.log(
+        "hit!" + KeyWNotesToHit[0] + "at" + noteAttemptWorldPosition.y
+      );
       dance(KeyWNotesToHit[0]);
       KeyWNotesToHit = KeyWNotesToHit.filter((e) => e !== noteAttempt.name);
-    }else{
-    console.log("miss!");
-    noteAttempt.material = noteBlockMissedMaterial;
-    KeyWNotesToHit = KeyWNotesToHit.filter((e) => e !== noteAttempt.name);
+    } else {
+      console.log("miss!");
+      noteAttempt.material = noteBlockMissedMaterial;
+      KeyWNotesToHit = KeyWNotesToHit.filter((e) => e !== noteAttempt.name);
     }
   }
 }
@@ -157,13 +177,20 @@ export function deleteNote(noteName) {
   fallingGroup.children.shift();
 }
 
+// takes 2d pixel value and returns a 3d vector (world position)
+function to3d(pixelX, pixelY) {
+  pixelX = (window.innerWidth * (pixelX + 1)) / 2;
+  pixelY = (-window.innerHeight * (pixelY - 1)) / 2;
+  let vector3position = new THREE.Vector3(x, y, -1).unproject(camera);
+  console.log(vector3position);
+}
+
 function animation(time) {
   // do not render if not in DOM:
 
   if (!renderer.domElement.parentNode) return;
   let delta = clock.getDelta();
-  fallingGroup.position.y -= fallSpeed * delta;
-
+  TWEEN.update();
   mixer.update(delta);
   renderer.render(scene, camera);
 }
