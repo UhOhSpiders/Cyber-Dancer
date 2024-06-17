@@ -1,5 +1,6 @@
 import * as Tone from "tone";
 import { addCube, playNote, deleteNote, dance } from "../ThreeJsScene/3d";
+import { fallTime } from "../constants/constants";
 
 export default function playMidi(midiTrack) {
     console.log(midiTrack)
@@ -30,7 +31,7 @@ export default function playMidi(midiTrack) {
                 if (track.name == 'SLAPBASS 1') {
                     addCube(note.name, note.time)
                 }
-            }, now + note.time - 2)
+            }, now + note.time - fallTime)
             // hit note now
             Tone.getDraw().schedule(function () {
                 if (track.name == 'SLAPBASS 1') {

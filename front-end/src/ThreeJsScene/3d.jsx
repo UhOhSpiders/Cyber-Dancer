@@ -2,6 +2,7 @@ import * as THREE from "three";
 import * as TWEEN from "@tweenjs/tween.js";
 import { MIDI_SCALE_X_POSITIONS } from "../constants/constants";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { fallTime } from "../constants/constants";
 
 let camera, scene, renderer, mixer, clock, light;
 let noteBlockGeometry,
@@ -14,7 +15,8 @@ let noteBlockGeometry,
   lineGeometry,
   line;
 let linePoints = [];
-let fallingGroup, fallSpeed, leftHandAction, rightHandAction;
+let fallingGroup, leftHandAction, rightHandAction;
+const targetYPosition = -0.25
 init();
 let KeyWNotesToHit = [];
 let KeyANotesToHit = [];
@@ -23,6 +25,7 @@ let KeyDNotesToHit = [];
 
 const input = document.querySelector("body");
 input.addEventListener("keydown", hitKey);
+
 function init() {
   camera = new THREE.PerspectiveCamera(42, 1, 0.01, 10);
   camera.position.z = 1;
@@ -46,7 +49,7 @@ function init() {
   linePoints.push(new THREE.Vector3(-1, 0, 0));
   lineGeometry = new THREE.BufferGeometry().setFromPoints(linePoints);
   line = new THREE.Line(lineGeometry, lineMaterial);
-  line.position.y = -0.25;
+  line.position.y = targetYPosition
   scene.add(line);
 
   light = new THREE.PointLight(0x404040, 400);
@@ -55,7 +58,6 @@ function init() {
   clock = new THREE.Clock();
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setAnimationLoop(animation);
-  fallSpeed = 0.3;
   const loader = new GLTFLoader();
 
   loader.load(
@@ -101,27 +103,10 @@ function getNewCubeXPosition(noteName) {
   } else return 0;
 }
 
-// function screenToWorld() {
-//   const coords = new THREE.Vector3(
-//       (500/window.innerWidth) * 2 - 1,
-//       -(500/window.innerHeight) * 2 + 1,
-//       1
-//   )
-//   const worldPosition = new THREE.Vector3()
-//   const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1))
-//   const raycaster = new THREE.Raycaster()
-//   raycaster.setFromCamera(coords, camera)
-//   let targetCoords = raycaster.ray.intersectPlane(plane, worldPosition)
-//   let newNoteBlock = noteBlockMesh.clone();
-//   newNoteBlock.position.set(targetCoords.x, targetCoords.y, targetCoords.z);
-//   console.log(newNoteBlock.position)
-//   return raycaster.ray.intersectPlane(plane, worldPosition)
-// }
-
 export function addCube(noteName, noteTime) {
   let newNoteBlock = noteBlockMesh.clone();
   let Xposition = getNewCubeXPosition(noteName);
-  let Yposition = 0.4 - fallingGroup.position.y;
+  let Yposition = 0.4 
   newNoteBlock.position.set(Xposition, Yposition, 0);
   newNoteBlock.name = noteName + noteTime;
   newNoteBlock.timeCreated = clock.elapsedTime;
@@ -129,16 +114,16 @@ export function addCube(noteName, noteTime) {
   KeyWNotesToHit.push(newNoteBlock.name);
 
   // animate fall
-  const targetPosition = new THREE.Vector3(Xposition, -0.25, 0);
-  // for smooth exit the y coordinate of the exit position must be the same distance from the target as the note's initial position
-  const exitPosition = new THREE.Vector3(Xposition, -0.9, 0);
+  const targetPosition = new THREE.Vector3(Xposition, targetYPosition, 0);
+  // for smooth exit the y coordinate of the exit position must be the same distance from the target as the note's initial position, this allows two tweens to chain together and look like 1 smooth motion while still having an exact target halfway through
+  const exitPosition = new THREE.Vector3(Xposition, targetYPosition-(Yposition-targetYPosition), 0);
   const fallTween = new TWEEN.Tween(newNoteBlock.position)
-    .to(targetPosition, 2000)
+    .to(targetPosition, fallTime*1000)
     .onUpdate(function (newPostion) {
       newNoteBlock.position.set(newPostion.x, newPostion.y, newPostion.z);
     });
   const exitTween = new TWEEN.Tween(newNoteBlock.position)
-    .to(exitPosition, 2000)
+    .to(exitPosition, fallTime*1000)
     .onUpdate(function (newPostion) {
       newNoteBlock.position.set(newPostion.x, newPostion.y, newPostion.z);
     });
@@ -193,16 +178,6 @@ export function deleteNote(noteName) {
   KeyWNotesToHit = KeyWNotesToHit.filter((e) => e !== noteName);
   fallingGroup.children.shift();
 }
-
-// takes 2d pixel value and returns a 3d vector (world position)
-function to3d(pixelX, pixelY) {
-  pixelX = (window.innerWidth * (pixelX + 1)) / 2;
-  pixelY = (-window.innerHeight * (pixelY - 1)) / 2;
-  let vector3position = new THREE.Vector3(x, y, -1).unproject(camera);
-  console.log(vector3position);
-}
-
-
 
 function animation(time) {
   // do not render if not in DOM:

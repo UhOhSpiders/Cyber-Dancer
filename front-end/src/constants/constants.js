@@ -12,3 +12,5 @@ export const MIDI_SCALE_X_POSITIONS = {
     "A#2": 1,
     B2: 1.21,
   };
+
+  export const fallTime = 2

@@ -17,27 +17,8 @@ function App() {
   if (midi) {
     return (
       <>
-        <button
-          onClick={handleClick}
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 20,
-          }}
-        >
-          Play midi
-        </button>
-        <button
-          onClick={resetCube}
-          style={{
-            position: "absolute",
-            top: 0,
-          }}
-        >
-          Reset Cube
-        </button>
-
-        <div id="threejsdiv"></div>
+        <button onClick={handleClick}>Play midi</button>
+        <button onClick={resetCube}>Reset Cube</button>
         <ThreeJsScene />
       </>
     );

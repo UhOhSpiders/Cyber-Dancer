@@ -1,16 +1,18 @@
 .Cube-container {
-  position: relative;
-  overflow: hidden;
+  /* position: relative;
+  overflow: hidden; */
 	
   /* put the size you want your 3D scene to be here */
-  width: 1280px;
-  height: 700px;
-  /* max-width: 80vw;
-  max-height: calc(100vh - 90px); */
+  width: 80vw;
+  
+  height: calc(100vh - 90px);
 }
 
 .Cube-container canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
+  display: block;
+  /* margin-left: auto; */
+  /* margin-right: auto; */
+  width: 40%;
+  border-radius: 20px;
+  
 }
