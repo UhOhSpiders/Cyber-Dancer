@@ -101,6 +101,23 @@ function getNewCubeXPosition(noteName) {
   } else return 0;
 }
 
+// function screenToWorld() {
+//   const coords = new THREE.Vector3(
+//       (500/window.innerWidth) * 2 - 1,
+//       -(500/window.innerHeight) * 2 + 1,
+//       1
+//   )
+//   const worldPosition = new THREE.Vector3()
+//   const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1))
+//   const raycaster = new THREE.Raycaster()
+//   raycaster.setFromCamera(coords, camera)
+//   let targetCoords = raycaster.ray.intersectPlane(plane, worldPosition)
+//   let newNoteBlock = noteBlockMesh.clone();
+//   newNoteBlock.position.set(targetCoords.x, targetCoords.y, targetCoords.z);
+//   console.log(newNoteBlock.position)
+//   return raycaster.ray.intersectPlane(plane, worldPosition)
+// }
+
 export function addCube(noteName, noteTime) {
   let newNoteBlock = noteBlockMesh.clone();
   let Xposition = getNewCubeXPosition(noteName);
@@ -184,6 +201,8 @@ function to3d(pixelX, pixelY) {
   let vector3position = new THREE.Vector3(x, y, -1).unproject(camera);
   console.log(vector3position);
 }
+
+
 
 function animation(time) {
   // do not render if not in DOM:
