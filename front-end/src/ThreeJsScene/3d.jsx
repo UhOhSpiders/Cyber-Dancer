@@ -3,19 +3,21 @@ import * as TWEEN from "@tweenjs/tween.js";
 import { MIDI_SCALE_X_POSITIONS } from "../constants/constants";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { fallTime } from "../constants/constants";
+import { loadCharacter } from "../utilities/loadCharacter";
+import { getDanceMoves } from "../utilities/getDanceMoves";
+import { loadDanceMoves } from "../utilities/loadDanceMoves";
 
 let camera, scene, renderer, mixer, clock, light;
 let noteBlockGeometry,
   noteBlockMaterial,
   noteBlockPlayedMaterial,
   noteBlockMissedMaterial,
-  fleshMaterial,
   noteBlockMesh,
   lineMaterial,
   lineGeometry,
   line;
 let linePoints = [];
-let fallingGroup, leftHandAction, rightHandAction;
+let fallingGroup, danceMoves;
 const targetYPosition = -0.25
 init();
 let KeyWNotesToHit = [];
@@ -42,8 +44,6 @@ function init() {
   fallingGroup.position.set(0, 0, 0);
   scene.add(fallingGroup);
 
-  fleshMaterial = new THREE.MeshPhongMaterial({ color: "darkorange" });
-
   lineMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
   linePoints.push(new THREE.Vector3(1, 0, 0));
   linePoints.push(new THREE.Vector3(-1, 0, 0));
@@ -58,43 +58,9 @@ function init() {
   clock = new THREE.Clock();
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setAnimationLoop(animation);
-  const loader = new GLTFLoader();
-
-  loader.load(
-    "/ddrman.gltf",
-    function (gltf) {
-      gltf.scene.name = "drrman";
-      gltf.scene.children[0].children[0].material = fleshMaterial;
-      gltf.scene.position.z = -5;
-      gltf.scene.position.y = -2;
-      gltf.scene.position.x = -1;
-      gltf.scene.animations = gltf.animations;
-      const idleClip = THREE.AnimationClip.findByName(
-        gltf.scenes[0].animations,
-        "idle"
-      );
-      const leftHandClip = THREE.AnimationClip.findByName(
-        gltf.scenes[0].animations,
-        "left_hand"
-      );
-      const rightHandClip = THREE.AnimationClip.findByName(
-        gltf.scenes[0].animations,
-        "right_hand"
-      );
-      const idleAction = mixer.clipAction(idleClip);
-      leftHandAction = mixer.clipAction(leftHandClip);
-      rightHandAction = mixer.clipAction(rightHandClip);
-      leftHandAction.setLoop(THREE.LoopOnce);
-      rightHandAction.setLoop(THREE.LoopOnce);
-      idleAction.loop = THREE.LoopPingPong;
-      scene.add(gltf.scenes[0]);
-      idleAction.play();
-    },
-    undefined,
-    function (error) {
-      console.error(error);
-    }
-  );
+  loadCharacter("/ddrman.gltf", scene, mixer).then(() => {
+    danceMoves = loadDanceMoves("ddrman",scene, mixer)
+  }) 
 }
 
 function getNewCubeXPosition(noteName) {
@@ -113,6 +79,9 @@ export function addCube(noteName, noteTime) {
   fallingGroup.add(newNoteBlock);
   KeyWNotesToHit.push(newNoteBlock.name);
 
+  danceMoves[1].stop()
+  danceMoves[1].play()
+  console.log(danceMoves)
   // animate fall
   const targetPosition = new THREE.Vector3(Xposition, targetYPosition, 0);
   // for smooth exit the y coordinate of the exit position must be the same distance from the target as the note's initial position, this allows two tweens to chain together and look like 1 smooth motion while still having an exact target halfway through
@@ -133,19 +102,16 @@ export function addCube(noteName, noteTime) {
 
 export function dance(noteName) {
   if (noteName.includes("#") || noteName.includes("A")) {
-    leftHandAction.stop();
-    leftHandAction.play();
+    danceMoves[1].stop();
+    danceMoves[1].play();
   } else {
-    rightHandAction.stop();
-    rightHandAction.play();
+    danceMoves[0].stop();
+    danceMoves[0].play();
   }
 }
 
 export function playNote(noteName, noteTime) {
   let objectName = noteName + noteTime;
-  // let noteToChange = scene.getObjectByName(objectName);
-  // let worldPosition = noteToChange.getWorldPosition(new THREE.Vector3());
-  // console.log(worldPosition.y)
 }
 
 function hitKey(e) {
