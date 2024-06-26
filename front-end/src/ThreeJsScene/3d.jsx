@@ -4,7 +4,6 @@ import { MIDI_SCALE_X_POSITIONS } from "../constants/constants";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { fallTime } from "../constants/constants";
 import { loadCharacter } from "../utilities/loadCharacter";
-import { getDanceMoves } from "../utilities/getDanceMoves";
 import { loadDanceMoves } from "../utilities/loadDanceMoves";
 
 let camera, scene, renderer, mixer, clock, light;
@@ -78,10 +77,6 @@ export function addCube(noteName, noteTime) {
   newNoteBlock.timeCreated = clock.elapsedTime;
   fallingGroup.add(newNoteBlock);
   KeyWNotesToHit.push(newNoteBlock.name);
-
-  danceMoves[1].stop()
-  danceMoves[1].play()
-  console.log(danceMoves)
   // animate fall
   const targetPosition = new THREE.Vector3(Xposition, targetYPosition, 0);
   // for smooth exit the y coordinate of the exit position must be the same distance from the target as the note's initial position, this allows two tweens to chain together and look like 1 smooth motion while still having an exact target halfway through
@@ -121,8 +116,8 @@ function hitKey(e) {
       new THREE.Vector3()
     );
     if (
-      noteAttemptWorldPosition.y < -0.2 &&
-      noteAttemptWorldPosition.y > -0.6
+      noteAttemptWorldPosition.y < targetYPosition+0.2 &&
+      noteAttemptWorldPosition.y > targetYPosition-0.2
     ) {
       noteAttempt.material = noteBlockPlayedMaterial;
       console.log(

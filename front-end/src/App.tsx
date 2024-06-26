@@ -1,13 +1,13 @@
 import { Midi } from "@tonejs/midi";
-import playMidi from "./utilities/playMidi";
+import playMidiAndMP3 from "./utilities/playMidiAndMP3"
 import ThreeJsScene from "./ThreeJsScene";
 import { addCube } from "./ThreeJsScene/3d";
 
-const midi = await Midi.fromUrl("../ghostbusters_edit.midi");
+const midi = await Midi.fromUrl("../midi-to-click-test.MID");
 
 function App() {
   const handleClick = async () => {
-    playMidi(midi);
+    playMidiAndMP3(midi);
   };
 
   const resetCube = () => {
