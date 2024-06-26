@@ -34,7 +34,7 @@ export default async function playMidi(midiTrack) {
                 note.time + now,
                 note.velocity
             );
-            // create cascading note visual ahead of time (offset time is now + note.time - (container height /350))
+            // create cascading note visual ahead of time
             Tone.getDraw().schedule(function () {
                 if (track.name == 'dance_moves') {
                     addCube(note.name, note.time)
@@ -52,7 +52,7 @@ export default async function playMidi(midiTrack) {
                 if (track.name == 'dance_moves') {
                     deleteNote(note.name + note.time)
                 }
-            }, now + note.time + 0.1)
+            }, now + note.time + 0.5)
         });
     });
   }

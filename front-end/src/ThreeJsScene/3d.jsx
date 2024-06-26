@@ -1,23 +1,31 @@
 import * as THREE from "three";
 import * as TWEEN from "@tweenjs/tween.js";
 import { MIDI_SCALE_X_POSITIONS } from "../constants/constants";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { fallTime } from "../constants/constants";
 import { loadCharacter } from "../utilities/loadCharacter";
 import { loadDanceMoves } from "../utilities/loadDanceMoves";
+import { createNoteTargets } from "../utilities/createNoteTargets";
+import { assignNotesToColums } from "../utilities/assignNotesToColumns";
 
 let camera, scene, renderer, mixer, clock, light;
 let noteBlockGeometry,
   noteBlockMaterial,
   noteBlockPlayedMaterial,
   noteBlockMissedMaterial,
-  noteBlockMesh,
-  lineMaterial,
-  lineGeometry,
-  line;
-let linePoints = [];
+  noteBlockMesh
 let fallingGroup, danceMoves;
 const targetYPosition = -0.25
+const noteDropperWidth = 0.7
+const noteDropperColumnNumber = 4
+const noteXPositions = []
+let noteXPosition =  0 - noteDropperWidth / 2
+for (let step = 0; step < noteDropperColumnNumber; step++) {
+  noteXPositions.push(noteXPosition)
+  noteXPosition += noteDropperWidth / (noteDropperColumnNumber-1);
+}
+let noteColumns = assignNotesToColums(noteXPositions)
+console.log(noteXPositions)
+
 init();
 let KeyWNotesToHit = [];
 let KeyANotesToHit = [];
@@ -39,17 +47,11 @@ function init() {
   noteBlockMissedMaterial = new THREE.MeshBasicMaterial({ color: "grey" });
   noteBlockMesh = new THREE.Mesh(noteBlockGeometry, noteBlockMaterial);
   fallingGroup = new THREE.Group();
-  fallingGroup.add(noteBlockMesh);
-  fallingGroup.position.set(0, 0, 0);
+  
   scene.add(fallingGroup);
 
-  lineMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
-  linePoints.push(new THREE.Vector3(1, 0, 0));
-  linePoints.push(new THREE.Vector3(-1, 0, 0));
-  lineGeometry = new THREE.BufferGeometry().setFromPoints(linePoints);
-  line = new THREE.Line(lineGeometry, lineMaterial);
-  line.position.y = targetYPosition
-  scene.add(line);
+  let noteDropper = createNoteTargets(targetYPosition, noteXPositions, noteDropperWidth)
+  scene.add(noteDropper)
 
   light = new THREE.PointLight(0x404040, 400);
   scene.add(light);
@@ -62,15 +64,10 @@ function init() {
   }) 
 }
 
-function getNewCubeXPosition(noteName) {
-  if (MIDI_SCALE_X_POSITIONS[noteName]) {
-    return MIDI_SCALE_X_POSITIONS[noteName];
-  } else return 0;
-}
-
 export function addCube(noteName, noteTime) {
+  console.log(noteName)
   let newNoteBlock = noteBlockMesh.clone();
-  let Xposition = getNewCubeXPosition(noteName);
+  let Xposition = noteColumns[noteName]
   let Yposition = 0.4 
   newNoteBlock.position.set(Xposition, Yposition, 0);
   newNoteBlock.name = noteName + noteTime;
