@@ -5,33 +5,23 @@ import { loadCharacter } from "../utilities/loadCharacter";
 import { loadDanceMoves } from "../utilities/loadDanceMoves";
 import { createNoteTargets } from "../utilities/createNoteTargets";
 import { assignNotesToColums } from "../utilities/assignNotesToColumns";
+import { getColumnXPositions } from "../utilities/getColumnXPositions";
 
 let camera, scene, renderer, mixer, clock, light;
 let noteBlockGeometry,
   noteBlockMaterial,
   noteBlockPlayedMaterial,
   noteBlockMissedMaterial,
-  noteBlockMesh
+  noteBlockMesh;
 let fallingGroup, danceMoves;
 
-
-const targetYPosition = -0.25
-const noteDropperWidth = 0.7
-const noteDropperKeys = ["A","S","D","F","G"]
-const noteDropperColumnNumber = noteDropperKeys.length
-const noteXPositions = []
-let noteXPosition =  0 - noteDropperWidth / 2
-for (let step = 0; step < noteDropperColumnNumber; step++) {
-  noteXPositions.push(noteXPosition)
-  noteXPosition += noteDropperWidth / (noteDropperColumnNumber-1);
-}
-let noteColumns = assignNotesToColums(noteXPositions)
-
+const targetYPosition = -0.25;
+const noteDropperWidth = 0.7;
+const noteDropperKeys = ["KeyA", "KeyS", "KeyD", "KeyF", "KeyG", "KeyJ","KeyK"];
+const columnXPositions = getColumnXPositions(noteDropperWidth, noteDropperKeys.length);
+let noteColumns = assignNotesToColums(columnXPositions);
 init();
 let KeyWNotesToHit = [];
-let KeyANotesToHit = [];
-let KeySNotesToHit = [];
-let KeyDNotesToHit = [];
 
 const input = document.querySelector("body");
 input.addEventListener("keydown", hitKey);
@@ -48,11 +38,16 @@ function init() {
   noteBlockMissedMaterial = new THREE.MeshBasicMaterial({ color: "grey" });
   noteBlockMesh = new THREE.Mesh(noteBlockGeometry, noteBlockMaterial);
   fallingGroup = new THREE.Group();
-  
+
   scene.add(fallingGroup);
 
-  let noteDropper = createNoteTargets(targetYPosition, noteXPositions, noteDropperWidth, noteDropperKeys)
-  scene.add(noteDropper)
+  let noteDropper = createNoteTargets(
+    targetYPosition,
+    columnXPositions,
+    noteDropperWidth,
+    noteDropperKeys
+  );
+  scene.add(noteDropper);
 
   light = new THREE.PointLight(0x404040, 400);
   scene.add(light);
@@ -61,14 +56,14 @@ function init() {
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setAnimationLoop(animation);
   loadCharacter("/ddrman.gltf", scene, mixer).then(() => {
-    danceMoves = loadDanceMoves("ddrman",scene, mixer)
-  }) 
+    danceMoves = loadDanceMoves("ddrman", scene, mixer);
+  });
 }
 
 export function addCube(noteName, noteTime) {
   let newNoteBlock = noteBlockMesh.clone();
-  let Xposition = noteColumns[noteName]
-  let Yposition = 0.4 
+  let Xposition = noteColumns[noteName];
+  let Yposition = 0.4;
   newNoteBlock.position.set(Xposition, Yposition, 0);
   newNoteBlock.name = noteName + noteTime;
   newNoteBlock.timeCreated = clock.elapsedTime;
@@ -77,18 +72,22 @@ export function addCube(noteName, noteTime) {
   // animate fall
   const targetPosition = new THREE.Vector3(Xposition, targetYPosition, 0);
   // for smooth exit the y coordinate of the exit position must be the same distance from the target as the note's initial position, this allows two tweens to chain together and look like 1 smooth motion while still having an exact target halfway through
-  const exitPosition = new THREE.Vector3(Xposition, targetYPosition-(Yposition-targetYPosition), 0);
+  const exitPosition = new THREE.Vector3(
+    Xposition,
+    targetYPosition - (Yposition - targetYPosition),
+    0
+  );
   const fallTween = new TWEEN.Tween(newNoteBlock.position)
-    .to(targetPosition, fallTime*1000)
+    .to(targetPosition, fallTime * 1000)
     .onUpdate(function (newPostion) {
       newNoteBlock.position.set(newPostion.x, newPostion.y, newPostion.z);
     });
   const exitTween = new TWEEN.Tween(newNoteBlock.position)
-    .to(exitPosition, fallTime*1000)
+    .to(exitPosition, fallTime * 1000)
     .onUpdate(function (newPostion) {
       newNoteBlock.position.set(newPostion.x, newPostion.y, newPostion.z);
     });
-  fallTween.chain(exitTween)
+  fallTween.chain(exitTween);
   fallTween.start();
 }
 
@@ -113,8 +112,8 @@ function hitKey(e) {
       new THREE.Vector3()
     );
     if (
-      noteAttemptWorldPosition.y < targetYPosition+0.2 &&
-      noteAttemptWorldPosition.y > targetYPosition-0.2
+      noteAttemptWorldPosition.y < targetYPosition + 0.2 &&
+      noteAttemptWorldPosition.y > targetYPosition - 0.2
     ) {
       noteAttempt.material = noteBlockPlayedMaterial;
       console.log(
