@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import * as TWEEN from "@tweenjs/tween.js";
-import { MIDI_SCALE_X_POSITIONS } from "../constants/constants";
 import { fallTime } from "../constants/constants";
 import { loadCharacter } from "../utilities/loadCharacter";
 import { loadDanceMoves } from "../utilities/loadDanceMoves";
@@ -14,9 +13,12 @@ let noteBlockGeometry,
   noteBlockMissedMaterial,
   noteBlockMesh
 let fallingGroup, danceMoves;
+
+
 const targetYPosition = -0.25
 const noteDropperWidth = 0.7
-const noteDropperColumnNumber = 4
+const noteDropperKeys = ["A","S","D","F","G"]
+const noteDropperColumnNumber = noteDropperKeys.length
 const noteXPositions = []
 let noteXPosition =  0 - noteDropperWidth / 2
 for (let step = 0; step < noteDropperColumnNumber; step++) {
@@ -24,7 +26,6 @@ for (let step = 0; step < noteDropperColumnNumber; step++) {
   noteXPosition += noteDropperWidth / (noteDropperColumnNumber-1);
 }
 let noteColumns = assignNotesToColums(noteXPositions)
-console.log(noteXPositions)
 
 init();
 let KeyWNotesToHit = [];
@@ -50,7 +51,7 @@ function init() {
   
   scene.add(fallingGroup);
 
-  let noteDropper = createNoteTargets(targetYPosition, noteXPositions, noteDropperWidth)
+  let noteDropper = createNoteTargets(targetYPosition, noteXPositions, noteDropperWidth, noteDropperKeys)
   scene.add(noteDropper)
 
   light = new THREE.PointLight(0x404040, 400);
@@ -65,7 +66,6 @@ function init() {
 }
 
 export function addCube(noteName, noteTime) {
-  console.log(noteName)
   let newNoteBlock = noteBlockMesh.clone();
   let Xposition = noteColumns[noteName]
   let Yposition = 0.4 
