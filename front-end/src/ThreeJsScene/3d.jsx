@@ -101,7 +101,20 @@ export function addCube(noteName, noteTime) {
   fallTween.start();
 }
 
-export function dance(notePitch, isHit) {
+export function deleteNote(noteName) {
+  // might need to find another way to delete notes from the noteToHit object that doesn't involve looping through the whole object every time. if there's loads of notes on screen this could be slow
+  for (const key in notesToHit) {
+    const array = notesToHit[key];
+    const index = array.indexOf(noteName);
+    if (index !== -1) {
+      array.splice(index, 1);
+      return;
+    }
+  }
+  fallingGroup.children.shift();
+}
+
+function dance(notePitch, isHit) {
   if (isHit) {
     let danceMove = noteColumns[notePitch].danceMove
     danceMove.stop()
@@ -109,10 +122,6 @@ export function dance(notePitch, isHit) {
   } else {
     // play stumble animation
   }
-}
-
-export function playNote(noteName, noteTime) {
-  let objectName = noteName + noteTime;
 }
 
 function hitKey(e) {
@@ -134,19 +143,6 @@ function hitKey(e) {
   dance(noteAttempt.pitch, isHit);
 
   notesToHit[e.code] = notesToHit[e.code].filter((e) => e !== noteAttempt.name);
-}
-
-export function deleteNote(noteName) {
-  // might need to find another way to delete notes from the noteToHit object that doesn't involve looping through the whole object every time. if there's loads of notes on screen this could be slow
-  for (const key in notesToHit) {
-    const array = notesToHit[key];
-    const index = array.indexOf(noteName);
-    if (index !== -1) {
-      array.splice(index, 1);
-      return;
-    }
-  }
-  fallingGroup.children.shift();
 }
 
 function animation(time) {
