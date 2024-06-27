@@ -30,7 +30,7 @@ export function createNoteTargets(
     text.anchorY = "middle";
     text.fontSize = 0.03;
     text.sync();
-    console.log(text);
+    // console.log(text);
     newTarget.position.set(columnXPositions[step], targetYPosition, 0);
     noteDropperGroup.add(newTarget);
   }
