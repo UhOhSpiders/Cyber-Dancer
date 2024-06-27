@@ -4,7 +4,7 @@ import { fallTime } from "../constants/constants";
 import { loadCharacter } from "../utilities/loadCharacter";
 import { assignDanceMovesToNotes } from "../utilities/assignDanceMovesToNotes"
 import { createNoteTargets } from "../utilities/createNoteTargets";
-import { assignNotesToColums } from "../utilities/assignNotesToColumns";
+import { assignNotesToColumns } from "../utilities/assignNotesToColumns";
 import { getColumnXPositions } from "../utilities/getColumnXPositions";
 
 let camera, scene, renderer, mixer, clock, light;
@@ -22,7 +22,7 @@ const columnXPositions = getColumnXPositions(
   noteDropperWidth,
   noteDropperKeys.length
 );
-let noteColumns = assignNotesToColums(columnXPositions, noteDropperKeys);
+let noteColumns = assignNotesToColumns(columnXPositions, noteDropperKeys);
 
 init();
 

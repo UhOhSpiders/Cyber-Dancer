@@ -5,6 +5,7 @@
 - Refactor noteColumn & noteName variable names for easier readability
 ## Animation logic:
 - Improve dance move logic
+- Add hit/miss animations
 ## Animation:
 - Model character
 - Animate moves

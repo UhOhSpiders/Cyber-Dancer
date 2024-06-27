@@ -1,4 +1,4 @@
-export function assignNotesToColums(columnXPositions, keyEvent) {
+export function assignNotesToColumns(columnXPositions, keyEvent) {
     let assignedNotes = {};
     let columnIndex = 0;
   
