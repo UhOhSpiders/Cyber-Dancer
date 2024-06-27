@@ -1,5 +1,8 @@
 # DDR Clone To-dos
 
+
+## General:
+- Refactor noteColumn & noteName variable names for easier readability
 ## Animation logic:
 - Improve dance move logic
 ## Animation:

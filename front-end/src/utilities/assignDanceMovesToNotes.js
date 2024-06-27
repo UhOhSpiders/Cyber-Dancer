@@ -19,15 +19,17 @@ export function assignDanceMovesToNotes(
       danceMoveActions.push(action);
     }
   });
-  let danceMoveIndex = 0
+  let danceMoveIndex = 0;
+
+  // A: {XPosition: -0.11666666666666667, keyEvent: 'KeyS', daceMove: danceMoveAction}
+  // assigns a danceMove to each note in the noteColumns object to be accessed in the dance() function
 
   for (const noteName in noteColumns) {
     const noteData = noteColumns[noteName];
 
-    // Assign the dance move at the current index, handling potential array overflow
-    noteData.danceMove = danceMoveActions[danceMoveIndex % danceMoveActions.length];
+    noteData.danceMove =
+      danceMoveActions[danceMoveIndex % danceMoveActions.length];
 
-    // Increment the dance move index, wrapping around if necessary
     danceMoveIndex++;
   }
 

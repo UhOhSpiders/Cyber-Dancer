@@ -13,7 +13,7 @@ let noteBlockGeometry,
   noteBlockPlayedMaterial,
   noteBlockMissedMaterial,
   noteBlockMesh;
-let fallingGroup, danceMoves;
+let fallingGroup
 
 const targetYPosition = -0.25;
 const noteDropperWidth = 0.7;
