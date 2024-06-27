@@ -8,15 +8,16 @@ export function assignNotesToColums(columnXPositions, keyEvent) {
       }
   
       const noteNames = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-      // {<noteName>:[<columnXPosition>,<keyEvent>]}
-      // the above structure means newly created notes can be positioned using "noteColumns[noteName][0]" and then added to the notes to hit object with the appropriate key "noteColumns[noteName][1]"
-      assignedNotes[noteNames[step]] = [columnXPositions[columnIndex],keyEvent[columnIndex]];
+      // A: {XPosition: -0.11666666666666667, keyEvent: 'KeyS'}
+      // the above structure means newly created notes can be positioned using "noteColumns[noteName].XPostition" and then added to the notes to hit object with the appropriate key "noteColumns[noteName].keyEvent"
+      assignedNotes[noteNames[step]] = {"XPosition":columnXPositions[columnIndex],"keyEvent":keyEvent[columnIndex]};
   
       for (let octave = 1; octave <= 7; octave++) {
-        assignedNotes[noteNames[step] + octave] = [columnXPositions[columnIndex],keyEvent[columnIndex]];
+        assignedNotes[noteNames[step] + octave] = {"XPosition":columnXPositions[columnIndex],"keyEvent":keyEvent[columnIndex]};
       }
   
       columnIndex++;
     }
+    console.log(assignedNotes)
     return assignedNotes;
   }

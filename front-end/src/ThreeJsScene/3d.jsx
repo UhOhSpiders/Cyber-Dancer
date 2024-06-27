@@ -2,7 +2,7 @@ import * as THREE from "three";
 import * as TWEEN from "@tweenjs/tween.js";
 import { fallTime } from "../constants/constants";
 import { loadCharacter } from "../utilities/loadCharacter";
-import { loadDanceMoves } from "../utilities/loadDanceMoves";
+import { assignDanceMovesToNotes } from "../utilities/assignDanceMovesToNotes"
 import { createNoteTargets } from "../utilities/createNoteTargets";
 import { assignNotesToColums } from "../utilities/assignNotesToColumns";
 import { getColumnXPositions } from "../utilities/getColumnXPositions";
@@ -50,13 +50,13 @@ function init() {
 
   scene.add(fallingGroup);
 
-  let noteDropper = createNoteTargets(
+  let noteTargets = createNoteTargets(
     targetYPosition,
     columnXPositions,
     noteDropperWidth,
     noteDropperKeys
   );
-  scene.add(noteDropper);
+  scene.add(noteTargets);
 
   light = new THREE.PointLight(0x404040, 400);
   scene.add(light);
@@ -65,19 +65,20 @@ function init() {
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setAnimationLoop(animation);
   loadCharacter("/ddrman.gltf", scene, mixer).then(() => {
-    danceMoves = loadDanceMoves("ddrman", scene, mixer);
+    noteColumns = assignDanceMovesToNotes("ddrman", scene, mixer, noteColumns);
   });
 }
 
 export function addCube(noteName, noteTime) {
   let newNoteBlock = noteBlockMesh.clone();
-  let Xposition = noteColumns[noteName][0];
+  let Xposition = noteColumns[noteName].XPosition;
   let Yposition = 0.4;
   newNoteBlock.position.set(Xposition, Yposition, 0);
   newNoteBlock.name = noteName + noteTime;
+  newNoteBlock.pitch = noteName 
   newNoteBlock.timeCreated = clock.elapsedTime;
   fallingGroup.add(newNoteBlock);
-  notesToHit[noteColumns[noteName][1]].push(newNoteBlock.name);
+  notesToHit[noteColumns[noteName].keyEvent].push(newNoteBlock.name);
   // animate fall
   const targetPosition = new THREE.Vector3(Xposition, targetYPosition, 0);
   // for smooth exit the y coordinate of the exit position must be the same distance from the target as the note's initial position, this allows two tweens to chain together and look like 1 smooth motion while still having an exact target halfway through
@@ -100,15 +101,11 @@ export function addCube(noteName, noteTime) {
   fallTween.start();
 }
 
-export function dance(noteName, isHit) {
+export function dance(notePitch, isHit) {
   if (isHit) {
-    if (noteName.includes("#") || noteName.includes("A")) {
-      danceMoves[1].stop();
-      danceMoves[1].play();
-    } else {
-      danceMoves[0].stop();
-      danceMoves[0].play();
-    }
+    let danceMove = noteColumns[notePitch].danceMove
+    danceMove.stop()
+    danceMove.play()
   } else {
     // play stumble animation
   }
@@ -134,7 +131,7 @@ function hitKey(e) {
     ? noteBlockPlayedMaterial
     : noteBlockMissedMaterial;
 
-  dance(notesToHit[e.code][0], isHit);
+  dance(noteAttempt.pitch, isHit);
 
   notesToHit[e.code] = notesToHit[e.code].filter((e) => e !== noteAttempt.name);
 }
