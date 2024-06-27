@@ -8,3 +8,5 @@
 - Model/animate background
 ## Game logic:
 - Scoring
+## Display logic:
+- Make layout of threejs scene responsive

@@ -1,7 +1,6 @@
 export const fallTime = 2;
 
 export const keyCodes = {
-  // Letters (uppercase and lowercase)
   KeyA: "A",
   KeyB: "B",
   KeyC: "C",
@@ -54,12 +53,10 @@ export const keyCodes = {
   Keyx: "x",
   Keyy: "y",
   Keyz: "z",
-  ShiftLeft: "(Shift)", // Special case for Shift
-  ControlLeft: "(Ctrl)", // Special cases for modifier keys
+  ShiftLeft: "(Shift)", 
+  ControlLeft: "(Ctrl)", 
   AltLeft: "(Alt)",
-  MetaLeft: "(Meta)", // Meta is often used for Command on Mac
-
-  // Numbers (consider separate mappings for number pad if needed)
+  MetaLeft: "(Meta)", 
   Digit0: "0",
   Digit1: "1",
   Digit2: "2",
@@ -70,29 +67,24 @@ export const keyCodes = {
   Digit7: "7",
   Digit8: "8",
   Digit9: "9",
-
-  // Function keys (adjust based on your specific needs)
   Escape: "Esc",
   Backspace: "Backspace",
   Tab: "Tab",
   Enter: "Enter",
   CapsLock: "Caps Lock",
-  // Arrow keys
-  ArrowLeft: "←", // Left arrow
-  ArrowUp: "↑", // Up arrow
-  ArrowRight: "→", // Right arrow
-  ArrowDown: "↓", // Down arrow
-
-  // Other common keys
+  ArrowLeft: "←", 
+  ArrowUp: "↑", 
+  ArrowRight: "→", 
+  ArrowDown: "↓", 
   Space: "Space",
   Comma: ",",
   Period: ".",
   Slash: "/",
-  Backquote: "`", // Backtick
+  Backquote: "`", 
   BracketLeft: "[",
   BracketRight: "]",
   Semicolon: ";",
-  Quote: "'", // Single quote
+  Quote: "'", 
   Equal: "=",
   Minus: "-",
   Underscore: "_",

@@ -17,7 +17,7 @@ let fallingGroup, danceMoves;
 
 const targetYPosition = -0.25;
 const noteDropperWidth = 0.7;
-const noteDropperKeys = ["KeyA", "KeyS", "KeyD", "KeyF","KeyG","KeyH","KeyJ"];
+const noteDropperKeys = ["KeyA", "KeyS", "KeyD", "KeyF"];
 const columnXPositions = getColumnXPositions(
   noteDropperWidth,
   noteDropperKeys.length
@@ -25,7 +25,6 @@ const columnXPositions = getColumnXPositions(
 let noteColumns = assignNotesToColums(columnXPositions, noteDropperKeys);
 
 init();
-let KeyWNotesToHit = [];
 
 let notesToHit = noteDropperKeys.reduce(
   (acc, curr) => ((acc[curr] = []), acc),
@@ -78,10 +77,7 @@ export function addCube(noteName, noteTime) {
   newNoteBlock.name = noteName + noteTime;
   newNoteBlock.timeCreated = clock.elapsedTime;
   fallingGroup.add(newNoteBlock);
-  KeyWNotesToHit.push(newNoteBlock.name);
   notesToHit[noteColumns[noteName][1]].push(newNoteBlock.name);
-
-  console.log(notesToHit);
   // animate fall
   const targetPosition = new THREE.Vector3(Xposition, targetYPosition, 0);
   // for smooth exit the y coordinate of the exit position must be the same distance from the target as the note's initial position, this allows two tweens to chain together and look like 1 smooth motion while still having an exact target halfway through
@@ -132,7 +128,7 @@ function hitKey(e) {
       console.log(
         "hit!" + notesToHit[e.code][0] + "at" + noteAttemptWorldPosition.y
       );
-      dance(KeyWNotesToHit[0]);
+      dance(notesToHit[e.code][0]);
       notesToHit[e.code] = notesToHit[e.code].filter((e) => e !== noteAttempt.name);
     } else {
       console.log("miss!");
@@ -143,7 +139,7 @@ function hitKey(e) {
 }
 
 export function deleteNote(noteName) {
-  // might need to find anotherway to delete notes from the noteToHit object that doesn't involve looping through the whole object every time. if there's loads of notes on screen this could be slow
+  // might need to find another way to delete notes from the noteToHit object that doesn't involve looping through the whole object every time. if there's loads of notes on screen this could be slow
   for (const key in notesToHit) {
     const array = notesToHit[key];
     const index = array.indexOf(noteName);
@@ -152,7 +148,6 @@ export function deleteNote(noteName) {
       return
     }
   }
-  KeyWNotesToHit = KeyWNotesToHit.filter((e) => e !== noteName);
   fallingGroup.children.shift();
 }
 
