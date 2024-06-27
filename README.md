@@ -8,4 +8,3 @@
 - Model/animate background
 ## Game logic:
 - Scoring
-- Connect note dropper columns to specific keystrokes
