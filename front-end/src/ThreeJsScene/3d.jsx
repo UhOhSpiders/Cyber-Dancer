@@ -100,13 +100,17 @@ export function addCube(noteName, noteTime) {
   fallTween.start();
 }
 
-export function dance(noteName) {
-  if (noteName.includes("#") || noteName.includes("A")) {
-    danceMoves[1].stop();
-    danceMoves[1].play();
+export function dance(noteName, isHit) {
+  if (isHit) {
+    if (noteName.includes("#") || noteName.includes("A")) {
+      danceMoves[1].stop();
+      danceMoves[1].play();
+    } else {
+      danceMoves[0].stop();
+      danceMoves[0].play();
+    }
   } else {
-    danceMoves[0].stop();
-    danceMoves[0].play();
+    // play stumble animation
   }
 }
 
@@ -115,27 +119,24 @@ export function playNote(noteName, noteTime) {
 }
 
 function hitKey(e) {
-  if (notesToHit[e.code].length) {
-    let noteAttempt = scene.getObjectByName(notesToHit[e.code][0]);
-    let noteAttemptWorldPosition = noteAttempt.getWorldPosition(
-      new THREE.Vector3()
-    );
-    if (
-      noteAttemptWorldPosition.y < targetYPosition + 0.07 &&
-      noteAttemptWorldPosition.y > targetYPosition - 0.07
-    ) {
-      noteAttempt.material = noteBlockPlayedMaterial;
-      console.log(
-        "hit!" + notesToHit[e.code][0] + "at" + noteAttemptWorldPosition.y
-      );
-      dance(notesToHit[e.code][0]);
-      notesToHit[e.code] = notesToHit[e.code].filter((e) => e !== noteAttempt.name);
-    } else {
-      console.log("miss!");
-      noteAttempt.material = noteBlockMissedMaterial;
-      notesToHit[e.code] = notesToHit[e.code].filter((e) => e !== noteAttempt.name);
-    }
-  }
+  if (!notesToHit[e.code].length) return;
+
+  const noteAttempt = scene.getObjectByName(notesToHit[e.code][0]);
+  const noteAttemptWorldPosition = noteAttempt.getWorldPosition(
+    new THREE.Vector3()
+  );
+
+  const isHit =
+    noteAttemptWorldPosition.y < targetYPosition + 0.07 &&
+    noteAttemptWorldPosition.y > targetYPosition - 0.07;
+
+  noteAttempt.material = isHit
+    ? noteBlockPlayedMaterial
+    : noteBlockMissedMaterial;
+
+  dance(notesToHit[e.code][0], isHit);
+
+  notesToHit[e.code] = notesToHit[e.code].filter((e) => e !== noteAttempt.name);
 }
 
 export function deleteNote(noteName) {
@@ -145,7 +146,7 @@ export function deleteNote(noteName) {
     const index = array.indexOf(noteName);
     if (index !== -1) {
       array.splice(index, 1);
-      return
+      return;
     }
   }
   fallingGroup.children.shift();
