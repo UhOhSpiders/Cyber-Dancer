@@ -8,11 +8,13 @@ import { fallTime } from "./constants/constants.js";
 import { assignNotesToColumns } from "./utilities/assignNotesToColumns.js";
 
 export default class NoteDropper {
-  constructor(width, scene, camera) {
+  constructor(loadedGltf, gltfName, width, scene, camera) {
+    this.loadedGltf = loadedGltf
+    this.gltfName = gltfName
     this.width = width;
     this.scene = scene;
     this.camera = camera;
-    this.keys = ["KeyA", "KeyS", "KeyD", "KeyF"];
+    this.keys = ["KeyA", "KeyS", "KeyD", "KeyF","KeyG"];
     this.targetYPosition = -0.25;
     this.notesToHit = this.keys.reduce(
       (acc, curr) => ((acc[curr] = []), acc),
@@ -24,7 +26,7 @@ export default class NoteDropper {
     this.noteDropperGroup.add(this.fallingGroup);
     this.columnXPositions = getColumnXPositions(width, this.keys.length);
     this.noteColumns = assignNotesToColumns(this.columnXPositions, this.keys);
-    this.noteGeometry = new THREE.BoxGeometry(0.02, 0.02, 0.02);
+    this.noteGeometry = new THREE.BoxGeometry();
     this.noteMaterial = new THREE.MeshBasicMaterial({ color: "red" });
     this.notePlayedMaterial = new THREE.MeshBasicMaterial({
       color: "green",
@@ -33,29 +35,26 @@ export default class NoteDropper {
       color: "grey",
     });
     this.noteMesh = new THREE.Mesh(this.noteGeometry, this.noteMaterial);
+    this.targetMesh = new THREE.Mesh(new THREE.CircleGeometry(0.02, 8), new THREE.MeshPhongMaterial({ color: "blue" }))
   }
-  load() {
-    let linePoints = [];
-    let lineMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
-    linePoints.push(new THREE.Vector3(this.width / 2, this.targetYPosition, 0));
-    linePoints.push(
-      new THREE.Vector3(this.width / -2, this.targetYPosition, 0)
-    );
-    let lineGeometry = new THREE.BufferGeometry().setFromPoints(linePoints);
-    let line = new THREE.Line(lineGeometry, lineMaterial);
+  create() {
+    let customNoteMesh = this.loadedGltf.scene.getObjectByName(`${this.gltfName}_note`)
+    this.noteMesh = customNoteMesh ? customNoteMesh : this.noteMesh
+    this.noteMesh.scale.set(0.2,0.2,0.2)
 
-    let targetGeometry = new THREE.CircleGeometry(0.02, 8);
-    let targetMaterial = new THREE.MeshPhongMaterial({ color: "blue" });
-    let targetMesh = new THREE.Mesh(targetGeometry, targetMaterial);
+    let customTargetMesh = this.loadedGltf.scene.getObjectByName(`${this.gltfName}_target`)
+    this.targetMesh = customTargetMesh ? customTargetMesh : this.targetMesh
+    this.targetMesh.scale.set(0.2,0.2,0.2)
+    // turn this into an add targets function
     for (let step = 0; step < this.columnXPositions.length; step++) {
-      let newTarget = targetMesh.clone();
+      let newTarget = this.targetMesh.clone();
       let text = new Text();
       this.noteDropperGroup.add(text);
       text.text = keyCodes[this.keys[step]];
       newTarget.name = this.keys[step]
       text.position.x = this.columnXPositions[step];
       text.position.y = this.targetYPosition;
-      text.color = "white";
+      text.color = "green";
       text.anchorX = "center";
       text.anchorY = "middle";
       text.fontSize = 0.03;
@@ -68,7 +67,6 @@ export default class NoteDropper {
       this.noteDropperGroup.add(newTarget);
     }
 
-    this.noteDropperGroup.add(line);
     this.scene.add(this.noteDropperGroup);
   }
 
@@ -86,7 +84,7 @@ export default class NoteDropper {
       this.targetYPosition,
       0
     );
-    // for smooth exit the y coordinate of the exit position must be the same distance from the target as the note's initial position, this allows two tweens to chain together and look like 1 smooth motion while still having an exact target halfway through
+    // turn this into a createFallTween function
     const exitPosition = new THREE.Vector3(
       Xposition,
       this.targetYPosition - (Yposition - this.targetYPosition),
@@ -120,9 +118,10 @@ export default class NoteDropper {
 
   checkHit(e) {
     if (this.notesToHit[e.code]){
+      // turn this into a hitTween function
         const targetResponse = this.noteDropperGroup.getObjectByName(e.code)
-        const targetResponseTween = new TWEEN.Tween(new THREE.Vector3(1,1,1))
-      .to(new THREE.Vector3(1.7,1.7,1.7), 80)
+        const targetResponseTween = new TWEEN.Tween(new THREE.Vector3(0.2,0.2,0.2))
+      .to(new THREE.Vector3(0.5,0.5,0.5), 80)
       targetResponseTween.onUpdate(function (newScale) {
         targetResponse.scale.set(newScale.x, newScale.y, newScale.z);
       })

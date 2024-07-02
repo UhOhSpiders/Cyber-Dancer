@@ -10,7 +10,6 @@ export default class Game {
   constructor() {
     this.noteDropperWidth = 0.7;
     this.danceMoves = [];
-    this.noteDropper = null;
     this.camera = new THREE.PerspectiveCamera(42, 1, 0.01, 10);
     this.camera.position.z = 1;
     this.scene = new THREE.Scene();
@@ -19,6 +18,7 @@ export default class Game {
     this.mixer = new THREE.AnimationMixer(this.scene);
     this.clock = new THREE.Clock();
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.noteDropper = new NoteDropper();
 
     window.addEventListener("resize", () => this.resize());
     this.input = document.querySelector("body");
@@ -44,13 +44,11 @@ export default class Game {
     if (container) {
       const width = container.offsetWidth;
       const height = container.offsetHeight;
-      // add note dropper resize in here too
       this.renderer.setSize(width, height);
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
-      if (this.noteDropper) {
-        this.noteDropper.setSize(width, height);
-      }
+      // add note dropper resize in here too
+      this.noteDropper.setSize(width, height);
     }
   }
 
@@ -73,20 +71,14 @@ export default class Game {
         );
       });
       this.noteDropper = new NoteDropper(
+        loadedGltf,
+        gltfName,
         this.noteDropperWidth,
         this.scene,
         this.camera
       );
-      this.noteDropper.load();
+      this.noteDropper.create();
     });
-  }
-
-  addCube(notePitch, noteTime) {
-    this.noteDropper.addNote(notePitch, noteTime);
-  }
-
-  deleteNote(noteName) {
-    this.noteDropper.deleteNote(noteName);
   }
 
   dance(notePitch, isHit) {

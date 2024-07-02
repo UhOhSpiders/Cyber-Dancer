@@ -13,7 +13,7 @@ function App() {
   };
 
   const resetCube = () => {
-    game.addCube("F#", 2.0);
+    game.noteDropper.addNote("F#", 2.0);
   };
 
 

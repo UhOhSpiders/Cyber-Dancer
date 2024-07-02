@@ -1,13 +1,14 @@
 import * as THREE from "three";
 
 export function assignDanceMovesToNotes(
-  characterName,
+  gltfName,
   gameScene,
   animationMixer,
   noteColumns
 ) {
   let danceMoveActions = [];
-  let character = gameScene.getObjectByName(characterName);
+  let character = gameScene.getObjectByName(`${gltfName}_character`);
+  console.log(character)
   character.animations.forEach((animation) => {
     if (animation.name != "idle") {
       let clip = THREE.AnimationClip.findByName(

@@ -18,13 +18,13 @@ export default async function playMidi(midiTrack, game) {
             // create cascading note visual ahead of time
             Tone.getDraw().schedule(function () {
                 if (track.name == 'dance_moves') {
-                    game.addCube(note.name, note.time)
+                    game.noteDropper.addNote(note.name, note.time)
                 }
             }, now + note.time - fallTime)
             // dispose of object
             Tone.getDraw().schedule(function () {
                 if (track.name == 'dance_moves') {
-                    game.deleteNote(note.name + note.time)
+                    game.noteDropper.deleteNote(note.name + note.time)
                 }
             }, now + note.time + 0.5)
         });
