@@ -18,6 +18,5 @@ export function assignNotesToColumns(columnXPositions, keyEvent) {
   
       columnIndex++;
     }
-    console.log(assignedNotes)
     return assignedNotes;
   }
