@@ -3,6 +3,7 @@ import playMidiAndMP3 from "./utilities/playMidiAndMP3.js";
 import ThreeJsScene from "./ThreeJsScene/index.jsx";
 import Game from "./ThreeJsScene/3d.jsx";
 import { useEffect, useState } from "react";
+import "./App.css"
 
 const midi = await Midi.fromUrl("../midi-to-click-test.MID");
 
@@ -30,13 +31,7 @@ function App() {
       <>
         {playing ? null : (
           <button
-            style={{
-              position: "fixed",
-              margin: "auto",
-              inset: "0px",
-              width: "20rem",
-              height: "5rem",
-            }}
+            
             onClick={handleClick}
           >
             Start Game

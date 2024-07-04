@@ -67,7 +67,7 @@ export default class NoteDropper {
       text.position.x = this.columnXPositions[step];
       text.position.y = this.noteTargetPosition.y;
       text.position.z = this.noteTargetPosition.z + 0.05;
-      text.color = "green";
+      text.color = "orange";
       text.anchorX = "center";
       text.anchorY = "middle";
       text.fontSize = 0.03;

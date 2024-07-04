@@ -5,3 +5,23 @@ body{
   margin-left:40px;
   margin-right:40px;
 }
+h1{
+  color: aqua;
+}
+
+button{
+  background-color:orange;
+  border-radius: 20px;
+  border:none;
+  position: fixed;
+  margin: auto;
+  inset: 0px;
+  width: 20rem;
+  height: 5rem;
+  font-size: x-large;
+}
+
+button:hover{
+  background-color: chocolate;
+  cursor: pointer;
+}
