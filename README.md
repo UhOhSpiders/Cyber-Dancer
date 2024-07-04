@@ -2,10 +2,8 @@
 
 
 ## General:
+- Problem with using react for the menu system is that it must be forced to update the ThreeJsScene JSX element through passing a prop with state change to the useCallback dependency array. This forces the game to remount every time the menu changes.
 - Refactor noteColumn & noteName variable names for easier readability
-- Extract functions in 3d.jsx into their own files.
-- Move materials to constants.js, sctructure them as an object to be accessed as material.characterName ? OR experiment with exporting PBR materials through blender
-- Improve the character loading function so it can deal with a variety of gltf nesting structures 
 - Allow different backgrounds/targets/note blocks to be imported, while still having fallbacks
 ## Animation logic:
 - Improve dance move logic
