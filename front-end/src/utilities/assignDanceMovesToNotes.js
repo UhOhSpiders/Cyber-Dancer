@@ -8,7 +8,6 @@ export function assignDanceMovesToNotes(
 ) {
   let danceMoveActions = [];
   let character = gameScene.getObjectByName(`${gltfName}_character`);
-  console.log(character)
   character.animations.forEach((animation) => {
     if (animation.name != "idle") {
       let clip = THREE.AnimationClip.findByName(

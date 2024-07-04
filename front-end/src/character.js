@@ -1,5 +1,6 @@
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as THREE from "three";
+import { assignDanceMovesToNotes } from "./utilities/assignDanceMovesToNotes";
 
 export default class Character {
   constructor(loadedGltf, gltfName, position, scene, animationMixer) {
@@ -8,6 +9,7 @@ export default class Character {
     this.position = position;
     this.scene = scene;
     this.animationMixer = animationMixer;
+    this.danceMoves = [];
   }
   create() {
     return new Promise((resolve) => {
@@ -26,5 +28,22 @@ export default class Character {
       idleAction.play();
       resolve();
     }, undefined);
+  }
+  createDanceMoves(noteColumns) {
+    this.danceMoves = assignDanceMovesToNotes(
+      this.gltfName,
+      this.scene,
+      this.animationMixer,
+      noteColumns
+    );
+  }
+  dance(notePitch, isHit) {
+    if (isHit) {
+      let danceMove = this.danceMoves[notePitch].danceMove;
+      danceMove.stop();
+      danceMove.play();
+    } else {
+      // play stumble animation
+    }
   }
 }
