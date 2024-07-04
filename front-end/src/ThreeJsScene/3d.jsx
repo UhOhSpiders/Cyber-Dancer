@@ -23,10 +23,6 @@ export default class Game {
     this.noteDropper = new NoteDropper();
     this.character = new Character();
 
-    window.addEventListener("resize", () => this.resize());
-    this.input = document.querySelector("body");
-    this.input.addEventListener("keydown", (e) => this.hitKey(e));
-    this.mounted = false;
     this.stats = new Stats();
     this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
     document.body.appendChild(this.stats.dom);
@@ -35,10 +31,7 @@ export default class Game {
     this.mount = this.mount.bind(this);
     this.resize = this.resize.bind(this);
 
-    this.resize();
-
     this.renderer.setAnimationLoop(this.animation);
-    this.mounted = false;
     window.game = this;
   }
 
@@ -96,11 +89,12 @@ export default class Game {
   }
 
   mount(container) {
-    if (!this.mounted && container) {
+    if (container) {
+      window.addEventListener("resize", () => this.resize());
+      this.input = document.querySelector("body");
+      this.input.addEventListener("keydown", (e) => this.hitKey(e));
       container.insertBefore(this.renderer.domElement, container.firstChild);
       this.resize();
-      console.log(this.mounted);
-      this.mounted = true;
     } else {
       this.renderer.domElement.remove();
     }
