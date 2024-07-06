@@ -4,9 +4,17 @@ body{
   /* padding:20px */
   margin-left:40px;
   margin-right:40px;
+  font-family: sans-serif;
 }
+
 h1{
-  color: aqua;
+  font-family: "Kode Mono";
+  font-style: bold;
+  font-size: 80px;
+}
+h1, h3{
+  color: rgb(32, 27, 40);
+  
 }
 
 button{
@@ -17,6 +25,7 @@ button{
   width: 10rem;
   height: 5rem;
   font-size: medium;
+  margin-top: 1.5rem;
 }
 
 p{
@@ -25,11 +34,10 @@ p{
   border:none;
   padding: 2.5rem;
   font-size: medium;
-  font-family: sans-serif;
+  
 }
 
 .menu-container {
-  height: 200px;
   display: flex;
   flex-direction: column;
   place-items: center;

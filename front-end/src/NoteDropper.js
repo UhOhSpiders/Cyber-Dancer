@@ -28,11 +28,13 @@ export default class NoteDropper {
     this.noteColumns = assignNotesToColumns(this.columnXPositions, this.keys);
     this.noteGeometry = new THREE.BoxGeometry();
     this.noteMaterial = new THREE.MeshBasicMaterial({ color: "red" });
-    this.notePlayedMaterial = new THREE.MeshBasicMaterial({
+    this.notePlayedMaterial = new THREE.MeshPhongMaterial({
       color: "green",
     });
     this.noteMissedMaterial = new THREE.MeshBasicMaterial({
       color: "grey",
+      transparent:true,
+      opacity: 0.5
     });
     this.noteMesh = new THREE.Mesh(this.noteGeometry, this.noteMaterial);
     this.targetMesh = new THREE.Mesh(

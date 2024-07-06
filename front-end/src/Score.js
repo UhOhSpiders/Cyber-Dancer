@@ -14,14 +14,10 @@ export default class Score {
     this.text.sync();
     this.scene.add(this.text);
   }
-  increase(isHit) {
-    if (isHit) {
-      this.total += 1;
-      this.text.text = this.total;
-      this.text.sync();
-    } else {
-      this.breakStreak();
-    }
+  increase() {
+    this.total += 1;
+    this.text.text = this.total;
+    this.text.sync();
   }
   breakStreak() {
     console.log("streak broken");

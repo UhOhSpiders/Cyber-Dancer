@@ -10,9 +10,7 @@
 
 .Cube-container canvas {
   display: block;
-  /* margin-left: auto; */
-  /* margin-right: auto; */
-  width: 40%;
   border-radius: 20px;
-  
+  box-shadow: 5px 5px 25px;
+
 }

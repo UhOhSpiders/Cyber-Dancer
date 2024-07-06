@@ -6,6 +6,8 @@ import NoteDropper from "../NoteDropper.js";
 import { loadGltf } from "../utilities/loadGltf.js";
 import playMidiAndMP3 from "../utilities/playMidiAndMP3.js";
 import Score from "../Score.js";
+import Background from "../Background.js"
+import Lights from "../Lights.js"
 
 export default class Game {
   constructor() {
@@ -13,17 +15,29 @@ export default class Game {
     this.camera.position.z = 1;
     this.scene = new THREE.Scene();
     // create lights function here
-    this.scene.background = new THREE.Color(0x231024);
-    this.light = new THREE.HemisphereLight(0x1c51ff, 0xff3bba, 6);
-    this.scene.add(this.light);
+    this.scene.background = new THREE.Color(0xfcca03);
+    
+   
 
     this.mixer = new THREE.AnimationMixer(this.scene);
     this.clock = new THREE.Clock();
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
 
+    this.background = new Background()
     this.noteDropper = new NoteDropper();
     this.character = new Character();
-    this.score = new Score(this.scene)
+    this.score = new Score(this.scene);
+    this.lights = new Lights(this.scene)
+
+    this.loadedGltf = loadGltf("psych_test").then((gltf) => {
+      this.loadedGltf = gltf;
+      this.background = new Background(
+        this.scene,
+        this.loadedGltf,
+        "psych_test"
+      )
+      this.background.create()
+    });
 
     this.stats = new Stats();
     this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
@@ -51,36 +65,36 @@ export default class Game {
   }
 
   loadGraphics(position, gltfName) {
-    loadGltf(gltfName).then((loadedGltf) => {
-      this.character = new Character(
-        loadedGltf,
-        gltfName,
-        position,
-        this.scene,
-        this.mixer,
-        this.noteDropper.noteColumns
-      );
-      this.character.create();
-      this.noteDropper = new NoteDropper(
-        loadedGltf,
-        gltfName,
-        this.scene,
-        this.camera
-      );
-      this.noteDropper.create();
-      this.score.createDisplay();
-    });
+    this.character = new Character(
+      this.loadedGltf,
+      gltfName,
+      position,
+      this.scene,
+      this.mixer,
+      this.noteDropper.noteColumns
+    );
+    this.character.create();
+    this.noteDropper = new NoteDropper(
+      this.loadedGltf,
+      gltfName,
+      this.scene,
+      this.camera
+    );
+    this.noteDropper.create();
+    
+    this.score.createDisplay();
   }
 
   hitKey(e) {
     let checkedHit = this.noteDropper.checkHit(e);
-    if (checkedHit) {
-      this.character.dance(checkedHit.pitch, checkedHit.isHit);
-      this.score.increase(checkedHit.isHit)
-      console.log(this.score)
-      return
-    }else{
-      this.score.breakStreak()
+    if (checkedHit.isHit) {
+      this.character.dance(checkedHit.pitch);
+      this.score.increase(checkedHit.isHit);
+      this.lights.flash()
+      return;
+    } else {
+      this.character.stumble()
+      this.score.breakStreak();
     }
   }
 
@@ -90,7 +104,7 @@ export default class Game {
   }
 
   replay(midi) {
-    this.score.reset()
+    this.score.reset();
     playMidiAndMP3(midi, this);
   }
 
