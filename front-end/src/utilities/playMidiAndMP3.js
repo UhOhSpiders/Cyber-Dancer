@@ -2,16 +2,19 @@ import * as Tone from "tone";
 import { fallTime } from "../constants/constants";
 import * as THREE from "three";
 
-export default async function playMidi(midiTrack) {
-  const playerStoppedEvent = new CustomEvent("playerStopped");
+export default async function playMidiAndMP3(midiTrack, game) {
   const player = await new Promise((resolve, reject) => {
     const player = new Tone.Player({
       url: "../midi-to-click-test.mp3",
       onload: () => {
-        resolve(player.toDestination())},
+        resolve(player.toDestination());
+      },
       onerror: (err) => reject(err),
       autostart: "true",
       onstop: () => {
+        const playerStoppedEvent = new CustomEvent("playerStopped", {
+          detail: { score: game.score.total },
+        });
         document.dispatchEvent(playerStoppedEvent);
       },
     });
@@ -22,7 +25,6 @@ export default async function playMidi(midiTrack) {
       // create cascading note visual ahead of time
       Tone.getDraw().schedule(function () {
         if (track.name == "dance_moves") {
-          console.log("scheduled function triggered")
           game.noteDropper.addNote(note.name, note.time);
         }
       }, now + note.time - fallTime);

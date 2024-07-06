@@ -2,12 +2,9 @@ import * as TWEEN from "@tweenjs/tween.js";
 import * as THREE from "three";
 
 export function createScalePulseTween(mesh) {
-  const scalePulseTween = new TWEEN.Tween(mesh.scale).to(
-    new THREE.Vector3(
-      mesh.scale.x + 0.2,
-      mesh.scale.y + 0.2,
-      mesh.scale.z + 0.2
-    ),
+  console.log(mesh)
+  const scalePulseTween = new TWEEN.Tween(new THREE.Vector3(0.2, 0.2, 0.2)).to(
+    new THREE.Vector3(0.4, 0.4, 0.4),
     80
   );
   scalePulseTween.onUpdate(function (newScale) {

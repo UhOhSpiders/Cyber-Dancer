@@ -1,8 +1,10 @@
-import { useCallback, useRef, useEffect } from "react";
+import { useCallback, memo} from "react";
 import "./index.css";
-// import setupThreeJsScene from "./setupThreeJsScene";
 
-export default function ThreeJsSceneComponent({ playing }) {
-  const containerRef = useCallback(window.game.mount, [playing]);
+export default function ThreeJsSceneComponent() {
+  const containerRef = useCallback(window.game.mount, []);
+  // alert("rerendered scene")
   return <div className="Cube-container" ref={containerRef} ></div>;
 }
+
+export const MemoizedThreeJsScene = memo(ThreeJsSceneComponent)

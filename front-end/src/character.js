@@ -3,13 +3,14 @@ import * as THREE from "three";
 import { assignDanceMovesToNotes } from "./utilities/assignDanceMovesToNotes";
 
 export default class Character {
-  constructor(loadedGltf, gltfName, position, scene, animationMixer) {
+  constructor(loadedGltf, gltfName, position, scene, animationMixer, noteColumns) {
     this.loadedGltf = loadedGltf;
     this.gltfName = gltfName;
     this.position = position;
     this.scene = scene;
     this.animationMixer = animationMixer;
-    this.danceMoves = [];
+    this.noteColumns = noteColumns
+    this.danceMoves = []
   }
   create() {
     return new Promise((resolve) => {
@@ -27,15 +28,14 @@ export default class Character {
       this.scene.add(character);
       idleAction.play();
       resolve();
-    }, undefined);
-  }
-  createDanceMoves(noteColumns) {
-    this.danceMoves = assignDanceMovesToNotes(
-      this.gltfName,
-      this.scene,
-      this.animationMixer,
-      noteColumns
-    );
+    }, undefined).then(() => {
+      this.danceMoves = assignDanceMovesToNotes(
+            this.gltfName,
+            this.scene,
+            this.animationMixer,
+            this.noteColumns
+          );
+    });
   }
   dance(notePitch, isHit) {
     if (isHit) {

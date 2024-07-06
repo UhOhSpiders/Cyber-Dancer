@@ -39,6 +39,7 @@ export default class NoteDropper {
       new THREE.CircleGeometry(0.02, 8),
       new THREE.MeshPhongMaterial({ color: "blue" })
     );
+    // this.create()
   }
   create() {
     let customNoteMesh = this.loadedGltf.scene.getObjectByName(

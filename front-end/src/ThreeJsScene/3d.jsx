@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import * as TWEEN from "@tweenjs/tween.js";
-import { assignDanceMovesToNotes } from "../utilities/assignDanceMovesToNotes.js";
 import Stats from "stats.js";
 import Character from "../character.js";
 import NoteDropper from "../NoteDropper.js";
 import { loadGltf } from "../utilities/loadGltf.js";
+import playMidiAndMP3 from "../utilities/playMidiAndMP3.js";
+import Score from "../Score.js";
 
 export default class Game {
   constructor() {
@@ -22,6 +23,7 @@ export default class Game {
 
     this.noteDropper = new NoteDropper();
     this.character = new Character();
+    this.score = new Score(this.scene)
 
     this.stats = new Stats();
     this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
@@ -55,11 +57,10 @@ export default class Game {
         gltfName,
         position,
         this.scene,
-        this.mixer
+        this.mixer,
+        this.noteDropper.noteColumns
       );
-      this.character.create().then(() => {
-        this.character.createDanceMoves(this.noteDropper.noteColumns);
-      });
+      this.character.create();
       this.noteDropper = new NoteDropper(
         loadedGltf,
         gltfName,
@@ -67,6 +68,7 @@ export default class Game {
         this.camera
       );
       this.noteDropper.create();
+      this.score.createDisplay();
     });
   }
 
@@ -74,7 +76,22 @@ export default class Game {
     let checkedHit = this.noteDropper.checkHit(e);
     if (checkedHit) {
       this.character.dance(checkedHit.pitch, checkedHit.isHit);
+      this.score.increase(checkedHit.isHit)
+      console.log(this.score)
+      return
+    }else{
+      this.score.breakStreak()
     }
+  }
+
+  play(midi, gltfName) {
+    this.loadGraphics({ x: 0, y: -1.2, z: -2.5 }, gltfName);
+    playMidiAndMP3(midi, this);
+  }
+
+  replay(midi) {
+    this.score.reset()
+    playMidiAndMP3(midi, this);
   }
 
   animation(time) {

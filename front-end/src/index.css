@@ -13,15 +13,33 @@ button{
   background-color:orange;
   border-radius: 20px;
   border:none;
-  position: fixed;
-  margin: auto;
   inset: 0px;
-  width: 20rem;
+  width: 10rem;
   height: 5rem;
-  font-size: x-large;
+  font-size: medium;
+}
+
+p{
+  background-color:rgb(255, 209, 122);
+  border-radius: 20px;
+  border:none;
+  padding: 2.5rem;
+  font-size: medium;
+  font-family: sans-serif;
+}
+
+.menu-container {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 80vw;
+  height: calc(100vh - 90px);
 }
 
 button:hover{
-  background-color: chocolate;
+  background-color: rgb(255, 106, 0);
   cursor: pointer;
 }
