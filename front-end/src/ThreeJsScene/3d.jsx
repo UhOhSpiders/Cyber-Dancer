@@ -13,12 +13,11 @@ export default class Game {
   constructor() {
     this.camera = new THREE.PerspectiveCamera(42, 1, 0.01, 10);
     this.camera.position.z = 1;
+    this.camera.position.y = -0.2
+
     this.scene = new THREE.Scene();
-    // create lights function here
     this.scene.background = new THREE.Color(0xfcca03);
     
-   
-
     this.mixer = new THREE.AnimationMixer(this.scene);
     this.clock = new THREE.Clock();
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -26,7 +25,7 @@ export default class Game {
     this.background = new Background()
     this.noteDropper = new NoteDropper();
     this.character = new Character();
-    this.score = new Score(this.scene);
+    this.score = new Score(this.scene, this.camera.position);
     this.lights = new Lights(this.scene)
 
     this.loadedGltf = loadGltf("psych_test").then((gltf) => {

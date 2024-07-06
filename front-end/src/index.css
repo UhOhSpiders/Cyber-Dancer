@@ -8,28 +8,42 @@ body{
 }
 
 h1{
-  font-family: "Kode Mono";
+  
   font-style: bold;
   font-size: 80px;
 }
 h1, h3{
   color: rgb(32, 27, 40);
+  font-family: "Kode Mono";
   
 }
 
+h3{
+  font-style: italic;
+  font-weight: 300;
+}
+
 button{
-  background-color:orange;
+  font-family: "Kode Mono";
+  background-color:transparent;
   border-radius: 20px;
   border:none;
   inset: 0px;
   width: 10rem;
   height: 5rem;
-  font-size: medium;
+  font-size: x-large;
   margin-top: 1.5rem;
 }
 
+button:hover{
+  /* background-color: rgb(255, 106, 0); */
+  cursor: pointer;
+  font-weight: 700;
+}
+
 p{
-  background-color:rgb(255, 209, 122);
+  
+  background-color:rgb(255, 247, 4);
   border-radius: 20px;
   border:none;
   padding: 2.5rem;
@@ -47,7 +61,3 @@ p{
   height: calc(100vh - 90px);
 }
 
-button:hover{
-  background-color: rgb(255, 106, 0);
-  cursor: pointer;
-}

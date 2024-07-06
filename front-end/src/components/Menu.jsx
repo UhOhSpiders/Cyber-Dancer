@@ -39,7 +39,7 @@ const Menu = ({ game, midi }) => {
       <div className="menu-container">
         <h3>(hold me closer)</h3>
         <h1>Cyber Dancer</h1>
-        <h3>Featuring Music From MGMT</h3>
+        {/* <h3>Featuring Music From MGMT</h3> */}
         <button onClick={handleClickPlay}>Start Game</button>
       </div>
     );

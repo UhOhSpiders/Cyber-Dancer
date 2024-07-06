@@ -13,9 +13,9 @@ export default class NoteDropper {
     this.width = 0.5;
     this.scene = scene;
     this.camera = camera;
-    this.noteStartPosition = new THREE.Vector3(0, 0.4, 0.5);
-    this.noteTargetPosition = new THREE.Vector3(0, -0.13, 0.5);
-    this.keys = ["KeyA", "KeyS", "KeyD", "KeyF", "KeyG"];
+    this.noteStartPosition = new THREE.Vector3(0, 0.2, 0.5);
+    this.noteTargetPosition = new THREE.Vector3(0, -0.35, 0.5);
+    this.keys = ["KeyA", "KeyS", "KeyD", "KeyF"];
     this.notesToHit = this.keys.reduce(
       (acc, curr) => ((acc[curr] = []), acc),
       {}
