@@ -59,5 +59,23 @@ p{
   position: absolute;
   width: 80vw;
   height: calc(100vh - 90px);
+  border-radius: 20px;
 }
 
+.loading{
+  position: relative;
+  background-color: black;
+  box-shadow: 5px 5px 25px;
+  
+}
+@keyframes fade{
+  from{opacity: 100;}
+  to{opacity: 0;}
+}
+
+ .fade-in{
+  background-color: black;
+  animation-name: fade;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+ }

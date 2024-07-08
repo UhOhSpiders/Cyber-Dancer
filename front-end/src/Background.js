@@ -3,6 +3,7 @@ export default class Background{
         this.scene = scene;
         this.gltf = gltf
         this.levelName = levelName
+        this.create()
     }
     create(){
         let background = this.gltf.scene.getObjectByName(`${this.levelName}_background`)

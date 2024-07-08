@@ -44,6 +44,7 @@ export default class NoteDropper {
     // this.create()
   }
   create() {
+    console.log(this.loadedGltf)
     let customNoteMesh = this.loadedGltf.scene.getObjectByName(
       `${this.gltfName}_note`
     );

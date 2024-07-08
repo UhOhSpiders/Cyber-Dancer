@@ -2,7 +2,6 @@ import * as TWEEN from "@tweenjs/tween.js";
 import * as THREE from "three";
 
 export function createLightFlashTween(light, light2) {
-  console.log(light)
   const lightFlashTween = new TWEEN.Tween({intensity:30}).to(
     {intensity:0},
     150
