@@ -1,10 +1,8 @@
 import * as THREE from "three";
 import * as TWEEN from "@tweenjs/tween.js";
 import Stats from "stats.js";
-import Character from "../character.js";
 import NoteDropper from "../NoteDropper.js";
 import CharacterSelector from "../CharacterSelector.js";
-import { loadGltf } from "../utilities/loadGltf.js";
 import playMidiAndMP3 from "../utilities/playMidiAndMP3.js";
 import Score from "../Score.js";
 import Background from "../Background.js";
@@ -63,7 +61,7 @@ export default class Game {
     }
   }
 
-  loadGraphics(position, gltfName) {
+  loadGraphics(gltfName) {
     this.noteDropper = new NoteDropper(
       this.loadedGltf,
       gltfName,
@@ -81,7 +79,7 @@ export default class Game {
       console.log(this.selectedCharacter);
       this.selectedCharacter.dance(checkedHit.pitch);
       this.score.increase(checkedHit.isHit);
-      this.lights.flash();
+      // this.lights.flash();
       return;
     } else {
       this.selectedCharacter.stumble();

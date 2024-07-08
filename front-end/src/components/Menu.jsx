@@ -3,18 +3,20 @@ import CharacterMenu from "./CharacterMenu";
 
 const Menu = ({ game, midi }) => {
   const [playing, setPlaying] = useState(false);
-  const [score, setScore] = useState(null);
-  const [isCharacterSelected, setIsCharacterSelected ] = useState(false)
+  const [scoreDetails, setScoreDetails] = useState(null);
+  const [isCharacterSelected, setIsCharacterSelected] = useState(false);
 
   useEffect(() => {
-    const handlePlayerStop = (score) => {
+    const handlePlayerStop = (scoreDetails) => {
       setPlaying(false);
-      setScore(score);
+      scoreDetails.maxStreak = scoreDetails.allStreaks.reduce((a, b) => Math.max(a, b), -Infinity)
+      setScoreDetails(scoreDetails);
     };
     document.addEventListener(
       "playerStopped",
       function (evt) {
-        handlePlayerStop(evt.detail.score);
+        console.log(evt.detail.scoreDetails)
+        handlePlayerStop(evt.detail.scoreDetails);
       },
       false
     );
@@ -29,14 +31,19 @@ const Menu = ({ game, midi }) => {
 
   const handleClickReplay = () => {
     setPlaying(true);
-    setScore(null);
+    setScoreDetails(null);
     game.replay(midi);
   };
 
-  if(!isCharacterSelected){
-    return (<CharacterMenu game={game} setIsCharacterSelected={setIsCharacterSelected}/>)
+  if (!isCharacterSelected) {
+    return (
+      <CharacterMenu
+        game={game}
+        setIsCharacterSelected={setIsCharacterSelected}
+      />
+    );
   }
-  if (!playing && !score) {
+  if (!playing && !scoreDetails) {
     return (
       <div className="menu-container">
         <h3>(hold me closer)</h3>
@@ -44,11 +51,15 @@ const Menu = ({ game, midi }) => {
         <button onClick={handleClickPlay}>Start Game</button>
       </div>
     );
-  } else if (score) {
+  } else if (scoreDetails) {
     return (
       <div className="menu-container">
         <h1>Level Complete</h1>
-        <p>Congratulations. You scored {score} points.</p>
+        <p>
+          Congratulations. You scored {scoreDetails.total} points. You missed{" "}
+          {scoreDetails.notesMissed} notes. Your longest streak was{" "}
+          {scoreDetails.maxStreak}.
+        </p>
         <button onClick={handleClickReplay}>Replay</button>
       </div>
     );

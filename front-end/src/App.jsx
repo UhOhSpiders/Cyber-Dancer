@@ -1,6 +1,5 @@
 import { Midi } from "@tonejs/midi";
 import MemoizedThreeJsScene from "./ThreeJsScene/index.jsx";
-import Game from "./ThreeJsScene/3d.jsx";
 import Menu from "./components/Menu.jsx";
 import "./App.css";
 import useLoadGame from "./hook/useLoadGame.js";
@@ -21,7 +20,7 @@ function App() {
   } else {
     return (
       <div className="menu-container loading">
-        <p className="loading-text">Loading...</p>
+        <p id="loading-text">Loading...</p>
       </div>
     );
   }
