@@ -16,6 +16,7 @@ export function assignDanceMovesToNotes(
       );
       let action = animationMixer.clipAction(clip);
       action.setLoop(THREE.LoopOnce);
+      // action.fadeIn(0.1)
       danceMoveActions.push(action);
     }
   });

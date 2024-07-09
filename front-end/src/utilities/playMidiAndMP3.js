@@ -28,12 +28,20 @@ export default async function playMidiAndMP3(midiTrack, game) {
           game.noteDropper.addNote(note.name, note.time);
         }
       }, now + note.time - fallTime);
+      // force miss
+      Tone.getDraw().schedule(function () {
+        if (track.name == "dance_moves") {
+          game.noteDropper.forceMiss(note.name + note.time);
+        }
+      }, now + note.time + 0.4);
       // dispose of object
       Tone.getDraw().schedule(function () {
         if (track.name == "dance_moves") {
-          game.noteDropper.deleteNote(note.name + note.time);
+          game.noteDropper.deleteNote();
         }
       }, now + note.time + 0.5);
+
+
     });
   });
 }

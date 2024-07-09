@@ -27,7 +27,6 @@ export default class Score {
     this.scoreDetails.allStreaks.push(this.currentStreak)
     this.currentStreak = 0
     this.scoreDetails.notesMissed += 1;
-    console.log("streak broken");
   }
   reset() {
     this.scoreDetails= {total:0,notesMissed:0,allStreaks:[]}

@@ -18,6 +18,7 @@ export default class Game {
     this.scene.background = new THREE.Color(0xfcca03);
 
     this.mixer = new THREE.AnimationMixer(this.scene);
+    
     this.clock = new THREE.Clock();
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
 
@@ -36,9 +37,9 @@ export default class Game {
 
     this.loadedGltf = loadedGltf
    
-    this.stats = new Stats();
-    this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-    document.body.appendChild(this.stats.dom);
+    // this.stats = new Stats();
+    // this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+    // document.body.appendChild(this.stats.dom);
 
     this.animation = this.animation.bind(this);
     this.mount = this.mount.bind(this);
@@ -66,7 +67,8 @@ export default class Game {
       this.loadedGltf,
       gltfName,
       this.scene,
-      this.camera
+      this.camera,
+      this.score
     );
     this.noteDropper.create();
 
@@ -88,7 +90,7 @@ export default class Game {
   }
 
   play(midi, gltfName) {
-    this.loadGraphics({ x: 0, y: -1.2, z: -2.5 }, gltfName);
+    this.loadGraphics(gltfName);
     playMidiAndMP3(midi, this);
   }
 
@@ -100,12 +102,12 @@ export default class Game {
   animation(time) {
     // do not render if not in DOM:
     if (!this.renderer.domElement.parentNode) return;
-    this.stats.begin();
+    // this.stats.begin();
     let delta = this.clock.getDelta();
     TWEEN.update();
     this.mixer.update(delta);
     this.renderer.render(this.scene, this.camera);
-    this.stats.end();
+    // this.stats.end();
   }
 
   mount(container) {

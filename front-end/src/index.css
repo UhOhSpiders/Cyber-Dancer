@@ -1,9 +1,10 @@
 body {
-  display: flex;
-  justify-content: center;
-  margin-left: 40px;
-  margin-right: 40px;
   font-family: sans-serif;
+}
+
+.game-container {
+  display:flex;
+  justify-content: center;
 }
 
 h1 {
@@ -11,9 +12,22 @@ h1 {
   font-size: 80px;
 }
 h1,
+h2,
 h3 {
   color: rgb(32, 27, 40);
   font-family: "Kode Mono";
+}
+.nav-bar{
+  margin-top:0.8rem;
+  margin-bottom: 0.8rem;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-bar h2{
+  margin:0;
 }
 
 h3 {
