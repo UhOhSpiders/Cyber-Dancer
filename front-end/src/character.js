@@ -3,51 +3,52 @@ import * as THREE from "three";
 import { assignDanceMovesToNotes } from "./utilities/assignDanceMovesToNotes";
 
 export default class Character {
-  constructor(
-    loadedGltf,
-    gltfName,
-    position,
-    scene,
-    animationMixer,
-    noteColumns
-  ) {
-    this.loadedGltf = loadedGltf;
-    this.gltfName = gltfName;
-    this.position = position;
+  constructor(object3D, scene, animationMixer, noteColumns) {
+    this.object3D = object3D;
     this.scene = scene;
     this.animationMixer = animationMixer;
     this.noteColumns = noteColumns;
+    this.idle = null;
     this.danceMoves = [];
+
   }
   create() {
     return new Promise((resolve) => {
-      let character = this.loadedGltf.scene.getObjectByName(
-        `${this.gltfName}_character`
-      );
-      character.animations = this.loadedGltf.animations;
-      character.position.set(this.position.x, this.position.y, this.position.z);
+      console.log(this.object3D)
+      let character = this.object3D;
       const idleClip = THREE.AnimationClip.findByName(
-        this.loadedGltf.animations,
+        this.object3D.animations,
         "idle"
       );
       const idleAction = this.animationMixer.clipAction(idleClip);
       idleAction.loop = THREE.LoopPingPong;
+      character.position.set(0, -0.55, 0);
+      character.scale.set(0.3, 0.3, 0.3);
       this.scene.add(character);
-      idleAction.play();
+      this.idle = idleAction;
+      this.idle.play();
+      this.animationMixer.addEventListener("finished", function(){
+        idleAction.reset()
+        idleAction.fadeIn(0.1)
+        idleAction.play()
+      })
       resolve();
     }, undefined).then(() => {
       this.danceMoves = assignDanceMovesToNotes(
-        this.gltfName,
+        this.object3D,
         this.scene,
         this.animationMixer,
         this.noteColumns
       );
     });
+
   }
   dance(notePitch) {
     let danceMove = this.danceMoves[notePitch].danceMove;
-    danceMove.stop();
-    danceMove.play();
+    this.idle.fadeOut(0.1)
+    danceMove.reset()
+    danceMove.fadeIn(0.1)
+    danceMove.play()
   }
   stumble() {
     // play stumble animation

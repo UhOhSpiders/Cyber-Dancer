@@ -1,19 +1,33 @@
 import React, { useState, useEffect } from "react";
+import CharacterMenu from "./CharacterMenu";
+import StartGameMenu from "./StartGameMenu";
+import ScoreCard from "./ScoreCard";
 
 const Menu = ({ game, midi }) => {
   const [playing, setPlaying] = useState(false);
-  const [score, setScore] = useState(null);
-  const [level, setLevel] = useState("psych_test");
+  const [scoreDetails, setScoreDetails] = useState(null);
+  const [isCharacterSelected, setIsCharacterSelected] = useState(false);
 
   useEffect(() => {
-    const handlePlayerStop = (score) => {
+    const handlePlayerStop = (scoreDetails) => {
       setPlaying(false);
-      setScore(score);
+      {
+        scoreDetails.allStreaks.length > 1
+          ? (scoreDetails.maxStreak = scoreDetails.allStreaks.reduce(
+              (a, b) => Math.max(a, b),
+              -Infinity
+            ))
+          : scoreDetails.allStreaks.length
+          ? (scoreDetails.maxStreak = scoreDetails.allStreaks[0])
+          : (scoreDetails.maxStreak = 0);
+      }
+      setScoreDetails(scoreDetails);
     };
     document.addEventListener(
       "playerStopped",
       function (evt) {
-        handlePlayerStop(evt.detail.score);
+        console.log(evt.detail.scoreDetails);
+        handlePlayerStop(evt.detail.scoreDetails);
       },
       false
     );
@@ -22,34 +36,35 @@ const Menu = ({ game, midi }) => {
   }, [playing]);
 
   const handleClickPlay = () => {
-    game.play(midi, level);
+    game.play(midi, "psych_test");
     setPlaying(true);
   };
 
   const handleClickReplay = () => {
     setPlaying(true);
-    setScore(null);
+    setScoreDetails(null);
     game.replay(midi);
   };
-  // if(level){
-  //   return (<div className="menu-container"><p>level selection</p></div>)
-  // }
-  if (!playing && !score) {
+
+  if (!playing && !scoreDetails) {
     return (
-      <div className="menu-container">
-        <h3>(hold me closer)</h3>
-        <h1>Cyber Dancer</h1>
-        {/* <h3>Featuring Music From MGMT</h3> */}
-        <button onClick={handleClickPlay}>Start Game</button>
-      </div>
+      <>
+        {isCharacterSelected ? (
+          <StartGameMenu handleClickPlay={handleClickPlay} />
+        ) : (
+          <CharacterMenu
+            game={game}
+            setIsCharacterSelected={setIsCharacterSelected}
+          />
+        )}
+      </>
     );
-  } else if (score) {
+  } else if (scoreDetails) {
     return (
-      <div className="menu-container">
-        <h1>Level Complete</h1>
-        <p>Congratulations. You scored {score} points.</p>
-        <button onClick={handleClickReplay}>Replay</button>
-      </div>
+      <ScoreCard
+        scoreDetails={scoreDetails}
+        handleClickReplay={handleClickReplay}
+      />
     );
   }
   return null;

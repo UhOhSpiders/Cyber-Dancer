@@ -7,12 +7,13 @@ import { createFallTween } from "./utilities/tweens/createFallTween.js";
 import { createScalePulseTween } from "./utilities/tweens/createScalePulseTween.js";
 
 export default class NoteDropper {
-  constructor(loadedGltf, gltfName, scene, camera) {
+  constructor(loadedGltf, gltfName, scene, camera, score) {
     this.loadedGltf = loadedGltf;
     this.gltfName = gltfName;
     this.width = 0.5;
     this.scene = scene;
     this.camera = camera;
+    this.score = score
     this.noteStartPosition = new THREE.Vector3(0, 0.2, 0.5);
     this.noteTargetPosition = new THREE.Vector3(0, -0.35, 0.5);
     this.keys = ["KeyA", "KeyS", "KeyD", "KeyF"];
@@ -44,6 +45,7 @@ export default class NoteDropper {
     // this.create()
   }
   create() {
+    console.log(this.loadedGltf)
     let customNoteMesh = this.loadedGltf.scene.getObjectByName(
       `${this.gltfName}_note`
     );
@@ -104,14 +106,7 @@ export default class NoteDropper {
     fallTween.start();
   }
 
-  deleteNote(noteName) {
-    for (const key in this.notesToHit) {
-      const array = this.notesToHit[key];
-      const index = array.indexOf(noteName);
-      if (index !== -1) {
-        array.splice(index, 1);
-      }
-    }
+  deleteNote() {
     this.fallingGroup.children.shift();
   }
 
@@ -143,5 +138,16 @@ export default class NoteDropper {
     return { pitch: noteAttempt.pitch, isHit: isHit };
   }
 
+  forceMiss(noteName){
+    for (const key in this.notesToHit) {
+      const array = this.notesToHit[key];
+      const index = array.indexOf(noteName);
+      if (index !== -1) {
+        this.score.breakStreak()
+        array.splice(index, 1);
+      }
+    }
+
+  }
   setSize(width, height) {}
 }

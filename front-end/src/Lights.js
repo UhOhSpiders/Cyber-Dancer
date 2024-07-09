@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { createLightFlashTween } from "./utilities/tweens/createLightFlashTween";
+
 export default class Score {
   constructor(scene) {
     this.scene = scene;
@@ -25,10 +26,7 @@ export default class Score {
     this.scene.add(this.directionalLight1);
     this.scene.add(this.directionalLight2);
     this.scene.add(this.directionalLight3);
+    
   }
 
-  flash() {
-    // const lightTween = createLightFlashTween(this.directionalLight1, this.directionalLight2)
-    // lightTween.start()
-  }
 }

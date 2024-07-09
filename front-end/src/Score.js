@@ -4,11 +4,12 @@ export default class Score {
   constructor(scene, cameraPosition) {
     this.scene = scene;
     this.cameraPosition = cameraPosition;
-    this.total = 0;
+    this.scoreDetails = {total:0,notesMissed:0,allStreaks:[]}
+    this.currentStreak = 0
     this.text = new Text();
   }
   createDisplay() {
-    this.text.text = this.total;
+    this.text.text = this.scoreDetails.total;
     this.text.position.x = this.cameraPosition.x + 0.17;
     this.text.position.y = this.cameraPosition.y + 0.15;
     this.text.position.z = this.cameraPosition.z - 0.4
@@ -17,16 +18,23 @@ export default class Score {
     this.scene.add(this.text);
   }
   increase() {
-    this.total += 1;
-    this.text.text = this.total;
+    this.currentStreak += 1
+    this.scoreDetails.total += 1;
+    this.text.text = this.scoreDetails.total;
     this.text.sync();
   }
   breakStreak() {
-    console.log("streak broken");
+    this.scoreDetails.allStreaks.push(this.currentStreak)
+    this.currentStreak = 0
+    this.scoreDetails.notesMissed += 1;
   }
   reset() {
-    this.total = 0;
-    this.text.text = this.total;
+    this.scoreDetails= {total:0,notesMissed:0,allStreaks:[]}
+    this.text.text = this.scoreDetails.total;
     this.text.sync();
+  }
+  getScoreDetails(){
+    this.scoreDetails.allStreaks.push(this.currentStreak)
+    return this.scoreDetails
   }
 }
