@@ -33,4 +33,8 @@ export default class Score {
     this.text.text = this.scoreDetails.total;
     this.text.sync();
   }
+  getScoreDetails(){
+    this.scoreDetails.allStreaks.push(this.currentStreak)
+    return this.scoreDetails
+  }
 }

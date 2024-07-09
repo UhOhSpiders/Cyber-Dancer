@@ -14,6 +14,7 @@ export default class Character {
   }
   create() {
     return new Promise((resolve) => {
+      console.log(this.object3D)
       let character = this.object3D;
       const idleClip = THREE.AnimationClip.findByName(
         this.object3D.animations,

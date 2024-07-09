@@ -13,7 +13,7 @@ export default async function playMidiAndMP3(midiTrack, game) {
       autostart: "true",
       onstop: () => {
         const playerStoppedEvent = new CustomEvent("playerStopped", {
-          detail: { scoreDetails: game.score.scoreDetails },
+          detail: { scoreDetails: game.score.getScoreDetails() },
         });
         document.dispatchEvent(playerStoppedEvent);
       },

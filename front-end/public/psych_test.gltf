@@ -9,6 +9,35 @@
 			"name":"Scene"
 		},
 		{
+			"extras":{
+				"ats_settings":{
+					"num_tiles":[
+						15,
+						9
+					],
+					"threads_error":0,
+					"prev_engine":"BLENDER_RENDER",
+					"prev_device":"",
+					"prev_border":0,
+					"prev_threads":2,
+					"prev_choice":"64",
+					"prev_res":[
+						960,
+						540
+					],
+					"prev_border_res":[
+						0.0,
+						0.0,
+						1.0,
+						1.0
+					],
+					"prev_actual_tile_size":[
+						64,
+						60
+					],
+					"first_run":0
+				}
+			},
 			"name":"Scene.001",
 			"nodes":[
 				222,
@@ -4116,6 +4145,13 @@
 				215,
 				217
 			],
+			"extras":{
+				"rig_ui":{
+					"name":"rig.002_ui.py",
+					"type":"Text"
+				},
+				"blurb":"Plonk is the kindest soul you'll ever meet."
+			},
 			"name":"plonk_character"
 		},
 		{
@@ -8226,6 +8262,13 @@
 				441,
 				443
 			],
+			"extras":{
+				"rig_ui":{
+					"name":"rig.002_ui.py",
+					"type":"Text"
+				},
+				"blurb":"They're dancing out the demons!"
+			},
 			"name":"blarf_character"
 		}
 	],
