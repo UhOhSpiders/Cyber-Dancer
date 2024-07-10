@@ -11,6 +11,7 @@ export default class CharacterSelector {
   }
   getCharacters(gltf) {
     gltf.scene.children.forEach((object3D) => {
+      // console.log(gltf)
       if (object3D.name.includes("character")) {
         object3D.animations = this.loadedGltf.animations;
         const character = new Character(

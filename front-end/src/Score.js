@@ -30,6 +30,7 @@ export default class Score {
   }
   reset() {
     this.scoreDetails= {total:0,notesMissed:0,allStreaks:[]}
+    this.currentStreak = 0
     this.text.text = this.scoreDetails.total;
     this.text.sync();
   }

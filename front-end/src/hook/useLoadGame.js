@@ -10,7 +10,7 @@ const useLoadGame = (path) => {
   const handleLoadGame = () => {
     setIsLoading(true)
     loadGltf(path).then((gltf)=>{
-        console.log(gltf)
+        // console.log(gltf)
         setGame(new Game(gltf))
         setIsLoading(false)
     })

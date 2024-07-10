@@ -7,7 +7,7 @@ export function createLightFlashTween(light, light2) {
     150
   );
   lightFlashTween.onUpdate(function (newInstensity) {
-    console.log(newInstensity.intensity)
+    // console.log(newInstensity.intensity)
     light.intensity = newInstensity.intensity;
     light2.intensity = newInstensity.intensity
     

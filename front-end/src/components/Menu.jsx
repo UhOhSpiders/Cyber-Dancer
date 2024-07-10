@@ -26,7 +26,6 @@ const Menu = ({ game, midi }) => {
     document.addEventListener(
       "playerStopped",
       function (evt) {
-        console.log(evt.detail.scoreDetails);
         handlePlayerStop(evt.detail.scoreDetails);
       },
       false
