@@ -18,11 +18,11 @@ export default class Game {
     this.scene.background = new THREE.Color(0xfcca03);
 
     this.mixer = new THREE.AnimationMixer(this.scene);
-    
+
     this.clock = new THREE.Clock();
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
 
-    this.background = new Background(this.scene, loadedGltf,"psych_test");
+    this.background = new Background(this.scene, loadedGltf, "psych_test");
     this.noteDropper = new NoteDropper();
     this.characterSelector = new CharacterSelector(
       loadedGltf,
@@ -31,12 +31,12 @@ export default class Game {
       this.noteDropper.noteColumns,
       this.selectedCharacter
     );
-    this.selectedCharacter = null
+    this.selectedCharacter = null;
     this.score = new Score(this.scene, this.camera.position);
     this.lights = new Lights(this.scene);
 
-    this.loadedGltf = loadedGltf
-   
+    this.loadedGltf = loadedGltf;
+
     // this.stats = new Stats();
     // this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
     // document.body.appendChild(this.stats.dom);
@@ -68,21 +68,22 @@ export default class Game {
       gltfName,
       this.scene,
       this.camera,
+      this.renderer,
       this.score
     );
+    this.resize()
     this.noteDropper.create();
-
+    this.input = document.querySelector("body");
+    this.input.addEventListener("keydown", (e) => this.hitAttempt(e));
+    this.input.addEventListener("mousedown", (e) => this.hitAttempt(e));
     this.score.createDisplay();
   }
 
-  hitKey(e) {
+  hitAttempt(e) {
     let checkedHit = this.noteDropper.checkHit(e);
     if (checkedHit.isHit) {
-      console.log(this.selectedCharacter);
       this.selectedCharacter.dance(checkedHit.pitch);
       this.score.increase(checkedHit.isHit);
-      // this.lights.flash();
-      return;
     } else {
       this.selectedCharacter.stumble();
       this.score.breakStreak();
@@ -113,8 +114,6 @@ export default class Game {
   mount(container) {
     if (container) {
       window.addEventListener("resize", () => this.resize());
-      this.input = document.querySelector("body");
-      this.input.addEventListener("keydown", (e) => this.hitKey(e));
       container.insertBefore(this.renderer.domElement, container.firstChild);
       this.resize();
     } else {

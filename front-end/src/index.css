@@ -2,32 +2,36 @@ body {
   font-family: sans-serif;
 }
 
+.Cube-container {
+  width: 80vw;
+  height: calc(100vh - 90px);
+}
+
+.Cube-container canvas {
+  display: block;
+  border-radius: 20px;
+  box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.5);
+}
+
 .game-container {
-  display:flex;
+  display: flex;
   justify-content: center;
 }
 
-h1 {
-  font-style: bold;
-  font-size: 80px;
-}
 h1,
 h2,
 h3 {
   color: rgb(32, 27, 40);
   font-family: "Kode Mono";
 }
-.nav-bar{
-  margin-top:0.8rem;
-  margin-bottom: 0.8rem;
-  margin-left: 1.5rem;
-  margin-right: 1.5rem;
-  display: flex;
-  justify-content: space-between;
+
+h1 {
+  font-style: bold;
+  font-size: 80px;
 }
 
-.nav-bar h2{
-  margin:0;
+h2 {
+  margin: 0;
 }
 
 h3 {
@@ -35,12 +39,18 @@ h3 {
   font-weight: 300;
 }
 
+.nav-bar {
+  margin: 0.8rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
 button {
   font-family: "Kode Mono";
   background-color: transparent;
   border-radius: 20px;
   border: none;
-  inset: 0px;
+  padding: 0;
   width: 10rem;
   height: 5rem;
   font-size: x-large;
@@ -48,7 +58,6 @@ button {
 }
 
 button:hover {
-  /* background-color: rgb(255, 106, 0); */
   cursor: pointer;
   font-weight: 700;
 }
@@ -63,7 +72,7 @@ p {
 .menu-container {
   display: flex;
   flex-direction: column;
-  place-items: center;
+  align-items: center;
   justify-content: center;
   position: absolute;
   width: 80vw;
@@ -74,13 +83,14 @@ p {
 .loading {
   position: relative;
   background-color: black;
-  box-shadow: 5px 5px 25px;
+  box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.5);
 }
 
 #loading-text {
   color: white;
   background-color: transparent;
 }
+
 @keyframes fade {
   from {
     opacity: 100;
@@ -95,4 +105,37 @@ p {
   animation-name: fade;
   animation-duration: 2s;
   animation-fill-mode: forwards;
+}
+
+@media only screen and (max-width: 768px) {
+  .nav-bar {
+    display: none;
+  }
+
+  button:active {
+    font-weight: 700;
+  }
+  .Cube-container {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .menu-container {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+  }
+
+  .Cube-container canvas {
+    border-radius: 0px;
+    box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.5);
+  }
+
+  .game-container {
+    justify-content: center;
+  }
+
+  body {
+    margin: 0;
+  }
 }

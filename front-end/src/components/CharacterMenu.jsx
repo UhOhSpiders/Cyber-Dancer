@@ -11,12 +11,9 @@ const CharacterMenu = ({ game, setIsCharacterSelected }) => {
     (character, index) => {
       let characterName = character.object3D.name.split("_");
       return (
-        <>
         <button id={index} key={index} onClick={handleClick}>
           {characterName[0]}
         </button>
-        {/* <li>{character.object3D.userData.blurb}</li> */}
-        </>
       );
     }
   );

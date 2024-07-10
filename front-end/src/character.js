@@ -10,11 +10,10 @@ export default class Character {
     this.noteColumns = noteColumns;
     this.idle = null;
     this.danceMoves = [];
-
+    this.isDancing = false;
   }
   create() {
     return new Promise((resolve) => {
-      console.log(this.object3D)
       let character = this.object3D;
       const idleClip = THREE.AnimationClip.findByName(
         this.object3D.animations,
@@ -27,11 +26,12 @@ export default class Character {
       this.scene.add(character);
       this.idle = idleAction;
       this.idle.play();
-      this.animationMixer.addEventListener("finished", function(){
-        idleAction.reset()
-        idleAction.fadeIn(0.1)
-        idleAction.play()
-      })
+      this.animationMixer.addEventListener("finished", () => {
+        this.isDancing = false
+        idleAction.reset();
+        idleAction.fadeIn(0.1);
+        idleAction.play();
+      });
       resolve();
     }, undefined).then(() => {
       this.danceMoves = assignDanceMovesToNotes(
@@ -41,16 +41,21 @@ export default class Character {
         this.noteColumns
       );
     });
-
   }
   dance(notePitch) {
-    let danceMove = this.danceMoves[notePitch].danceMove;
-    this.idle.fadeOut(0.1)
-    danceMove.reset()
-    danceMove.fadeIn(0.1)
-    danceMove.play()
+    if (!this.isDancing) {
+      this.isDancing = true;
+      let danceMove = this.danceMoves[notePitch].danceMove;
+      this.idle.fadeOut(0.1);
+      danceMove.reset();
+      danceMove.fadeIn(0.1);
+      danceMove.play();
+    }
   }
   stumble() {
     // play stumble animation
+  }
+  toggleIsDancing() {
+    this.isDancing = !this.isDancing;
   }
 }

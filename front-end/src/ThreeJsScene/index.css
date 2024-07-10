@@ -1,10 +1,5 @@
-.Cube-container {
-  /* position: relative;
-  overflow: hidden; */
-	
-  /* put the size you want your 3D scene to be here */
+/* .Cube-container {
   width: 80vw;
-  
   height: calc(100vh - 90px);
 }
 
@@ -12,5 +7,4 @@
   display: block;
   border-radius: 20px;
   box-shadow: 5px 5px 25px;
-
-}
+} */
