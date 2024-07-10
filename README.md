@@ -16,3 +16,4 @@
 - Streak bonus
 ## Display logic:
 - Bind score display position to camera position
+- Move score for mobile

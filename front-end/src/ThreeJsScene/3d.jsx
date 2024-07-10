@@ -58,7 +58,8 @@ export default class Game {
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
       // add note dropper resize in here too
-      this.noteDropper.setSize(width, height);
+      this.noteDropper.setSize(width);
+      this.score.setSize(width, height)
     }
   }
 
@@ -71,12 +72,12 @@ export default class Game {
       this.renderer,
       this.score
     );
-    this.resize()
     this.noteDropper.create();
     this.input = document.querySelector("body");
     this.input.addEventListener("keydown", (e) => this.hitAttempt(e));
     this.input.addEventListener("mousedown", (e) => this.hitAttempt(e));
     this.score.createDisplay();
+    this.resize()
   }
 
   hitAttempt(e) {

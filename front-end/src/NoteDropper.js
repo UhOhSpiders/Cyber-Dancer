@@ -15,8 +15,8 @@ export default class NoteDropper {
     this.camera = camera;
     this.renderer = renderer;
     this.score = score;
-    this.hitMargin = {upper: 0.07, lower: - 0.07}
-    this.noteStartPosition =  new THREE.Vector3(0, 0.2, 0.5);
+    this.hitMargin = { upper: 0.07, lower: -0.07 };
+    this.noteStartPosition = new THREE.Vector3(0, 0.2, 0.5);
     this.noteTargetPosition = new THREE.Vector3(0, -0.35, 0.5);
     this.keys = ["KeyA", "KeyS", "KeyD", "KeyF"];
     this.notesToHit = this.keys.reduce(
@@ -27,7 +27,7 @@ export default class NoteDropper {
     this.noteDropperGroup = new THREE.Group();
     this.fallingGroup = new THREE.Group();
     this.textGroup = new THREE.Group();
-    
+
     this.noteDropperGroup.add(this.fallingGroup);
     this.columnXPositions = getColumnXPositions(this.width, this.keys.length);
     this.noteColumns = assignNotesToColumns(this.columnXPositions, this.keys);
@@ -42,11 +42,12 @@ export default class NoteDropper {
       opacity: 0.5,
     });
     this.noteMesh = new THREE.Mesh(this.noteGeometry, this.noteMaterial);
-    this.noteScale = new THREE.Vector3(0.2,0.2,0.2)
+    this.noteScale = new THREE.Vector3(0.2, 0.2, 0.2);
     this.targetMesh = new THREE.Mesh(
       new THREE.CircleGeometry(0.02, 8),
       new THREE.MeshPhongMaterial({ color: "blue" })
     );
+    this.targetMeshScale = new THREE.Vector3(0.2, 0.2, 0.2);
     this.raycaster = new THREE.Raycaster();
   }
   create() {
@@ -59,12 +60,16 @@ export default class NoteDropper {
       `${this.gltfName}_target`
     );
     this.targetMesh = customTargetMesh ? customTargetMesh : this.targetMesh;
-    this.targetMesh.scale.set(0.2, 0.2, 0.2);
+    this.targetMesh.scale.set(
+      this.targetMeshScale.x,
+      this.targetMeshScale.y,
+      this.targetMeshScale.z
+    );
     // turn this into an add targets function
     for (let step = 0; step < this.columnXPositions.length; step++) {
       let newTarget = this.targetMesh.clone();
       let text = new Text();
-      this.textGroup.add(text)
+      this.textGroup.add(text);
       this.scene.add(this.textGroup);
       text.text = keyCodes[this.keys[step]];
       newTarget.name = this.keys[step];
@@ -89,7 +94,7 @@ export default class NoteDropper {
 
   addNote(notePitch, noteTime) {
     const mesh = this.noteMesh.clone();
-    mesh.scale.set(this.noteScale.x,this.noteScale.y,this.noteScale.z);
+    mesh.scale.set(this.noteScale.x, this.noteScale.y, this.noteScale.z);
     mesh.position.set(
       this.noteStartPosition.x,
       this.noteStartPosition.y,
@@ -143,7 +148,10 @@ export default class NoteDropper {
 
     if (this.notesToHit[keyCode]) {
       const targetResponse = this.noteDropperGroup.getObjectByName(keyCode);
-      const targetResponseTween = createScalePulseTween(targetResponse);
+      const targetResponseTween = createScalePulseTween(
+        targetResponse,
+        this.targetMeshScale
+      );
       targetResponseTween.start();
     }
     if (!this.notesToHit[keyCode] || !this.notesToHit[keyCode].length)
@@ -155,8 +163,10 @@ export default class NoteDropper {
     );
 
     const isHit =
-      noteAttemptWorldPosition.y < this.noteTargetPosition.y + this.hitMargin.upper &&
-      noteAttemptWorldPosition.y > this.noteTargetPosition.y + this.hitMargin.lower;
+      noteAttemptWorldPosition.y <
+        this.noteTargetPosition.y + this.hitMargin.upper &&
+      noteAttemptWorldPosition.y >
+        this.noteTargetPosition.y + this.hitMargin.lower;
 
     noteAttempt.material = isHit
       ? this.notePlayedMaterial
@@ -179,21 +189,33 @@ export default class NoteDropper {
     }
   }
   setSize(width) {
-    if(width < 800){
-      this.noteDropperGroup.scale.set(0.45,0.45,0.45)
-      this.noteDropperGroup.position.set(0,-0.27,0)
-      this.noteStartPosition = new THREE.Vector3(0, 1, 0.5)
-      this.noteScale = new THREE.Vector3(0.5,0.5,0.5)
-      this.hitMargin = {upper:0.04,lower:-0.1}
-      this.textGroup.visible = false
+    if (width < 800) {
+      this.noteDropperGroup.scale.set(0.45, 0.45, 0.45);
+      this.noteDropperGroup.position.set(0, -0.27, 0);
+      this.noteDropperGroup.children.forEach((item) => {
+        if (item.userData.name && item.userData.name.includes("target")) {
+          item.scale.set(0.4,0.4,0.4)
+        }
+      });
+      this.targetMeshScale = new THREE.Vector3(0.4, 0.4, 0.4);
+      this.noteStartPosition = new THREE.Vector3(0, 1, 0.5);
+      this.noteScale = new THREE.Vector3(0.5, 0.5, 0.5);
+      this.hitMargin = { upper: 0.04, lower: -0.4 };
+      this.textGroup.visible = false;
     }
-    if(width > 800){
-      this.noteDropperGroup.scale.set(1,1,1)
-      this.noteDropperGroup.position.set(0,0,0)
-      this.noteStartPosition = new THREE.Vector3(0, 0.2, 0.5)
-      this.noteScale = new THREE.Vector3(0.2,0.2,0.2)
-      this.hitMargin = {upper:0.07,lower:-0.07}
-      this.textGroup.visible = true
+    else {
+      this.noteDropperGroup.scale.set(1, 1, 1);
+      this.noteDropperGroup.position.set(0, 0, 0);
+      this.noteStartPosition = new THREE.Vector3(0, 0.2, 0.5);
+      this.noteDropperGroup.children.forEach((item) => {
+        if (item.userData.name && item.userData.name.includes("target")) {
+          item.scale.set(0.2,0.2,0.2)
+        }
+      });
+      this.targetMeshScale = new THREE.Vector3(0.2, 0.2, 0.2);
+      this.noteScale = new THREE.Vector3(0.2, 0.2, 0.2);
+      this.hitMargin = { upper: 0.07, lower: -0.07 };
+      this.textGroup.visible = true;
     }
   }
 }
