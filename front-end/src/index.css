@@ -117,12 +117,12 @@ p {
   }
   .Cube-container {
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
   }
 
   .menu-container {
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     border-radius: 0;
   }
 
