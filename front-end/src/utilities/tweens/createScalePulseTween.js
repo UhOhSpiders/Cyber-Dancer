@@ -10,6 +10,7 @@ export function createScalePulseTween(mesh, baseScale) {
   scalePulseTween.onUpdate(function (newScale) {
     mesh.scale.set(newScale.x, newScale.y, newScale.z);
   });
+  
   scalePulseTween.repeat(1);
   scalePulseTween.yoyo(true);
 

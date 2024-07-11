@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Text } from "troika-three-text";
-import { keyCodes } from "./constants/constants";
+import { keyCodes, sceneLayoutWidthBreakpoint } from "./constants/constants";
 import { getColumnXPositions } from "./utilities/getColumnXPositions";
 import { assignNotesToColumns } from "./utilities/assignNotesToColumns.js";
 import { createFallTween } from "./utilities/tweens/createFallTween.js";
@@ -68,6 +68,7 @@ export default class NoteDropper {
     // turn this into an add targets function
     for (let step = 0; step < this.columnXPositions.length; step++) {
       let newTarget = this.targetMesh.clone();
+      newTarget.tween = createScalePulseTween(newTarget, this.targetMeshScale);
       let text = new Text();
       this.textGroup.add(text);
       this.scene.add(this.textGroup);
@@ -148,11 +149,8 @@ export default class NoteDropper {
 
     if (this.notesToHit[keyCode]) {
       const targetResponse = this.noteDropperGroup.getObjectByName(keyCode);
-      const targetResponseTween = createScalePulseTween(
-        targetResponse,
-        this.targetMeshScale
-      );
-      targetResponseTween.start();
+      targetResponse.tween.stop();
+      targetResponse.tween.start();
     }
     if (!this.notesToHit[keyCode] || !this.notesToHit[keyCode].length)
       return { isHit: false };
@@ -189,30 +187,31 @@ export default class NoteDropper {
     }
   }
   setSize(width) {
-    if (width < 800) {
+    if (width < sceneLayoutWidthBreakpoint) {
       this.noteDropperGroup.scale.set(0.45, 0.45, 0.45);
       this.noteDropperGroup.position.set(0, -0.27, 0);
+      this.targetMeshScale = new THREE.Vector3(0.4, 0.4, 0.4);
       this.noteDropperGroup.children.forEach((item) => {
         if (item.userData.name && item.userData.name.includes("target")) {
-          item.scale.set(0.4,0.4,0.4)
+          item.scale.set(0.4, 0.4, 0.4);
+          item.tween = createScalePulseTween(item, this.targetMeshScale);
         }
       });
-      this.targetMeshScale = new THREE.Vector3(0.4, 0.4, 0.4);
       this.noteStartPosition = new THREE.Vector3(0, 1, 0.5);
       this.noteScale = new THREE.Vector3(0.5, 0.5, 0.5);
       this.hitMargin = { upper: 0.04, lower: -0.4 };
       this.textGroup.visible = false;
-    }
-    else {
+    } else {
       this.noteDropperGroup.scale.set(1, 1, 1);
       this.noteDropperGroup.position.set(0, 0, 0);
       this.noteStartPosition = new THREE.Vector3(0, 0.2, 0.5);
       this.noteDropperGroup.children.forEach((item) => {
+      this.targetMeshScale = new THREE.Vector3(0.2, 0.2, 0.2);
         if (item.userData.name && item.userData.name.includes("target")) {
-          item.scale.set(0.2,0.2,0.2)
+          item.scale.set(0.2, 0.2, 0.2);
+          item.tween = createScalePulseTween(item, this.targetMeshScale);
         }
       });
-      this.targetMeshScale = new THREE.Vector3(0.2, 0.2, 0.2);
       this.noteScale = new THREE.Vector3(0.2, 0.2, 0.2);
       this.hitMargin = { upper: 0.07, lower: -0.07 };
       this.textGroup.visible = true;

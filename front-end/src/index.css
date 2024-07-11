@@ -107,6 +107,18 @@ p {
   animation-fill-mode: forwards;
 }
 
+@media only screen and (max-width: 1500px) {
+
+.Cube-container {
+  width: 98vw;
+}
+
+.menu-container {
+  width: 98vw;
+}
+
+}
+
 @media only screen and (max-width: 768px) {
   .nav-bar {
     display: none;
