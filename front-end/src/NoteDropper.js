@@ -93,6 +93,12 @@ export default class NoteDropper {
     this.scene.add(this.noteDropperGroup);
   }
 
+  delete(){
+    this.scene.children = this.scene.children.filter(item => item.id !== this.noteDropperGroup.id)
+    this.scene.children = this.scene.children.filter(item => item.id !== this.textGroup.id)
+    return null
+  }
+
   addNote(notePitch, noteTime) {
     const mesh = this.noteMesh.clone();
     mesh.scale.set(this.noteScale.x, this.noteScale.y, this.noteScale.z);
@@ -186,6 +192,7 @@ export default class NoteDropper {
       }
     }
   }
+
   setSize(width) {
     if (width < sceneLayoutWidthBreakpoint) {
       this.noteDropperGroup.scale.set(0.45, 0.45, 0.45);

@@ -17,9 +17,9 @@ export default class Character {
       let character = this.object3D;
       const idleClip = THREE.AnimationClip.findByName(
         this.object3D.animations,
-        "idle"
+        `idle`
       );
-      const idleAction = this.animationMixer.clipAction(idleClip);
+      const idleAction = this.animationMixer.clipAction(idleClip, this.object3D);
       idleAction.loop = THREE.LoopPingPong;
       character.position.set(0, -0.55, 0);
       character.scale.set(0.3, 0.3, 0.3);
@@ -42,6 +42,12 @@ export default class Character {
       );
     });
   }
+
+  delete(){
+    this.scene.children = this.scene.children.filter(item => item.id !== this.object3D.id)
+    return null
+  }
+  
   dance(notePitch) {
     if (!this.isDancing) {
       this.isDancing = true;

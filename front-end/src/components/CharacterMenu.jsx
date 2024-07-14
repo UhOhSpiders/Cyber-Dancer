@@ -2,8 +2,8 @@ import React from "react";
 
 const CharacterMenu = ({ game, setIsCharacterSelected }) => {
   const handleClick = (e) => {
-    game.selectedCharacter = game.characterSelector.characters[e.target.id];
-    game.selectedCharacter.create();
+    game.selectedCharacter = game.characterSelector.characters[e.target.id]
+    game.selectedCharacter.create()
     setIsCharacterSelected(true);
   };
 
