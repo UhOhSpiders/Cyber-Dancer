@@ -13,7 +13,7 @@ Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhyt
 - A specially authored MIDI track is played in sync with this. Each note within this track triggers a new visual.
 - The MIDI track generates no audio, and is used purely for signal purposes. Tone.js parses the MIDI track, and via Tone.js's Draw class, schedules callback functions to create the graphics. 
 - This approach allows for the straightforward authoring of new levels using any DAW. MIDI tracks can be recorded in real-time alongside the MP3, "quantized" automatically, and then easily tweaked if needed.
-- Although the user can't hear the MIDI track, the pitch information of each note is passed as an argument to the scheduled callback function, and determines which collumn the note falls in. The pitch information is also used to select specific dance moves for the animated characters. This aims to create identifiable sequences and give a sense of choreography to the dance routines.
+- Although the user can't hear the MIDI track, the pitch information of each note is passed as an argument to the scheduled callback function, and determines which column the note falls in. The pitch information is also used to select specific dance moves for the animated characters. This aims to create identifiable sequences and give a sense of choreography to the dance routines.
 
 #### 3D animation in a web browser
 - This project uses the popular Three.js library to display the graphics.
@@ -23,7 +23,7 @@ Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhyt
 - The menu system for the game is built with React.
 - The game's logic is structured through classes, and its rendered output is exposed as a canvas element to the React VDOM through a useCallback hook.
 - The game's graphics are dependent on a glTF file which is loaded via a custom useLoadGame hook. This hook prevents things like level and character selection from being displayed prematurely. 
-- An instance of the game is then passed as a prop to the relevant React components, for chararcter and level selection.
+- An instance of the game is then passed as a prop to the relevant React components, for character and level selection.
 - _Note: Another popular approach to Three.js/React integration is React Three Fiber - a library which turns many aspects of the Three.js library into useful React-friendly components. I decided that the game logic I wanted to implement would be better suited to vanilla Three.js._
 
 #### Asset Authoring
