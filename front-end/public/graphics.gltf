@@ -4163,7 +4163,7 @@
 					"name":"rig.002_ui.py",
 					"type":"Text"
 				},
-				"blurb":"They're dancing out the demons!"
+				"blurb":"Sweats profusely."
 			},
 			"name":"blarf_character"
 		},
@@ -12355,7 +12355,8 @@
 				"rig_ui":{
 					"name":"rig.005_ui.py",
 					"type":"Text"
-				}
+				},
+				"blurb":"Great eyesight. "
 			},
 			"name":"hoot_character"
 		}
