@@ -1,6 +1,6 @@
 export const fallTime = 2;
 
-export const sceneLayoutWidthBreakpoint = 800
+export const sceneLayoutWidthBreakpoint = 900
 
 export const keyCodes = {
   KeyA: "A",

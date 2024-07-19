@@ -14,7 +14,7 @@ export function assignDanceMovesToNotes(
         character.animations,
         animation.name
       );
-      let action = animationMixer.clipAction(clip);
+      let action = animationMixer.clipAction(clip, object3D);
       action.setLoop(THREE.LoopOnce);
       danceMoveActions.push(action);
     }

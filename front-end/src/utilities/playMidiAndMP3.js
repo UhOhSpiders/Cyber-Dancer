@@ -1,11 +1,12 @@
 import * as Tone from "tone";
 import { fallTime } from "../constants/constants";
-import * as THREE from "three";
+import { Midi } from "@tonejs/midi";
 
-export default async function playMidiAndMP3(midiTrack, game) {
+export default async function playMidiAndMP3(game, midiName, mp3Name) {
+  const midiTrack = await Midi.fromUrl(`../${midiName}`);
   const player = await new Promise((resolve, reject) => {
     const player = new Tone.Player({
-      url: "../midi-to-click-test.mp3",
+      url: `../${mp3Name}`,
       onload: () => {
         resolve(player.toDestination());
       },
@@ -15,6 +16,7 @@ export default async function playMidiAndMP3(midiTrack, game) {
         const playerStoppedEvent = new CustomEvent("playerStopped", {
           detail: { scoreDetails: game.score.getScoreDetails() },
         });
+        game.gameIsPlaying = false
         document.dispatchEvent(playerStoppedEvent);
       },
     });
