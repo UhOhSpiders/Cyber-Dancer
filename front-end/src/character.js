@@ -11,6 +11,7 @@ export default class Character {
     this.idle = null;
     this.danceMoves = [];
     this.isDancing = false;
+    this.create()
   }
   create() {
     return new Promise((resolve) => {
@@ -23,7 +24,6 @@ export default class Character {
       idleAction.loop = THREE.LoopPingPong;
       character.position.set(0, -0.55, 0);
       character.scale.set(0.3, 0.3, 0.3);
-      this.scene.add(character);
       this.idle = idleAction;
       this.idle.play();
       this.animationMixer.addEventListener("finished", () => {
@@ -33,7 +33,8 @@ export default class Character {
         idleAction.play();
       });
       resolve();
-    }, undefined).then(() => {
+    }, undefined)
+    .then(() => {
       this.danceMoves = assignDanceMovesToNotes(
         this.object3D,
         this.scene,

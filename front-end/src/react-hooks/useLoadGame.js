@@ -14,6 +14,7 @@ const useLoadGame = () => {
         setIsLoading(false)
     }).catch((error) => {
       setError(error); 
+      console.log(error)
       setIsLoading(false); 
     });
   };

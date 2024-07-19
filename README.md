@@ -2,18 +2,17 @@
 ## About the project
 Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhythm games like Dance Dance Revolution, Guitar Hero and Tap Tap Revenge. It is currently under development. An early-stage demo of the game can be accessed [here](https://cyber-dancer.vercel.app/).
 ### Built With
-- Three.js
-- Tone.js
-- Tween.js
-- React
+- [Three.js](https://threejs.org/)
+- [Tone.js](https://tonejs.github.io/docs/14.9.17/index.html)
+- [Tween.js](https://github.com/tweenjs/tween.js)
+- [React](https://react.dev/)
 
 ### How it works
-#### Visual/audio synchronization in a web browser
-- An MP3 is played by Tone.js's Player class. 
-- A specially authored MIDI track is played in sync with this. Each note within this track triggers a new visual.
-- The MIDI track generates no audio, and is used purely for signal purposes. Tone.js parses the MIDI track, and via Tone.js's Draw class, schedules callback functions to create the graphics. 
-- This approach allows for the straightforward authoring of new levels using any DAW. MIDI tracks can be recorded in real-time alongside the MP3, "quantized" automatically, and then easily tweaked if needed.
-- Although the user can't hear the MIDI track, the pitch information of each note is passed as an argument to the scheduled callback function, and determines which column the note falls in. The pitch information is also used to select specific dance moves for the animated characters. This aims to create identifiable sequences and give a sense of choreography to the dance routines.
+#### Audio/Visual synchronization in a web browser
+- An MP3 is played by a Tone.js [Player](https://tonejs.github.io/docs/14.9.17/classes/Player.html) in sync with a specially authored MIDI track. Each note within this MIDI track triggers a new visual.
+- The MIDI track generates no audio, and is used purely for signal purposes. [Tone.js parses it](https://github.com/Tonejs/Midi) and schedules callback functions to create the graphics via its [Draw class](https://tonejs.github.io/docs/14.9.17/functions/getDraw.html).
+- This approach allows for the straightforward authoring of new levels using a digital audio workstation. A MIDI track can be recorded in real-time alongside an MP3, "quantized" automatically, and then easily tweaked if needed.
+- The pitch information of a note is passed as an argument to the scheduled callback function, and determines which column the note falls in. The pitch information is also used to select specific dance moves for the animated characters. This aims to create identifiable sequences and give a sense of choreography to the dance routines.
 
 #### 3D animation in a web browser
 - This project uses the popular Three.js library to display the graphics.
@@ -22,19 +21,19 @@ Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhyt
 #### Structure/Integration with React
 - The menu system for the game is built with React.
 - The game's logic is structured through classes, and its rendered output is exposed as a canvas element to the React VDOM through a useCallback hook.
-- The game's graphics are dependent on a glTF file which is loaded via a custom useLoadGame hook. This hook prevents things like level and character selection from being displayed prematurely. 
-- An instance of the game is then passed as a prop to the relevant React components, for character and level selection.
+- The game's graphics are dependent on a glTF file which is handled through a custom useLoadGame hook. This hook prevents things like level and character selection from being displayed prematurely. 
+- Once the assets are loaded, this hook then passes an instance of the game as a prop to the relevant React components.
+- When a level finishes, a custom event containing the score information is dispatched. The React app listens for this and displays the score and further options to the user.
 - _Note: Another popular approach to Three.js/React integration is React Three Fiber - a library which turns many aspects of the Three.js library into useful React-friendly components. I decided that the game logic I wanted to implement would be better suited to vanilla Three.js._
 
 #### Asset Authoring
-- Graphics are created with Blender. Blurbs for each character were also authored in Blender via a custom text property. This text can be displayed during character selection.
-- MIDI tracks are created with Reaper - although there are a wide variety of DAWs which offer this functionality.
+- Graphics are created with [Blender](https://www.blender.org/). Blurbs for each character were also authored in Blender via a custom text property. This text can be displayed during character selection.
+- MIDI tracks are created with [Reaper](https://www.reaper.fm/) - although there are a wide variety of DAWs which offer this functionality.
 
 ## To-dos
 ### General:
 - Rename noteColumn name for readability?
 - Rename gltfName
-- Level selection 
 ### Menus:
 - Give visuals to character selection
 ### Animation logic:

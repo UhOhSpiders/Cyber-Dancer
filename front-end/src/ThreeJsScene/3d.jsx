@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import * as TWEEN from "@tweenjs/tween.js";
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from "stats.js";
 import NoteDropper from "../NoteDropper.js";
 import CharacterSelector from "../CharacterSelector.js";
@@ -70,6 +71,7 @@ export default class Game {
       this.camera.updateProjectionMatrix();
       this.noteDropper.setSize(width);
       this.score.setSize(width, height);
+
     }
   }
 
@@ -113,6 +115,7 @@ export default class Game {
     let delta = this.clock.getDelta();
     TWEEN.update();
     this.mixer.update(delta);
+    this.characterSelector.characterSelectorGroup.rotateY(0.01)
     this.renderer.render(this.scene, this.camera);
     // this.stats.end();
   }

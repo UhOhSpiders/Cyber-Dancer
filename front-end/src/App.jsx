@@ -1,9 +1,9 @@
 import MemoizedThreeJsScene from "./ThreeJsScene/index.jsx";
-import Menu from "./components/Menu.jsx";
+import Menu from "./react-components/Menu.jsx";
 import "./App.css";
-import useLoadGame from "./hook/useLoadGame.js";
-import LoadingScreen from "./components/LoadingScreen.jsx";
-import NavBar from "./components/NavBar.jsx";
+import useLoadGame from "./react-hooks/useLoadGame.js";
+import LoadingScreen from "./react-components/LoadingScreen.jsx";
+import NavBar from "./react-components/NavBar.jsx";
 
 function App() {
   const { game, isLoading, error } = useLoadGame();

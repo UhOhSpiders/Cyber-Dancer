@@ -53,6 +53,7 @@ const Menu = ({ game }) => {
 
   const handleChangeCharacter = () => {
     game.selectedCharacter.delete()
+    game.characterSelector.incrementPreview(0)
     setScoreDetails(null)
     setIsCharacterSelected(false)
   }

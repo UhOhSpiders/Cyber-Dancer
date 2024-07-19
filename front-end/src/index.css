@@ -80,6 +80,23 @@ p {
   border-radius: 20px;
 }
 
+.character-selector{
+  justify-content: space-between;
+}
+
+.character-selector > *{
+  padding:5px;
+  margin:0;
+}
+
+.prev-next-button-container{
+  flex-basis:100%;
+  justify-content: space-between;
+  align-items: center;
+  display:flex;
+  width:60%;
+}
+
 .loading {
   position: relative;
   background-color: black;
@@ -145,6 +162,10 @@ p {
 
   .game-container {
     justify-content: center;
+  }
+
+  .prev-next-button-container{
+    width:100%;
   }
 
   body {
