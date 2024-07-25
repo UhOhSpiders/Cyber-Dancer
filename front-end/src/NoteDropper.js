@@ -184,7 +184,6 @@ export default class NoteDropper {
   }
 
   forceMiss(noteName) {
-    console.log(this.character)
     for (const key in this.notesToHit) {
       const array = this.notesToHit[key];
       const index = array.indexOf(noteName);

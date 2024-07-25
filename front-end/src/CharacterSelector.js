@@ -2,11 +2,10 @@ import Character from "./character";
 import * as THREE from "three";
 
 export default class CharacterSelector {
-  constructor(loadedGltf, scene, mixer, noteColumns) {
+  constructor(loadedGltf, scene, mixer) {
     this.loadedGltf = loadedGltf;
     this.scene = scene;
     this.mixer = mixer;
-    this.noteColumns = noteColumns;
     this.characters = [];
     this.displayedCharacterIndex = 0;
     this.getCharacters(loadedGltf);
@@ -23,8 +22,7 @@ export default class CharacterSelector {
         const character = new Character(
           object3D,
           this.scene,
-          this.mixer,
-          this.noteColumns
+          this.mixer
         );
         this.characters.push(character);
       }

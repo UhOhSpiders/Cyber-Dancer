@@ -1,48 +1,50 @@
 import * as THREE from "three";
-import { assignDanceMovesToNotes } from "./utilities/assignDanceMovesToNotes";
-import LifeCounter from "./LifeCounter";
 
 export default class Character {
-  constructor(object3D, scene, animationMixer, noteColumns) {
+  constructor(object3D, scene, animationMixer) {
     this.object3D = object3D;
     this.scene = scene;
     this.animationMixer = animationMixer;
-    this.noteColumns = noteColumns;
     this.idle = null;
     this.danceMoves = [];
     this.isDancing = false;
+    this.newDanceMoves = [];
     this.create();
+    this.getDanceMoves();
   }
   create() {
-    return new Promise((resolve) => {
-      let character = this.object3D;
-      const idleClip = THREE.AnimationClip.findByName(
-        this.object3D.animations,
-        `idle`
-      );
-      const idleAction = this.animationMixer.clipAction(
-        idleClip,
-        this.object3D
-      );
-      idleAction.loop = THREE.LoopPingPong;
-      character.position.set(0, -0.55, 0);
-      character.scale.set(0.3, 0.3, 0.3);
-      this.idle = idleAction;
-      this.idle.play();
-      this.animationMixer.addEventListener("finished", () => {
-        this.isDancing = false;
-        idleAction.reset();
-        idleAction.fadeIn(0.1);
-        idleAction.play();
-      });
-      resolve();
-    }, undefined).then(() => {
-      this.danceMoves = assignDanceMovesToNotes(
-        this.object3D,
-        this.scene,
-        this.animationMixer,
-        this.noteColumns
-      );
+    let character = this.object3D;
+    const idleClip = THREE.AnimationClip.findByName(
+      this.object3D.animations,
+      `${this.object3D.name.split("_")[0]}_idle`
+    );
+    const idleAction = this.animationMixer.clipAction(idleClip, this.object3D);
+    idleAction.loop = THREE.LoopPingPong;
+    character.position.set(0, -0.55, 0);
+    character.scale.set(0.3, 0.3, 0.3);
+    this.idle = idleAction;
+    this.idle.play();
+    this.animationMixer.addEventListener("finished", () => {
+      this.isDancing = false;
+      idleAction.reset();
+      idleAction.fadeIn(0.1);
+      idleAction.play();
+    });
+  }
+
+  getDanceMoves() {
+    this.object3D.animations.forEach((animation) => {
+      if (
+        !animation.name.includes("idle") &&
+        animation.name.includes(this.object3D.name.split("_")[0])
+      ) {
+        let clip = THREE.AnimationClip.findByName(
+          this.object3D.animations,
+          animation.name
+        );
+        let action = this.animationMixer.clipAction(clip, this.object3D);
+        this.newDanceMoves.push(action);
+      }
     });
   }
 
@@ -56,7 +58,11 @@ export default class Character {
   dance(notePitch) {
     if (!this.isDancing) {
       this.isDancing = true;
-      let danceMove = this.danceMoves[notePitch].danceMove;
+      let danceMove =
+        this.newDanceMoves[
+          Math.floor(Math.random() * this.newDanceMoves.length)
+        ];
+      danceMove.setLoop(THREE.LoopOnce);
       this.idle.fadeOut(0.1);
       danceMove.reset();
       danceMove.fadeIn(0.1);
