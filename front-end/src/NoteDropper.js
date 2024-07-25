@@ -7,7 +7,7 @@ import { createFallTween } from "./utilities/tweens/createFallTween.js";
 import { createScalePulseTween } from "./utilities/tweens/createScalePulseTween.js";
 
 export default class NoteDropper {
-  constructor(loadedGltf, gltfName, scene, camera, renderer, score) {
+  constructor(loadedGltf, gltfName, scene, camera, renderer, score, lifeCounter) {
     this.loadedGltf = loadedGltf;
     this.gltfName = gltfName;
     this.width = 0.5;
@@ -15,6 +15,7 @@ export default class NoteDropper {
     this.camera = camera;
     this.renderer = renderer;
     this.score = score;
+    this.lifeCounter = lifeCounter
     this.hitMargin = { upper: 0.07, lower: -0.07 };
     this.noteStartPosition = new THREE.Vector3(0, 0.2, 0.5);
     this.noteTargetPosition = new THREE.Vector3(0, -0.35, 0.5);
@@ -183,11 +184,13 @@ export default class NoteDropper {
   }
 
   forceMiss(noteName) {
+    console.log(this.character)
     for (const key in this.notesToHit) {
       const array = this.notesToHit[key];
       const index = array.indexOf(noteName);
       if (index !== -1) {
         this.score.breakStreak();
+        this.lifeCounter.loseLife()
         array.splice(index, 1);
       }
     }

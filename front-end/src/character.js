@@ -1,6 +1,6 @@
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import { assignDanceMovesToNotes } from "./utilities/assignDanceMovesToNotes";
+import LifeCounter from "./LifeCounter";
 
 export default class Character {
   constructor(object3D, scene, animationMixer, noteColumns) {
@@ -11,7 +11,7 @@ export default class Character {
     this.idle = null;
     this.danceMoves = [];
     this.isDancing = false;
-    this.create()
+    this.create();
   }
   create() {
     return new Promise((resolve) => {
@@ -20,21 +20,23 @@ export default class Character {
         this.object3D.animations,
         `idle`
       );
-      const idleAction = this.animationMixer.clipAction(idleClip, this.object3D);
+      const idleAction = this.animationMixer.clipAction(
+        idleClip,
+        this.object3D
+      );
       idleAction.loop = THREE.LoopPingPong;
       character.position.set(0, -0.55, 0);
       character.scale.set(0.3, 0.3, 0.3);
       this.idle = idleAction;
       this.idle.play();
       this.animationMixer.addEventListener("finished", () => {
-        this.isDancing = false
+        this.isDancing = false;
         idleAction.reset();
         idleAction.fadeIn(0.1);
         idleAction.play();
       });
       resolve();
-    }, undefined)
-    .then(() => {
+    }, undefined).then(() => {
       this.danceMoves = assignDanceMovesToNotes(
         this.object3D,
         this.scene,
@@ -44,11 +46,13 @@ export default class Character {
     });
   }
 
-  delete(){
-    this.scene.children = this.scene.children.filter(item => item.id !== this.object3D.id)
-    return null
+  delete() {
+    this.scene.children = this.scene.children.filter(
+      (item) => item.id !== this.object3D.id
+    );
+    return null;
   }
-  
+
   dance(notePitch) {
     if (!this.isDancing) {
       this.isDancing = true;
@@ -64,5 +68,9 @@ export default class Character {
   }
   toggleIsDancing() {
     this.isDancing = !this.isDancing;
+  }
+
+  explode() {
+    console.log("explodes");
   }
 }

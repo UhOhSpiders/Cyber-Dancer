@@ -8,26 +8,28 @@ const Menu = ({ game }) => {
   const [playing, setPlaying] = useState(false);
   const [scoreDetails, setScoreDetails] = useState(null);
   const [isCharacterSelected, setIsCharacterSelected] = useState(false);
+  const [isDead, setIsDead] = useState(false)
   const [selectedLevel, setSelectedLevel] = useState(null);
   useEffect(() => {
-    const handlePlayerStop = (scoreDetails) => {
+    const handlePlayerStop = (details) => {
       setPlaying(false);
       {
-        scoreDetails.allStreaks.length > 1
-          ? (scoreDetails.maxStreak = scoreDetails.allStreaks.reduce(
+        details.scoreDetails.allStreaks.length > 1
+          ? (details.scoreDetails.maxStreak = details.scoreDetails.allStreaks.reduce(
               (a, b) => Math.max(a, b),
               -Infinity
             ))
-          : scoreDetails.allStreaks.length
-          ? (scoreDetails.maxStreak = scoreDetails.allStreaks[0])
-          : (scoreDetails.maxStreak = 0);
+          : details.scoreDetails.allStreaks.length
+          ? (details.scoreDetails.maxStreak = details.scoreDetails.allStreaks[0])
+          : (details.scoreDetails.maxStreak = 0);
       }
-      setScoreDetails(scoreDetails);
+      setScoreDetails(details.scoreDetails);
+      setIsDead(details.isDead)
     };
     document.addEventListener(
       "playerStopped",
       function (evt) {
-        handlePlayerStop(evt.detail.scoreDetails);
+        handlePlayerStop(evt.detail);
       },
       false
     );
@@ -82,6 +84,7 @@ const Menu = ({ game }) => {
       <div className="menu-container">
       <ScoreCard
         scoreDetails={scoreDetails}
+        isDead={isDead}
         handleClickReplay={handleClickReplay}
       />
       <button onClick={handleClickReplay}>Replay</button>

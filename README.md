@@ -32,10 +32,9 @@ Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhyt
 
 ## To-dos
 ### General:
+- Refactor playMidiAndMP3 into a class for easier control of track stop start
 - Rename noteColumn name for readability?
 - Rename gltfName
-### Menus:
-- Give visuals to character selection
 ### Animation logic:
 - Filter animations to specific characters
 ### Animation:

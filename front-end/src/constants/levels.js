@@ -1,10 +1,46 @@
 export const levels = [
   {
     name: "test track",
-    blurb: "info about artist and track here",
+    artist: "MGMT",
+    blurb: "This test track is a clip of an MGMT song. I've listened to it a lot.",
     midiName: "midi-to-click-test.MID",
     mp3Name: "midi-to-click-test.mp3",
     map: "psych_test",
-    thumbnail: null,
+    thumbnail: "/test-thumbnail.jpeg",
+  },{
+    name: "the same test track",
+    artist: "MGMT",
+    blurb: "This test track is a clip of an MGMT song. I've listened to it a lot.",
+    midiName: "midi-to-click-test.MID",
+    mp3Name: "midi-to-click-test.mp3",
+    map: "psych_test",
+    thumbnail: "/test-thumbnail.jpeg",
+  },
+  {
+    name: "i have copy and pasted this test track",
+    artist: "MGMT",
+    blurb: "This test track is a clip of an MGMT song. I've listened to it a lot.",
+    midiName: "midi-to-click-test.MID",
+    mp3Name: "midi-to-click-test.mp3",
+    map: "psych_test",
+    thumbnail: "/test-thumbnail.jpeg",
+  },
+  {
+    name: "i have copy and pasted this test track",
+    artist: "MGMT",
+    blurb: "This test track is a clip of an MGMT song. I've listened to it a lot.",
+    midiName: "midi-to-click-test.MID",
+    mp3Name: "midi-to-click-test.mp3",
+    map: "psych_test",
+    thumbnail: "/test-thumbnail.jpeg",
+  },
+  {
+    name: "i have copy and pasted this test track",
+    artist: "MGMT",
+    blurb: "This test track is a clip of an MGMT song. I've listened to it a lot.",
+    midiName: "midi-to-click-test.MID",
+    mp3Name: "midi-to-click-test.mp3",
+    map: "psych_test",
+    thumbnail: "/test-thumbnail.jpeg",
   }
 ];

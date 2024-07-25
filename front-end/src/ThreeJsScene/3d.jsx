@@ -1,13 +1,14 @@
 import * as THREE from "three";
 import * as TWEEN from "@tweenjs/tween.js";
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from "stats.js";
 import NoteDropper from "../NoteDropper.js";
 import CharacterSelector from "../CharacterSelector.js";
-import playMidiAndMP3 from "../utilities/playMidiAndMP3.js";
 import Score from "../Score.js";
 import Background from "../Background.js";
 import Lights from "../Lights.js";
+import LifeCounter from "../LifeCounter.js";
+import MidiAndMp3Player from "../MidiAndMp3Player.js";
+
 
 export default class Game {
   constructor(loadedGltf) {
@@ -24,14 +25,16 @@ export default class Game {
 
     this.background = new Background(this.scene, loadedGltf, "psych_test");
     this.noteDropper = new NoteDropper();
+    this.midiAndMp3Player = new MidiAndMp3Player()
     this.characterSelector = new CharacterSelector(
       loadedGltf,
       this.scene,
       this.mixer,
       this.noteDropper.noteColumns
     );
-    this.selectedCharacter = null;
+    this.selectedCharacter = null
     this.score = new Score(this.scene, this.camera.position);
+    this.lifeCounter = new LifeCounter()
     this.lights = new Lights(this.scene);
 
     this.loadedGltf = loadedGltf;
@@ -57,6 +60,7 @@ export default class Game {
       this.score.increase(checkedHit.isHit);
     } else {
       this.selectedCharacter.stumble();
+      this.lifeCounter.loseLife()
       this.score.breakStreak();
     }
   }
@@ -71,7 +75,7 @@ export default class Game {
       this.camera.updateProjectionMatrix();
       this.noteDropper.setSize(width);
       this.score.setSize(width, height);
-
+      // this.lifeCounter.setSize(width)
     }
   }
 
@@ -82,10 +86,12 @@ export default class Game {
       this.scene,
       this.camera,
       this.renderer,
-      this.score
+      this.score,
+      this.lifeCounter
     );
     this.noteDropper.create();
     this.score.createDisplay();
+    this.lifeCounter.createDisplay()
     this.resize();
   }
 
@@ -93,20 +99,25 @@ export default class Game {
     if (this.noteDropper.loadedGltf) {
       this.noteDropper = this.noteDropper.delete();
     }
+    this.lifeCounter.delete()
   }
 
   play(gltfName, midiName, mp3Name) {
-    this.gameIsPlaying = true;
     this.deleteGraphics();
+    this.midiAndMp3Player = new MidiAndMp3Player(this, midiName, mp3Name)
+    this.lifeCounter = new LifeCounter(this.selectedCharacter, this.scene, this.camera.position, this.midiAndMp3Player)
+    this.gameIsPlaying = true;
     this.loadGraphics(gltfName);
     this.score.reset();
-    playMidiAndMP3(this, midiName, mp3Name);
+    this.lifeCounter.reset();
+    this.midiAndMp3Player.startTrack()
   }
 
   replay(midiName, mp3Name) {
     this.gameIsPlaying = true
     this.score.reset();
-    playMidiAndMP3(this, midiName, mp3Name);
+    this.lifeCounter.reset()
+    this.midiAndMp3Player.startTrack()
   }
 
   animation(time) {
