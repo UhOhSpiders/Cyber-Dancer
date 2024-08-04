@@ -8,15 +8,15 @@ import Background from "../Background.js";
 import Lights from "../Lights.js";
 import LifeCounter from "../LifeCounter.js";
 import MidiAndMp3Player from "../MidiAndMp3Player.js";
-
+import Squisher from "../Squisher.js";
+import CameraController from "../CameraController.js";
 
 export default class Game {
   constructor(loadedGltf) {
     this.camera = new THREE.PerspectiveCamera(42, 1, 0.01, 10);
-    this.camera.position.z = 1;
-    this.camera.position.y = -0.2;
 
     this.scene = new THREE.Scene();
+    this.cameraController = new CameraController(this.camera, this.scene);
 
     this.mixer = new THREE.AnimationMixer(this.scene);
 
@@ -24,17 +24,18 @@ export default class Game {
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
 
     this.background = new Background(this.scene, loadedGltf, "psych_test");
+    this.squisher = new Squisher(loadedGltf, this.scene);
     this.noteDropper = new NoteDropper();
-    this.midiAndMp3Player = new MidiAndMp3Player()
+    this.midiAndMp3Player = new MidiAndMp3Player();
     this.characterSelector = new CharacterSelector(
       loadedGltf,
       this.scene,
       this.mixer,
       this.noteDropper.noteColumns
     );
-    this.selectedCharacter = null
-    this.score = new Score(this.scene, this.camera.position);
-    this.lifeCounter = new LifeCounter()
+    this.selectedCharacter = null;
+    this.score = new Score(this.scene, this.cameraController.gameplayPosition);
+    this.lifeCounter = new LifeCounter();
     this.lights = new Lights(this.scene);
 
     this.loadedGltf = loadedGltf;
@@ -60,7 +61,7 @@ export default class Game {
       this.score.increase(checkedHit.isHit);
     } else {
       this.selectedCharacter.stumble();
-      this.lifeCounter.loseLife()
+      this.lifeCounter.loseLife();
       this.score.breakStreak();
     }
   }
@@ -75,11 +76,37 @@ export default class Game {
       this.camera.updateProjectionMatrix();
       this.noteDropper.setSize(width);
       this.score.setSize(width, height);
-      // this.lifeCounter.setSize(width)
+      this.lifeCounter.setSize(width);
     }
   }
 
   loadGraphics(gltfName) {
+    this.noteDropper.create();
+    this.score.createDisplay();
+    this.lifeCounter.createDisplay();
+    this.resize();
+  }
+
+  deleteGraphics() {
+    if (this.noteDropper.loadedGltf) {
+      this.noteDropper = this.noteDropper.delete();
+    }
+    this.lifeCounter.delete();
+    this.squisher.delete();
+  }
+
+  play(gltfName, midiName, mp3Name) {
+    this.deleteGraphics();
+    this.cameraController.craneDown();
+    this.midiAndMp3Player = new MidiAndMp3Player(this, midiName, mp3Name);
+    this.lifeCounter = new LifeCounter(
+      this.selectedCharacter,
+      this.scene,
+      this.midiAndMp3Player,
+      this.squisher,
+      this.cameraController,
+      this
+    );
     this.noteDropper = new NoteDropper(
       this.loadedGltf,
       gltfName,
@@ -89,35 +116,34 @@ export default class Game {
       this.score,
       this.lifeCounter
     );
-    this.noteDropper.create();
-    this.score.createDisplay();
-    this.lifeCounter.createDisplay()
-    this.resize();
-  }
-
-  deleteGraphics() {
-    if (this.noteDropper.loadedGltf) {
-      this.noteDropper = this.noteDropper.delete();
-    }
-    this.lifeCounter.delete()
-  }
-
-  play(gltfName, midiName, mp3Name) {
-    this.deleteGraphics();
-    this.midiAndMp3Player = new MidiAndMp3Player(this, midiName, mp3Name)
-    this.lifeCounter = new LifeCounter(this.selectedCharacter, this.scene, this.camera.position, this.midiAndMp3Player)
-    this.gameIsPlaying = true;
     this.loadGraphics(gltfName);
+    this.gameIsPlaying = true;
+    this.selectedCharacter.object3D.visible = true;
     this.score.reset();
     this.lifeCounter.reset();
-    this.midiAndMp3Player.startTrack()
+    this.midiAndMp3Player.startTrack();
   }
 
-  replay(midiName, mp3Name) {
-    this.gameIsPlaying = true
+  replay() {
+    this.noteDropper.noteDropperGroup.visible = true
+    this.noteDropper.textGroup.visible = true
+    this.gameIsPlaying = true;
+    this.cameraController.craneDown();
+    this.selectedCharacter.object3D.visible = true;
+    this.squisher.delete();
     this.score.reset();
-    this.lifeCounter.reset()
-    this.midiAndMp3Player.startTrack()
+    this.lifeCounter.reset();
+    this.midiAndMp3Player.startTrack();
+  }
+
+  endGame(){
+    this.noteDropper.noteDropperGroup.visible = false
+    this.noteDropper.textGroup.visible = false
+    this.squisher.squish().then(() => {
+      this.cameraController.craneUp()
+      this.selectedCharacter.explode();
+      this.midiAndMp3Player.stopTrack();
+    });
   }
 
   animation(time) {
@@ -126,7 +152,7 @@ export default class Game {
     let delta = this.clock.getDelta();
     TWEEN.update();
     this.mixer.update(delta);
-    this.characterSelector.characterSelectorGroup.rotateY(0.01)
+    this.characterSelector.characterSelectorGroup.rotateY(0.01);
     this.renderer.render(this.scene, this.camera);
     // this.stats.end();
   }

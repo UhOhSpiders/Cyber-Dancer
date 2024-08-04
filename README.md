@@ -32,16 +32,16 @@ Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhyt
 
 ## To-dos
 ### General:
-- Refactor playMidiAndMP3 into a class for easier control of track stop start
-- Rename noteColumn name for readability?
 - Rename gltfName
-### Animation logic:
-- Filter animations to specific characters
 ### Animation:
 - Add stumble animation
 - Animate more moves
 - Add baseline looping dance throughout track
+- Create disco anvil smoosher 
 ### Game logic:
 - Streak bonus
+- Perfect hit bonus
 ### Display:
 - Bind score display position to camera position
+- Create camera controller - push camera on start, shake camera on miss, crane on death
+- Create scarier lighting the lower character lives get

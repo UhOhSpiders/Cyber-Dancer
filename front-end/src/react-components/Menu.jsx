@@ -54,8 +54,11 @@ const Menu = ({ game }) => {
   }
 
   const handleChangeCharacter = () => {
+    game.squisher.delete()
+    game.selectedCharacter.object3D.visible = true
     game.selectedCharacter.delete()
     game.characterSelector.incrementPreview(0)
+    game.cameraController.craneDown()
     setScoreDetails(null)
     setIsCharacterSelected(false)
   }
@@ -87,9 +90,11 @@ const Menu = ({ game }) => {
         isDead={isDead}
         handleClickReplay={handleClickReplay}
       />
-      <button onClick={handleClickReplay}>Replay</button>
+      <div className="button-container">
       <button onClick={handleResetLevel}>Change Track</button>
+      <button onClick={handleClickReplay}>Replay</button>
       <button onClick={handleChangeCharacter}>Change Character</button>
+      </div>
       </div>
     );
   }
