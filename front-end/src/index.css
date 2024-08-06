@@ -23,6 +23,7 @@ h2,
 h3 {
   color: rgb(32, 27, 40);
   font-family: "Kode Mono";
+  pointer-events: none;
 }
 
 h1 {
@@ -62,22 +63,85 @@ button:hover {
   font-weight: 700;
 }
 
-p {
-  background-color: rgb(255, 247, 4);
-  border-radius: 20px;
-  padding: 2.5rem;
-  font-size: medium;
+
+html {
+  /* Firefox */
+  scrollbar-color: hsla(0, 0%, 46%, 0.5) transparent;
 }
+
+/* Chrome */
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 7px;
+  height: 7px;
+}
+
+.level-card{
+  background-color: rgba(255, 230, 6, 0.85);
+  padding: 5px;
+  margin:5px;
+  border-radius: 10px;
+  display: flex;
+  text-align: left;
+  justify-content: space-between;
+  border-style: solid;
+  border-color: rgba(255, 255, 82, 0.759);
+}
+
+.level-card:hover{
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.759);
+  border-color: rgba(121, 121, 111, 0.759);
+}
+
+.level-card > *{
+  pointer-events: none;
+}
+
+.level-card > img{
+  height:150px;
+}
+
+.level-card > div > *{
+  padding: 5px;
+  margin: 0px;
+}
+
+.card-container{
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+
 
 .menu-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   justify-content: center;
   position: absolute;
   width: 80vw;
   height: calc(100vh - 90px);
   border-radius: 20px;
+}
+
+.button-container{
+  display: flex;
+  justify-content: center;
+  width: 90vw;
+}
+
+.score-card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 10px;
+  border-radius: 1rem;
+  background-color: rgba(255, 252, 225, 0.721);
 }
 
 .character-selector{

@@ -17,7 +17,6 @@ export default class Score {
     this.text.anchorX= 'right'
     this.text.sync();
     this.scene.add(this.text);
-    console.log(this.text)
   }
   increase() {
     this.currentStreak += 1

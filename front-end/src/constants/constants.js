@@ -1,6 +1,8 @@
 export const fallTime = 2;
 
-export const sceneLayoutWidthBreakpoint = 900
+export const sceneLayoutWidthBreakpoint = 900;
+
+export const characterPosition = { x: 0, y: -0.55, z: 0 };
 
 export const keyCodes = {
   KeyA: "A",
@@ -55,10 +57,10 @@ export const keyCodes = {
   Keyx: "x",
   Keyy: "y",
   Keyz: "z",
-  ShiftLeft: "(Shift)", 
-  ControlLeft: "(Ctrl)", 
+  ShiftLeft: "(Shift)",
+  ControlLeft: "(Ctrl)",
   AltLeft: "(Alt)",
-  MetaLeft: "(Meta)", 
+  MetaLeft: "(Meta)",
   Digit0: "0",
   Digit1: "1",
   Digit2: "2",
@@ -74,19 +76,19 @@ export const keyCodes = {
   Tab: "Tab",
   Enter: "Enter",
   CapsLock: "Caps Lock",
-  ArrowLeft: "←", 
-  ArrowUp: "↑", 
-  ArrowRight: "→", 
-  ArrowDown: "↓", 
+  ArrowLeft: "←",
+  ArrowUp: "↑",
+  ArrowRight: "→",
+  ArrowDown: "↓",
   Space: "Space",
   Comma: ",",
   Period: ".",
   Slash: "/",
-  Backquote: "`", 
+  Backquote: "`",
   BracketLeft: "[",
   BracketRight: "]",
   Semicolon: ";",
-  Quote: "'", 
+  Quote: "'",
   Equal: "=",
   Minus: "-",
   Underscore: "_",

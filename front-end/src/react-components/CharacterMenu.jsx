@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import LifeCounter from "../LifeCounter";
 
 
 const CharacterMenu = ({ game, setIsCharacterSelected }) => {

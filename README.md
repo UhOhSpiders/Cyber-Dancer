@@ -12,7 +12,7 @@ Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhyt
 - An MP3 is played by a Tone.js [Player](https://tonejs.github.io/docs/14.9.17/classes/Player.html) in sync with a specially authored MIDI track. Each note within this MIDI track triggers a new visual.
 - The MIDI track generates no audio, and is used purely for signal purposes. [Tone.js parses it](https://github.com/Tonejs/Midi) and schedules callback functions to create the graphics via its [Draw class](https://tonejs.github.io/docs/14.9.17/functions/getDraw.html).
 - This approach allows for the straightforward authoring of new levels using a digital audio workstation. A MIDI track can be recorded in real-time alongside an MP3, "quantized" automatically, and then easily tweaked if needed.
-- The pitch information of a note is passed as an argument to the scheduled callback function, and determines which column the note falls in. The pitch information is also used to select specific dance moves for the animated characters. This aims to create identifiable sequences and give a sense of choreography to the dance routines.
+- The pitch information of a note is passed as an argument to the scheduled callback function, and determines which column the note falls in.
 
 #### 3D animation in a web browser
 - This project uses the popular Three.js library to display the graphics.
@@ -32,17 +32,13 @@ Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhyt
 
 ## To-dos
 ### General:
-- Rename noteColumn name for readability?
 - Rename gltfName
-### Menus:
-- Give visuals to character selection
-### Animation logic:
-- Filter animations to specific characters
 ### Animation:
 - Add stumble animation
 - Animate more moves
 - Add baseline looping dance throughout track
 ### Game logic:
 - Streak bonus
+- Perfect hit bonus
 ### Display:
 - Bind score display position to camera position

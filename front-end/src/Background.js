@@ -7,7 +7,7 @@ export default class Background{
     }
     create(){
         let background = this.gltf.scene.getObjectByName(`${this.levelName}_background`)
-        background.position.set(0,-1.2,1)
+        background.position.set(0,-0.55,1)
         this.scene.add(background)
     }
 }
