@@ -77,11 +77,13 @@ html {
 }
 
 .level-card{
-  background-color: rgba(255, 255, 82, 0.759);
+  background-color: rgba(255, 230, 6, 0.85);
   padding: 5px;
   margin:5px;
   border-radius: 10px;
   display: flex;
+  text-align: left;
+  justify-content: space-between;
   border-style: solid;
   border-color: rgba(255, 255, 82, 0.759);
 }
@@ -118,6 +120,7 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   justify-content: center;
   position: absolute;
   width: 80vw;

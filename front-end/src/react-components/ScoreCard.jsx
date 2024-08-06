@@ -13,7 +13,7 @@ const ScoreCard = ({ scoreDetails, isDead }) => {
       ) : (
         <div>
           <h1 style={{ color: "#c50000da" }}>GAME OVER</h1>
-          <h3 >you were squished by the disco anvil</h3>
+          <h3 style={{color:"white"}}>Oh no! You were squished by the disco anvil.</h3>
         </div>
       )}
     </>

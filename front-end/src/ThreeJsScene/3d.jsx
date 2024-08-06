@@ -75,12 +75,12 @@ export default class Game {
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
       this.noteDropper.setSize(width);
-      this.score.setSize(width, height);
+      this.score.setSize(width);
       this.lifeCounter.setSize(width);
     }
   }
 
-  loadGraphics(gltfName) {
+  loadGraphics() {
     this.noteDropper.create();
     this.score.createDisplay();
     this.lifeCounter.createDisplay();
@@ -121,6 +121,7 @@ export default class Game {
     this.selectedCharacter.object3D.visible = true;
     this.score.reset();
     this.lifeCounter.reset();
+    this.lights.reset()
     this.midiAndMp3Player.startTrack();
   }
 
@@ -128,17 +129,20 @@ export default class Game {
     this.noteDropper.noteDropperGroup.visible = true
     this.noteDropper.textGroup.visible = true
     this.gameIsPlaying = true;
+    this.resize();
     this.cameraController.craneDown();
     this.selectedCharacter.object3D.visible = true;
     this.squisher.delete();
     this.score.reset();
     this.lifeCounter.reset();
+    this.lights.reset()
     this.midiAndMp3Player.startTrack();
   }
 
-  endGame(){
+  loseGame(){
     this.noteDropper.noteDropperGroup.visible = false
     this.noteDropper.textGroup.visible = false
+    this.lights.triggerDangerLights()
     this.squisher.squish().then(() => {
       this.cameraController.craneUp()
       this.selectedCharacter.explode();

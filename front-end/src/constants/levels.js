@@ -2,7 +2,7 @@ export const levels = [
   {
     name: "test track",
     artist: "MGMT",
-    blurb: "This test track is a clip of an MGMT song. I've listened to it a lot.",
+    blurb: "This test track is a clip of an MGMT song.",
     midiName: "midi-to-click-test.MID",
     mp3Name: "midi-to-click-test.mp3",
     map: "psych_test",
@@ -10,7 +10,7 @@ export const levels = [
   },{
     name: "the same test track",
     artist: "MGMT",
-    blurb: "This test track is a clip of an MGMT song. I've listened to it a lot.",
+    blurb: "This test track is a clip of an MGMT song.",
     midiName: "midi-to-click-test.MID",
     mp3Name: "midi-to-click-test.mp3",
     map: "psych_test",
@@ -19,7 +19,7 @@ export const levels = [
   {
     name: "i have copy and pasted this test track",
     artist: "MGMT",
-    blurb: "This test track is a clip of an MGMT song. I've listened to it a lot.",
+    blurb: "This test track is a clip of an MGMT song.",
     midiName: "midi-to-click-test.MID",
     mp3Name: "midi-to-click-test.mp3",
     map: "psych_test",
@@ -28,7 +28,7 @@ export const levels = [
   {
     name: "i have copy and pasted this test track",
     artist: "MGMT",
-    blurb: "This test track is a clip of an MGMT song. I've listened to it a lot.",
+    blurb: "This test track is a clip of an MGMT song.",
     midiName: "midi-to-click-test.MID",
     mp3Name: "midi-to-click-test.mp3",
     map: "psych_test",
@@ -37,7 +37,7 @@ export const levels = [
   {
     name: "i have copy and pasted this test track",
     artist: "MGMT",
-    blurb: "This test track is a clip of an MGMT song. I've listened to it a lot.",
+    blurb: "This test track is a clip of an MGMT song.",
     midiName: "midi-to-click-test.MID",
     mp3Name: "midi-to-click-test.mp3",
     map: "psych_test",

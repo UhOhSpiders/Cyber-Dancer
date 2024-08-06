@@ -21,7 +21,7 @@ export default class CameraController {
     this.craneUpTween = createTransformPositionTween(
       this.camera,
       this.craneUpPosition,
-      10000
+      5000
     )
       .delay(500)
       .easing(TWEEN.Easing.Exponential.Out);

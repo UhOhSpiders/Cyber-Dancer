@@ -9,7 +9,7 @@ export default class LifeCounter {
     this.squisher = squisher;
     this.cameraController = cameraController
     this.game = game
-    this.maxLives = 1;
+    this.maxLives = 5;
     this.currentLifeCount = this.maxLives;
     this.isDead = false;
     this.heartsArray = [];
@@ -25,6 +25,7 @@ export default class LifeCounter {
     this.text.anchorX = "left";
     this.text.sync();
     this.scene.add(this.text);
+    console.log(this.cameraController.camera)
   }
 
   async loseLife() {
@@ -35,7 +36,7 @@ export default class LifeCounter {
       if (this.currentLifeCount <= 0) {
         this.text.text = `\u{1F480}`; //"💀" unicode character
         this.isDead = true;
-        this.game.endGame()
+        this.game.loseGame()
       }
     }
     this.text.sync();
@@ -57,7 +58,7 @@ export default class LifeCounter {
   }
 
   setSize(width) {
-    if (!this.cameraPosition) return;
+    if (!this.cameraController) return;
     if (width < sceneLayoutWidthBreakpoint) {
       this.text.position.x = -0.08;
       this.text.fontSize = 0.012;

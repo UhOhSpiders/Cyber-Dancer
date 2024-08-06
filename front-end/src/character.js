@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { characterPosition } from "./constants/constants";
 
 export default class Character {
   constructor(object3D, scene, animationMixer) {
@@ -18,25 +19,32 @@ export default class Character {
       this.object3D.animations,
       `${this.object3D.name.split("_")[0]}_idle`
     );
-    character.position.set(0, -0.55, 0);
+    character.position.set(
+      characterPosition.x,
+      characterPosition.y,
+      characterPosition.z
+    );
     character.scale.set(0.3, 0.3, 0.3);
-    if(idleClip){
-    const idleAction = this.animationMixer.clipAction(idleClip, this.object3D);
-    idleAction.loop = THREE.LoopPingPong;
-    this.idle = idleAction;
-    this.idle.play();
-    this.animationMixer.addEventListener("finished", () => {
-      this.isDancing = false;
-      idleAction.reset();
-      idleAction.fadeIn(0.1);
-      idleAction.play();
-    });
-  }
-  if(character.name == "anvil_character"){
-    let bmap = new THREE.TextureLoader().load("disco_anvil_bump.png")
-    bmap.flipY = false
-    character.material.bumpMap = bmap
-  }
+    if (idleClip) {
+      const idleAction = this.animationMixer.clipAction(
+        idleClip,
+        this.object3D
+      );
+      idleAction.loop = THREE.LoopPingPong;
+      this.idle = idleAction;
+      this.idle.play();
+      this.animationMixer.addEventListener("finished", () => {
+        this.isDancing = false;
+        idleAction.reset();
+        idleAction.fadeIn(0.1);
+        idleAction.play();
+      });
+    }
+    if (character.name == "anvil_character") {
+      let bmap = new THREE.TextureLoader().load("disco_anvil_bump.png");
+      bmap.flipY = false;
+      character.material.bumpMap = bmap;
+    }
   }
 
   getDanceMoves() {
@@ -84,7 +92,7 @@ export default class Character {
   }
 
   explode() {
-    this.object3D.visible = false
+    this.object3D.visible = false;
     console.log("explodes");
   }
 }

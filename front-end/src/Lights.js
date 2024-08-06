@@ -1,32 +1,38 @@
 import * as THREE from "three";
-import { createLightFlashTween } from "./utilities/tweens/createLightFlashTween";
+import * as TWEEN from "@tweenjs/tween.js";
+import { createDefaultLights } from "./utilities/lights/createDefaultLights";
+import { createDangerLights } from "./utilities/lights/createDangerLights";
 
-export default class Score {
+export default class Lights {
   constructor(scene) {
     this.scene = scene;
-    this.light = new THREE.HemisphereLight(0x1c51ff, 0xff3bba, 2);
-    this.directionalLight1 = new THREE.DirectionalLight(0x1c51ff, 30)
-    this.directionalLight1.position.set(-3, 9, -5);
-
-    this.directionalLight2 = new THREE.DirectionalLight(0xff3bba, 30);
-    this.directionalLight2.position.set(3, 9, -5);
-
-    this.directionalLight3 = new THREE.DirectionalLight(0xffdcad, 5);
-    this.directionalLight3.position.set(2, 4, 5);
-
-    this.scene.add(this.light);
+    this.lights = new THREE.Group();
     this.targetObject = new THREE.Object3D();
     this.targetObject.position.set(0, -1.2, -2.5);
     this.scene.add(this.targetObject);
 
-    this.directionalLight1.target = this.targetObject;
-    this.directionalLight2.target = this.targetObject;
-    this.directionalLight3.target = this.targetObject;
-
-    this.scene.add(this.directionalLight1);
-    this.scene.add(this.directionalLight2);
-    this.scene.add(this.directionalLight3);
-    
+    this.defaultLights = createDefaultLights(this.targetObject);
+    this.dangerLights = createDangerLights(this.targetObject);
+    this.lights.add(this.defaultLights);
+    this.scene.add(this.lights);
   }
 
+  triggerDangerLights() {
+    this.defaultLights.children.forEach((light) => {
+      light.fadeOutTween.start();
+    });
+    this.lights.add(this.dangerLights);
+    this.dangerLights.children[0].fadeTween
+      .easing(TWEEN.Easing.Exponential.Out)
+      .start();
+  }
+
+  reset() {
+    if (this.defaultLights.children[0].intensity > 0) return;
+    this.lights.children = [];
+    this.lights.add(this.defaultLights);
+    this.defaultLights.children.forEach((light) => {
+      light.fadeInTween.start();
+    });
+  }
 }

@@ -1,8 +1,9 @@
 import React from "react";
 import { levels } from "../constants/levels";
 
-const LevelSelect = ({ setSelectedLevel }) => {
+const LevelSelect = ({ setSelectedLevel, isDead, game }) => {
   const handleClick = (e) => {
+    game.lights.reset()
     setSelectedLevel(levels[e.target.id]);
   };
   const levelList = levels.map((level, index) => {
@@ -19,7 +20,7 @@ const LevelSelect = ({ setSelectedLevel }) => {
   });
   return (
     <div className="menu-container">
-      <h2>Select Track</h2>
+      <h2 style={{color: isDead ? "white" : "black"}}>Select Track</h2>
       <div className="card-container">
       {levelList}
       </div>
