@@ -28,7 +28,7 @@ export default class CameraController {
     this.craneDownTween = createTransformPositionTween(
       this.camera,
       this.gameplayPosition,
-      3000
+      500
     );
     this.shakeTween = createTransformPositionTween(
       this.camera,
@@ -50,7 +50,7 @@ export default class CameraController {
   craneDown() {
     this.craneUpTween.stop();
     if (this.camera.position != this.gameplayPosition) {
-      this.craneDownTween.start();
+      this.craneDownTween.startFromCurrentValues();
     }
   }
 }

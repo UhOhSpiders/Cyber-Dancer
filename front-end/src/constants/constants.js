@@ -1,10 +1,42 @@
-export const fallTime = 2;
+import * as THREE from "three";
+export const FALL_TIME = 2;
 
-export const sceneLayoutWidthBreakpoint = 900;
+export const MOBILE_BREAKPOINT = 900;
 
 export const characterPosition = { x: 0, y: -0.55, z: 0 };
 
-export const keyCodes = {
+export const HIT_MARGIN = {
+  MOBILE: { upper: 0.04, lower: -0.4 },
+  DESKTOP: { upper: 0.07, lower: -0.07 },
+};
+
+
+export const TARGET_SCALE = {
+  MOBILE: new THREE.Vector3(0.4, 0.4, 0.4),
+  DESKTOP: new THREE.Vector3(0.2, 0.2, 0.2),
+};
+
+export const NOTE_SCALE = {
+  MOBILE: new THREE.Vector3(0.5, 0.5, 0.5),
+  DESKTOP: new THREE.Vector3(0.2, 0.2, 0.2),
+};
+
+export const NOTE_START_POSITION = {
+  MOBILE: new THREE.Vector3(0, 1, 0.5),
+  DESKTOP: new THREE.Vector3(0, 0.2, 0.5)
+}
+
+export const NOTE_DROPPER_GROUP_SCALE = {
+  MOBILE: new THREE.Vector3(0.45, 0.45, 0.45),
+  DESKTOP: new THREE.Vector3(1, 1, 1),
+};
+
+export const NOTE_DROPPER_GROUP_POSITION = {
+  MOBILE: { x: 0, y: -0.27, z: 0 },
+  DESKTOP: { x: 0, y: 0, z: 0 },
+};
+
+export const KEYCODES = {
   KeyA: "A",
   KeyB: "B",
   KeyC: "C",

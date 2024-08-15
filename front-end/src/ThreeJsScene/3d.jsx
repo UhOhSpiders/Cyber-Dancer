@@ -57,7 +57,7 @@ export default class Game {
     if (!this.gameIsPlaying) return;
     let checkedHit = this.noteDropper.checkHit(e);
     if (checkedHit.isHit) {
-      this.selectedCharacter.dance(checkedHit.pitch);
+      this.selectedCharacter.dance(checkedHit.name);
       this.score.increase(checkedHit.isHit);
     } else {
       this.selectedCharacter.stumble();
@@ -122,6 +122,7 @@ export default class Game {
     this.score.reset();
     this.lifeCounter.reset();
     this.lights.reset()
+    this.noteDropper.reset()
     this.midiAndMp3Player.startTrack();
   }
 
@@ -136,6 +137,7 @@ export default class Game {
     this.score.reset();
     this.lifeCounter.reset();
     this.lights.reset()
+    this.noteDropper.reset()
     this.midiAndMp3Player.startTrack();
   }
 
