@@ -1,5 +1,5 @@
 import { Text } from "troika-three-text";
-import { sceneLayoutWidthBreakpoint } from "./constants/constants";
+import { MOBILE_BREAKPOINT } from "./constants/constants";
 
 export default class Score {
   constructor(scene, cameraPosition) {
@@ -41,7 +41,7 @@ export default class Score {
   }
 
   setSize(width){
-    if(width < sceneLayoutWidthBreakpoint){
+    if(width < MOBILE_BREAKPOINT){
       this.text.position.x = this.cameraPosition.x + 0.065;
       this.text.fontSize = 0.02
       this.text.sync();

@@ -1,5 +1,5 @@
 import * as Tone from "tone";
-import { fallTime } from "./constants/constants";
+import { FALL_TIME } from "./constants/constants";
 import { Midi } from "@tonejs/midi";
 
 export default class MidiAndMp3Player {
@@ -46,14 +46,14 @@ export default class MidiAndMp3Player {
               this.game.noteDropper.addNote(note.name, note.time);
             }
           }.bind(this),
-          now + note.time - fallTime
+          now + note.time - FALL_TIME
         );
 
         // force miss
         Tone.getDraw().schedule(
           function () {
             if (track.name === "dance_moves") {
-              this.game.noteDropper.forceMiss(note.name + note.time);
+              this.game.noteDropper.forceMiss(`${note.name}_${note.time}`);
             }
           }.bind(this),
           now + note.time + 0.4

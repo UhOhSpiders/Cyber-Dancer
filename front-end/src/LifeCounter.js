@@ -1,5 +1,5 @@
 import { Text } from "troika-three-text";
-import { sceneLayoutWidthBreakpoint } from "./constants/constants";
+import { MOBILE_BREAKPOINT } from "./constants/constants";
 
 export default class LifeCounter {
   constructor(character, scene, midiAndMp3Player, squisher, cameraController, game) {
@@ -59,7 +59,7 @@ export default class LifeCounter {
 
   setSize(width) {
     if (!this.cameraController) return;
-    if (width < sceneLayoutWidthBreakpoint) {
+    if (width < MOBILE_BREAKPOINT) {
       this.text.position.x = -0.08;
       this.text.fontSize = 0.012;
       this.text.position.y = this.cameraController.gameplayPosition.y + 0.145;
