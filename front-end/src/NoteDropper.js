@@ -14,6 +14,7 @@ import { createScalePulseTween } from "./utilities/tweens/createScalePulseTween.
 import Note from "./Note.js";
 import NoteTarget from "./NoteTarget.js";
 import { getHitDetails } from "./utilities/getHitDetails.js";
+import HitText from "./HitText.js";
 
 export default class NoteDropper {
   constructor(
@@ -54,6 +55,7 @@ export default class NoteDropper {
     this.raycaster = new THREE.Raycaster();
 
     this.note = new Note(null, this.fallingGroup, this.scene);
+    this.hitText = new HitText(this.scene)
     this.noteTarget = null;
   }
   create() {
@@ -152,13 +154,15 @@ export default class NoteDropper {
       targetResponse.tween.start();
     }
     if (!this.notesToHit[keyCode] || !this.notesToHit[keyCode].length)
-      return { isHit: false };
+      return false;
 
     const noteAttempt = this.scene.getObjectByName(this.notesToHit[keyCode][0]);
 
     const hitDetails = getHitDetails(noteAttempt, this.hitMargin, this.noteTargetPosition)
 
     hitDetails.isHit ? this.note.hit(noteAttempt, hitDetails) : this.note.miss(noteAttempt);
+
+    this.hitText.triggerText(hitDetails)
 
     this.notesToHit[keyCode] = this.notesToHit[keyCode].filter(
       (e) => e !== noteAttempt.name

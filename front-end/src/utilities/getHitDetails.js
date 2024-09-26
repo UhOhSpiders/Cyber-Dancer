@@ -22,7 +22,8 @@ export function getHitDetails(noteAttempt, hitMargin, noteTargetPosition) {
     isGood: isGood,
     isPerfect: isPerfect,
     pitch: noteAttempt.name.split("_")[0],
-    name: noteAttempt.name
+    name: noteAttempt.name,
+    note: noteAttempt
   };
   return hitDetails;
 }

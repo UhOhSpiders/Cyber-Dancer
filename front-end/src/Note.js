@@ -4,7 +4,7 @@ import { createHitEffect } from "./utilities/createHitEffect";
 export default class Note {
   constructor(loadedGltf, fallingGroup, scene, gltfName) {
     this.fallingGroup = fallingGroup;
-    this.scene = scene
+    this.scene = scene;
     this.gltfName = gltfName;
     this.noteHitMaterial = new THREE.MeshPhongMaterial({
       color: "green",
@@ -55,11 +55,11 @@ export default class Note {
       : hitDetails.isGood
       ? this.goodHit(note)
       : (note.material = this.noteHitMaterial);
-    }
-    
-    perfectHit(note) {
-      note.material = this.notePerfectHitMaterial;     
-      createHitEffect(this.effectSphere, 3, this.scene, note.position)
+  }
+
+  perfectHit(note) {
+    note.material = this.notePerfectHitMaterial;
+    createHitEffect(this.effectSphere, 3, this.scene, note.position);
   }
 
   goodHit(note) {
