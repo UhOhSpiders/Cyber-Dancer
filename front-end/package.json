@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aws-amplify/ui-react": "^6.5.1",
     "@tonejs/midi": "^2.0.28",
     "@tweenjs/tween.js": "^23.1.2",
+    "aws-amplify": "^6.6.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.2.1",

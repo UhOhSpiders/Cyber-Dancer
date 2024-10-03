@@ -4,6 +4,8 @@ import StartGameMenu from "./StartGameMenu";
 import ScoreCard from "./ScoreCard";
 import LevelSelect from "./LevelSelect";
 
+
+
 const Menu = ({ game }) => {
   const [playing, setPlaying] = useState(false);
   const [scoreDetails, setScoreDetails] = useState(null);

@@ -1,0 +1,43 @@
+{
+  "api": {
+    "scoresapi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "cybrdancramp5129f62c"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
+  "function": {
+    "cybrdancramp5129f62c": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_cybrdancramp5129f62c_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "cybrdancramp5129f62c"
+        }
+      ]
+    },
+    "AMPLIFY_function_cybrdancramp5129f62c_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "cybrdancramp5129f62c"
+        }
+      ]
+    }
+  }
+}

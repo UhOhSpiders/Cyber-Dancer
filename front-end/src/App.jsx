@@ -3,9 +3,12 @@ import Menu from "./react-components/Menu.jsx";
 import useLoadGame from "./react-hooks/useLoadGame.js";
 import LoadingScreen from "./react-components/LoadingScreen.jsx";
 import NavBar from "./react-components/NavBar.jsx";
+import { getScores } from "./utilities/getScores.js";
 
 function App() {
   const { game, isLoading, error } = useLoadGame();
+  
+  getScores(1)
 
   return (
     <>
