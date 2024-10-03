@@ -1,0 +1,18 @@
+version: 1.0
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm install
+    build:
+      commands:
+        # Run your build command from the same directory
+        - npm run build
+  artifacts:
+    # Define where your build output is located
+    baseDirectory: build
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
