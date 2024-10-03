@@ -4,14 +4,16 @@ import useLoadGame from "./react-hooks/useLoadGame.js";
 import LoadingScreen from "./react-components/LoadingScreen.jsx";
 import NavBar from "./react-components/NavBar.jsx";
 import { getScores } from "./utilities/getScores.js";
+import TodoList from "./ToDoList.tsx";
 
 function App() {
   const { game, isLoading, error } = useLoadGame();
-  
-  getScores(1)
+
+  // getScores(1);
 
   return (
     <>
+      <TodoList />
       <NavBar />
       {isLoading ? (
         <div className="game-container">
