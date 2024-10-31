@@ -9,5 +9,6 @@ export default async function fetchSongs() {
     return songData.data.listSongs.items;
   } catch (error) {
     console.log(error);
+    throw error
   }
 }

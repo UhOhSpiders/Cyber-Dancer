@@ -16,5 +16,23 @@
         "amplifycyberdancer": {}
       }
     }
+  },
+  "dancedev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplifycyberdancer-dancedev-25d7c-authRole",
+      "UnauthRoleArn": "arn:aws:iam::664418984134:role/amplify-amplifycyberdancer-dancedev-25d7c-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::664418984134:role/amplify-amplifycyberdancer-dancedev-25d7c-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-amplifycyberdancer-dancedev-25d7c-deployment",
+      "UnauthRoleName": "amplify-amplifycyberdancer-dancedev-25d7c-unauthRole",
+      "StackName": "amplify-amplifycyberdancer-dancedev-25d7c",
+      "StackId": "arn:aws:cloudformation:eu-west-2:664418984134:stack/amplify-amplifycyberdancer-dancedev-25d7c/98cd1250-977c-11ef-af57-0a60bbbba82d",
+      "AmplifyAppId": "d28mzey9qzv3tt"
+    },
+    "categories": {
+      "api": {
+        "amplifycyberdancer": {}
+      }
+    }
   }
 }
