@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import CharacterMenu from "./CharacterMenu";
 import StartGameMenu from "./StartGameMenu";
-import ScoreCard from "./ScoreCard";
+import LevelCompleteMenu from "./LevelCompleteMenu";
 import LevelSelect from "./LevelSelect";
+import EndOfGameNavButtons from "./EndOfGameNavButtons";
 
-const Menu = ({ game }) => {
+const Menu = ({ game, songs }) => {
   const [playing, setPlaying] = useState(false);
   const [scoreDetails, setScoreDetails] = useState(null);
   const [isCharacterSelected, setIsCharacterSelected] = useState(false);
@@ -40,14 +41,14 @@ const Menu = ({ game }) => {
   }, [playing]);
 
   const handleClickPlay = () => {
-    game.play("psych_test", selectedLevel.midiName, selectedLevel.mp3Name);
+    game.play(selectedLevel.map, selectedLevel.midiName, selectedLevel.mp3Name);
     setPlaying(true);
   };
 
   const handleClickReplay = () => {
     setPlaying(true);
     setScoreDetails(null);
-    game.replay("midi-to-click-test.MID", "midi-to-click-test.mp3");
+    game.replay(selectedLevel.midiName, selectedLevel.mp3Name);
   };
 
   const handleResetLevel = () => {
@@ -80,41 +81,43 @@ const Menu = ({ game }) => {
               setSelectedLevel={setSelectedLevel}
               isDead={isDead}
               game={game}
+              songs={songs}
             />
           </>
         ) : (
-          <StartGameMenu handleClickPlay={handleClickPlay}/>
+          <StartGameMenu handleClickPlay={handleClickPlay} />
         )}
       </>
     );
-  } else if (scoreDetails) {
+  } else if (scoreDetails && !isDead) {
     return (
       <div className="menu-container">
-        <ScoreCard
+        <LevelCompleteMenu
           scoreDetails={scoreDetails}
-          isDead={isDead}
-          handleClickReplay={handleClickReplay}
+          songID={selectedLevel.id}
         />
-        <div className="button-container">
-          <button
-            style={{ color: isDead ? "white" : "black" }}
-            onClick={handleResetLevel}
-          >
-            Change Track
-          </button>
-          <button
-            style={{ color: isDead ? "white" : "black" }}
-            onClick={handleClickReplay}
-          >
-            Replay
-          </button>
-          <button
-            style={{ color: isDead ? "white" : "black" }}
-            onClick={handleChangeCharacter}
-          >
-            Change Character
-          </button>
-        </div>
+        <EndOfGameNavButtons
+          isDead={isDead}
+          handleResetLevel={handleResetLevel}
+          handleClickReplay={handleClickReplay}
+          handleChangeCharacter={handleChangeCharacter}
+        />
+      </div>
+    );
+  } else if (isDead) {
+    return (
+      <div className="menu-container">
+        <h1 style={{ color: "#c50000da" }}>GAME OVER</h1>
+        <h3 style={{ color: "white" }}>
+          Oh no! You were squished by the disco anvil.
+        </h3>
+
+        <EndOfGameNavButtons
+          isDead={isDead}
+          handleResetLevel={handleResetLevel}
+          handleClickReplay={handleClickReplay}
+          handleChangeCharacter={handleChangeCharacter}
+        />
       </div>
     );
   }

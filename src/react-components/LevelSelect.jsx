@@ -1,12 +1,11 @@
 import React from "react";
-import { levels } from "../constants/levels";
 
-const LevelSelect = ({ setSelectedLevel, isDead, game }) => {
+const LevelSelect = ({ setSelectedLevel, isDead, game, songs }) => {
   const handleClick = (e) => {
     game.lights.reset()
-    setSelectedLevel(levels[e.target.id]);
+    setSelectedLevel(songs[e.target.id]);
   };
-  const levelList = levels.map((level, index) => {
+  const levelList = songs.map((level, index) => {
     return (
       <div className="level-card" key={index} onClick={handleClick} id={index}>
         <div>

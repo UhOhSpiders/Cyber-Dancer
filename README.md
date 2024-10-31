@@ -6,6 +6,9 @@ Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhyt
 - [Tone.js](https://tonejs.github.io/docs/14.9.17/index.html)
 - [Tween.js](https://github.com/tweenjs/tween.js)
 - [React](https://react.dev/)
+- [DynamoDB](https://aws.amazon.com/dynamodb/)
+- [AWS Amplify](https://aws.amazon.com/amplify/)
+- [GraphQL](https://graphql.org/)
 
 ### How it works
 #### Audio/Visual synchronization in a web browser
@@ -21,10 +24,15 @@ Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhyt
 #### Structure/Integration with React
 - The menu system for the game is built with React.
 - The game's logic is structured through classes, and its rendered output is exposed as a canvas element to the React VDOM through a useCallback hook.
-- The game's graphics are dependent on a glTF file which is handled through a custom useLoadGame hook. This hook prevents things like level and character selection from being displayed prematurely. 
+- The 3D graphics are dependent on a glTF file which is handled through a custom useLoadGame hook. This hook prevents things like level and character selection from being displayed prematurely. 
 - Once the assets are loaded, this hook then passes an instance of the game as a prop to the relevant React components.
 - When a level finishes, a custom event containing the score information is dispatched. The React app listens for this and displays the score and further options to the user.
 - _Note: Another popular approach to Three.js/React integration is React Three Fiber - a library which turns many aspects of the Three.js library into useful React-friendly components. I decided that the game logic I wanted to implement would be better suited to vanilla Three.js._
+
+#### DynamoDB, GraphQL & Continuous Deployment with AWS Amplify
+- The highscore leaderboard is built with a NoSQL DynamoDB database, alongside a GraphQL API.
+- After defining an apropriate GraphQL schema, these resources were generated and deployed via the AWS Amplify CLI.
+- This repository is deployed continuously via AWS Amplify.
 
 #### Asset Authoring
 - Graphics are created with [Blender](https://www.blender.org/). Blurbs for each character were also authored in Blender via a custom text property. This text can be displayed during character selection.
