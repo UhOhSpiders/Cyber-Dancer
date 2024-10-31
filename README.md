@@ -1,6 +1,6 @@
 # Cyber Dancer
 ## About the project
-Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhythm games like Dance Dance Revolution, Guitar Hero and Tap Tap Revenge. It is currently under development. An early-stage demo of the game can be accessed [here](https://cyber-dancer.vercel.app/).
+Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhythm games like Dance Dance Revolution, Guitar Hero and Tap Tap Revenge. It is currently under development. An early-stage demo of the game can be accessed [here](https://amplify-2nd-attempt.d28mzey9qzv3tt.amplifyapp.com/).
 ### Built With
 - [Three.js](https://threejs.org/)
 - [Tone.js](https://tonejs.github.io/docs/14.9.17/index.html)
