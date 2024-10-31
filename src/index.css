@@ -24,6 +24,7 @@ h3 {
   color: rgb(32, 27, 40);
   font-family: "Kode Mono";
   pointer-events: none;
+  margin: 0;
 }
 
 h1 {
@@ -53,16 +54,15 @@ button {
   border: none;
   padding: 0;
   width: 10rem;
-  height: 5rem;
   font-size: x-large;
-  margin-top: 1.5rem;
+
+  /* margin-top: 1.5rem; */
 }
 
 button:hover {
   cursor: pointer;
   font-weight: 700;
 }
-
 
 html {
   /* Firefox */
@@ -76,10 +76,10 @@ html {
   height: 7px;
 }
 
-.level-card{
+.level-card {
   background-color: rgba(255, 230, 6, 0.85);
   padding: 5px;
-  margin:5px;
+  margin: 5px;
   border-radius: 10px;
   display: flex;
   text-align: left;
@@ -88,33 +88,31 @@ html {
   border-color: rgba(255, 255, 82, 0.759);
 }
 
-.level-card:hover{
+.level-card:hover {
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.759);
   border-color: rgba(121, 121, 111, 0.759);
 }
 
-.level-card > *{
+.level-card > * {
   pointer-events: none;
 }
 
-.level-card > img{
-  height:150px;
+.level-card > img {
+  height: 150px;
 }
 
-.level-card > div > *{
+.level-card > div > * {
   padding: 5px;
   margin: 0px;
 }
 
-.card-container{
+.card-container {
   overflow: auto;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
-
-
 
 .menu-container {
   display: flex;
@@ -128,37 +126,114 @@ html {
   border-radius: 20px;
 }
 
-.button-container{
+.end-of-game-nav-button-container {
   display: flex;
   justify-content: center;
   width: 90vw;
 }
 
-.score-card{
+.level-complete-menu {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  justify-content: space-evenly;
+  height: 80%;
   text-align: center;
-  padding-bottom: 10px;
   border-radius: 1rem;
   background-color: rgba(255, 252, 225, 0.721);
 }
 
-.character-selector{
+.splash {
+  flex-direction: column;
+  align-items: center;
+}
+
+.splash > h2 {
+  margin-top: 1rem;
+  font-size: 30px;
+}
+
+.splash > button {
+  background-color: rgba(255, 0, 149, 0.273);
+  margin: 1rem;
+  padding: 1rem;
+  width: auto;
+  font-size: larger;
+}
+.splash > button:hover {
+  background-color: rgba(255, 119, 230, 0.535);
+}
+.scoreboard-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.score-details {
+  background-color: rgba(255, 246, 169, 0.657);
+  padding: 0.5rem;
+  box-shadow: 5px 5px 25px rgba(143, 126, 93, 0.604);
+  overflow: auto;
+  height: 30%;
+}
+
+.table-header {
+  padding: 10px;
+  margin: 0;
+  background-color: rgb(118, 13, 134);
+  color: white;
+  border-radius: 1rem 0 0 0;
+}
+
+.highscore-grid-container {
+  overflow: auto;
+  height: 300px;
+}
+
+.grid-element {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.grid-hr {
+  grid-column: span 2;
+  width: 90%;
+}
+
+.score-submit-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 0 1rem 1rem 0;
+  background-color: rgba(255, 0, 149, 0.273);
+  padding: 20px;
+}
+
+input {
+  border: none;
+  width: 90%;
+  border-bottom: 2px solid red;
+  background-color: transparent;
+  font-family: "Kode Mono";
+  font-size: larger;
+  margin: 2rem;
+}
+
+.character-selector {
   justify-content: space-between;
 }
 
-.character-selector > *{
-  padding:5px;
-  margin:0;
+.character-selector > * {
+  padding: 5px;
+  margin: 0;
 }
 
-.prev-next-button-container{
-  flex-basis:100%;
+.prev-next-button-container {
+  flex-basis: 100%;
   justify-content: space-between;
   align-items: center;
-  display:flex;
-  width:60%;
+  display: flex;
+  width: 60%;
 }
 
 .loading {
@@ -189,15 +264,13 @@ html {
 }
 
 @media only screen and (max-width: 1500px) {
+  .Cube-container {
+    width: 98vw;
+  }
 
-.Cube-container {
-  width: 98vw;
-}
-
-.menu-container {
-  width: 98vw;
-}
-
+  .menu-container {
+    width: 98vw;
+  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -217,6 +290,27 @@ html {
     width: 100vw;
     height: 100dvh;
     border-radius: 0;
+    
+  }
+
+  .level-complete-menu{
+    width: 100vw;
+    height: 60dvh;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .scoreboard-container{
+    height:auto;
+  }
+
+  .score-submit-form{
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .table-header{
+    border-radius: 0;
   }
 
   .Cube-container canvas {
@@ -228,8 +322,8 @@ html {
     justify-content: center;
   }
 
-  .prev-next-button-container{
-    width:100%;
+  .prev-next-button-container {
+    width: 100%;
   }
 
   body {

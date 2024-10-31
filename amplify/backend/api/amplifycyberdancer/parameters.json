@@ -1,0 +1,6 @@
+{
+  "AppSyncApiName": "amplifycyberdancer",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2024-10-24T09:42:02.842Z"
+}
