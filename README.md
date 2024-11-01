@@ -31,7 +31,7 @@ Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhyt
 
 #### DynamoDB, GraphQL & Continuous Deployment with AWS Amplify
 - The highscore leaderboard is built with a NoSQL DynamoDB database, alongside a GraphQL API.
-- After defining an apropriate GraphQL schema, these resources were generated and deployed via the AWS Amplify CLI.
+- After defining an appropriate GraphQL schema, these resources were generated and deployed via the AWS Amplify CLI.
 - This repository is deployed continuously via AWS Amplify.
 
 #### Asset Authoring

@@ -54,19 +54,29 @@ export default class Note {
       ? this.perfectHit(note)
       : hitDetails.isGood
       ? this.goodHit(note)
-      : (note.material = this.noteHitMaterial);
+      : (this.changeMaterial(note, this.noteHitMaterial));
   }
 
   perfectHit(note) {
-    note.material = this.notePerfectHitMaterial;
+    this.changeMaterial(note, this.notePerfectHitMaterial);
     createHitEffect(this.effectSphere, 3, this.scene, note.position);
   }
 
   goodHit(note) {
-    note.material = this.noteGoodHitMaterial;
+    this.changeMaterial(note, this.noteGoodHitMaterial);
   }
 
   miss(note) {
-    note.material = this.noteMissedMaterial;
+    this.changeMaterial(note, this.noteMissedMaterial);
+  }
+
+  changeMaterial(note, material) {
+    if (note.children.length) {
+      note.children.forEach((mesh) => {
+        mesh.material = material;
+      });
+    } else {
+      note.material = material;
+    }
   }
 }

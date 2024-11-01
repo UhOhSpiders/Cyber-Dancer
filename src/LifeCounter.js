@@ -25,7 +25,6 @@ export default class LifeCounter {
     this.text.anchorX = "left";
     this.text.sync();
     this.scene.add(this.text);
-    console.log(this.cameraController.camera)
   }
 
   async loseLife() {

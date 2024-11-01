@@ -14,7 +14,6 @@ const ScoreSubmitForm = ({
   });
 
   const handleChange = (event) => {
-    console.log(event);
     const copyScoreSubmission = { ...scoreSubmission };
     copyScoreSubmission.user = event.target.value;
     setScoreSubmission(copyScoreSubmission);

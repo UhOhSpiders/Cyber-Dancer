@@ -43,10 +43,12 @@ const Menu = ({ game, songs }) => {
   const handleClickPlay = () => {
     game.play(selectedLevel.map, selectedLevel.midiName, selectedLevel.mp3Name);
     setPlaying(true);
+    setIsDead(false)
   };
 
   const handleClickReplay = () => {
     setPlaying(true);
+    setIsDead(false)
     setScoreDetails(null);
     game.replay(selectedLevel.midiName, selectedLevel.mp3Name);
   };

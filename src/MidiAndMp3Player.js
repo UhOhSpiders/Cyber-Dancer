@@ -13,7 +13,6 @@ export default class MidiAndMp3Player {
 
   async startTrack() {
     this.midiTrack = await Midi.fromUrl(`../${this.midiName}`);
-
     this.player = await new Promise((resolve, reject) => {
       const player = new Tone.Player({
         url: `../${this.mp3Name}`,
