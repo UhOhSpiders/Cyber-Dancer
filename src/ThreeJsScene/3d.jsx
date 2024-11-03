@@ -58,7 +58,8 @@ export default class Game {
     let checkedHit = this.noteDropper.checkHit(e);
     if (checkedHit.isHit) {
       this.selectedCharacter.dance(checkedHit.name);
-      this.score.increase(checkedHit.isHit);
+      this.lifeCounter.reset()
+      this.score.increase(checkedHit);
     } else {
       this.selectedCharacter.stumble();
       this.lifeCounter.loseLife();

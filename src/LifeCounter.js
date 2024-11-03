@@ -24,7 +24,7 @@ export default class LifeCounter {
     this.text.fontSize = 0.02;
     this.text.anchorX = "left";
     this.text.sync();
-    this.scene.add(this.text);
+    // this.scene.add(this.text);
   }
 
   async loseLife() {
@@ -38,12 +38,21 @@ export default class LifeCounter {
         this.game.loseGame()
       }
     }
-    this.text.sync();
+    // this.text.sync();
+  }
+
+  gainLife(){
+    if(this.currentLifeCount < 5){
+      this.currentLifeCount += 1;
+      this.heartsArray.push(`\u2665`)
+      this.text.text = `${this.heartsArray.join("")}`;
+      // this.text.sync();
+    }
   }
 
   getHeartsArray() {
     for (let i = 0; i < this.maxLives; i++) {
-      this.heartsArray.push(`\u2665`); //"❤️" unicode chrarcter
+      this.heartsArray.push(`\u2665`); //"❤️" unicode character
     }
   }
 
@@ -53,7 +62,7 @@ export default class LifeCounter {
     this.isDead = false;
     this.getHeartsArray();
     this.text.text = `${this.heartsArray.join("")}`;
-    this.text.sync();
+    // this.text.sync();
   }
 
   setSize(width) {
@@ -67,7 +76,7 @@ export default class LifeCounter {
       this.text.position.y = this.cameraController.gameplayPosition.y + 0.138;
       this.text.fontSize = 0.02;
     }
-    this.text.sync();
+    // this.text.sync();
   }
 
   delete() {
