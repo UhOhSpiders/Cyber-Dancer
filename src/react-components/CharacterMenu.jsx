@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-import LifeCounter from "../LifeCounter";
-
 
 const CharacterMenu = ({ game, setIsCharacterSelected }) => {
   const [characterBlurb, setCharacterBlurb] = useState(
@@ -45,13 +42,13 @@ const CharacterMenu = ({ game, setIsCharacterSelected }) => {
       <h2>{characterName}</h2>
       <div className="prev-next-button-container">
         <button id={-1} onClick={handleIncrement}>
-        <IoIosArrowBack style={{ pointerEvents: 'none' }}/>
+        &larr;
         </button>
+      <button onClick={handleSelect}>Select</button>
         <button id={1} onClick={handleIncrement}>
-        <IoIosArrowForward style={{ pointerEvents: 'none' }}/>
+        &rarr;
         </button>
       </div>
-      <button onClick={handleSelect}>Select</button>
       {characterBlurb ? <h3>{characterBlurb}</h3> : null}
     </div>
   );

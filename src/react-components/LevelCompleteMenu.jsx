@@ -13,7 +13,7 @@ const LevelCompleteMenu = ({ scoreDetails, songID }) => {
     fetchScores(songID).then((scores) => {
       setHighScores(scores);
     });
-  }, []);
+  }, [scoreIsSubmitted]);
   return (
     <>
       {!scoreboardToggle ? (

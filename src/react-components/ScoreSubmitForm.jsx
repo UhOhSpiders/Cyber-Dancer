@@ -26,7 +26,7 @@ const ScoreSubmitForm = ({
     });
   };
   return (
-    <div className="score-submit-form">
+    <div className="score-submit-form-container">
       {!scoreIsSubmitted ? (
         <>
           <form onSubmit={handleSubmit}>

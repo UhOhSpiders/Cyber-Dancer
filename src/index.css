@@ -199,7 +199,7 @@ html {
   width: 90%;
 }
 
-.score-submit-form {
+.score-submit-form-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -234,6 +234,16 @@ input {
   align-items: center;
   display: flex;
   width: 60%;
+}
+
+.prev-next-button-container > button {
+  height: 100%;
+}
+
+.prev-next-button-container button:nth-child(2) {
+  display: flex;
+  align-items: end;
+  justify-content: center;
 }
 
 .loading {
@@ -290,26 +300,38 @@ input {
     width: 100vw;
     height: 100dvh;
     border-radius: 0;
-    
   }
 
-  .level-complete-menu{
+  .level-complete-menu {
     width: 100vw;
-    height: 60dvh;
+    /* height: 60dvh; */
     flex-direction: column;
     justify-content: flex-start;
   }
 
-  .scoreboard-container{
-    height:auto;
+  .scoreboard-container {
+    height: auto;
   }
 
-  .score-submit-form{
-    height: 100%;
+  .score-submit-form-container {
+    display: flex;
+    align-items: center;
+    padding: 0;
     border-radius: 0;
+    height: 100%;
   }
 
-  .table-header{
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  form > input {
+    margin: 0.4rem;
+  }
+
+  .table-header {
     border-radius: 0;
   }
 
