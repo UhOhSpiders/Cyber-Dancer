@@ -11,8 +11,7 @@ const LevelSelect = ({ setSelectedLevel, isDead, game, songs }) => {
       <div className="level-card" key={index} onClick={handleClick} id={index}>
         <div>
           <h3>{level.name}</h3>
-          <h3>by {level.artist}</h3>
-          <p>{level.blurb}</p>
+          <h3>{level.blurb}</h3>
         </div>
         <img src={level.thumbnail} />
       </div>
