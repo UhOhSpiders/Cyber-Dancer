@@ -20,7 +20,8 @@ body {
 
 h1,
 h2,
-h3 {
+h3,
+ol {
   color: rgb(32, 27, 40);
   font-family: "Kode Mono";
   pointer-events: none;
@@ -41,6 +42,10 @@ h3 {
   font-weight: 300;
 }
 
+ol {
+  padding: 1rem;
+}
+
 .nav-bar {
   margin: 0.8rem 1.5rem;
   display: flex;
@@ -57,6 +62,11 @@ button {
   font-size: x-large;
 
   /* margin-top: 1.5rem; */
+}
+
+.back-button {
+  align-self: flex-start;
+  position: relative;
 }
 
 button:hover {
@@ -130,6 +140,35 @@ html {
   display: flex;
   justify-content: center;
   width: 90vw;
+}
+
+.start-game-menu {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  border-radius: 1rem;
+  padding: 1rem;
+  background-color: rgba(255, 252, 225, 0.721);
+}
+
+.HUD {
+  width: 100%;
+  height: 3rem;
+  justify-content: space-between;
+  flex-direction: row;
+  font-size: 3rem;
+  color: white;
+  padding-top: 1rem;
+  opacity: 0.75;
+}
+.HUD > * {
+  padding: 1.5rem;
+  
+}
+
+.HUD > div{
+  padding: 0;
 }
 
 .level-complete-menu {
@@ -300,6 +339,16 @@ input {
     width: 100vw;
     height: 100dvh;
     border-radius: 0;
+  }
+
+  .HUD{
+    height: auto;
+    padding-top: 0;
+  }
+
+  .HUD>p{
+    padding: 0.5rem;
+    margin: 0;
   }
 
   .level-complete-menu {

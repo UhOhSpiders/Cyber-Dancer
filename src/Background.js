@@ -10,7 +10,6 @@ export default class Background {
 
   getBackgrounds(gltf) {
     gltf.scene.children.forEach((object3D) => {
-      console.log(object3D)
       if (object3D.name.includes("background")) {
         object3D.position.set(0, -0.55, 1);
         this.backgrounds.push(object3D);

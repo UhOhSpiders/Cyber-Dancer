@@ -34,6 +34,7 @@ const ScoreSubmitForm = ({
               placeholder="insert disco alias here"
               onChange={handleChange}
               value={scoreSubmission.user}
+              maxLength={25}
               required
             ></input>
             <button type="submit">submit yr score</button>

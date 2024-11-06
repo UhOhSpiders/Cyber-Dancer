@@ -76,15 +76,11 @@ export default class Game {
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
       this.noteDropper.setSize(width);
-      this.score.setSize(width);
-      this.lifeCounter.setSize(width);
     }
   }
 
   loadGraphics(mapName) {
     this.noteDropper.create();
-    this.score.createDisplay();
-    this.lifeCounter.createDisplay();
     this.resize();
   }
 
@@ -92,7 +88,6 @@ export default class Game {
     if (this.noteDropper.loadedGltf) {
       this.noteDropper = this.noteDropper.delete();
     }
-    this.lifeCounter.delete();
     this.squisher.delete();
   }
 
