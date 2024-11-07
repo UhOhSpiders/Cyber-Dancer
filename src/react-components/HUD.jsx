@@ -16,9 +16,9 @@ const HUD = () => {
 
   useEffect(() => {
     const handleHUDEvent = (event) => {
-      if (event.key == "score") {
+      if (event.type == "score") {
         setScore(event);
-      } else if (event.key == "lifeCounter") {
+      } else if (event.type == "lifeCounter") {
         setLifeCounter(event);
       }
     };

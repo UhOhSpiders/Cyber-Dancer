@@ -1,11 +1,25 @@
 export default class Score {
   constructor(scene) {
     this.scene = scene;
-    this.scoreDetails = { total: 0, notesMissed: 0, allStreaks: [] };
+    this.scoreDetails = {
+      total: 0,
+      notesMissed: 0,
+      allStreaks: [],
+      perfectHitCount: 0,
+      goodHitCount: 0,
+    };
     this.currentStreak = 0;
     this.streakMultiplier = 1;
     this.streakProgressPercentage = 0;
-    this.barColors = ["white", "#ffbe0b", "#1aff00", "#0320FF", "#e100ff", "#FF0000"];
+    this.barColors = [
+      "white",
+      "#ffbe0b",
+      "#1aff00",
+      "#0320FF",
+      "#e100ff",
+      "#FF0000",
+    ];
+    this.maxStreak = (this.barColors.length - 1) * 10;
     this.dispatchScoreEvent();
   }
 
@@ -14,13 +28,18 @@ export default class Score {
     this.setStreakMultiplier();
     this.scoreDetails.total +=
       (checkedHit.isPerfect ? 2 : 1) * this.streakMultiplier;
+    if (checkedHit.isPerfect) {
+      this.scoreDetails.perfectHitCount += 1;
+    } else if (checkedHit.isGood) {
+      this.scoreDetails.goodHitCount += 1;
+    }
     this.dispatchScoreEvent();
   }
 
   dispatchScoreEvent() {
     const scoreEvent = new CustomEvent("HUDEvent", {
       detail: {
-        key: "score",
+        type: "score",
         total: this.scoreDetails.total,
         streakMultiplier: this.streakMultiplier,
         streakProgressPercentage: this.streakProgressPercentage,
@@ -32,7 +51,7 @@ export default class Score {
   }
 
   setStreakMultiplier() {
-    if (this.currentStreak < (this.barColors.length - 1) * 10) {
+    if (this.currentStreak <= this.maxStreak) {
       this.streakMultiplier = Math.floor(this.currentStreak / 10 + 1);
       this.streakProgressPercentage =
         (1 - (this.streakMultiplier - this.currentStreak / 10)) * 100;
@@ -47,7 +66,13 @@ export default class Score {
     this.dispatchScoreEvent();
   }
   reset() {
-    this.scoreDetails = { total: 0, notesMissed: 0, allStreaks: [] };
+    this.scoreDetails = {
+      total: 0,
+      notesMissed: 0,
+      allStreaks: [],
+      goodHitCount: 0,
+      perfectHitCount: 0,
+    };
     this.currentStreak = 0;
   }
   getScoreDetails() {
