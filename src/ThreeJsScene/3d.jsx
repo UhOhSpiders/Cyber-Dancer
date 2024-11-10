@@ -58,7 +58,8 @@ export default class Game {
     let checkedHit = this.noteDropper.checkHit(e);
     if (checkedHit.isHit) {
       this.selectedCharacter.dance(checkedHit.name);
-      this.score.increase(checkedHit.isHit);
+      this.lifeCounter.reset()
+      this.score.increase(checkedHit);
     } else {
       this.selectedCharacter.stumble();
       this.lifeCounter.loseLife();
@@ -75,15 +76,11 @@ export default class Game {
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
       this.noteDropper.setSize(width);
-      this.score.setSize(width);
-      this.lifeCounter.setSize(width);
     }
   }
 
-  loadGraphics() {
+  loadGraphics(mapName) {
     this.noteDropper.create();
-    this.score.createDisplay();
-    this.lifeCounter.createDisplay();
     this.resize();
   }
 
@@ -91,11 +88,10 @@ export default class Game {
     if (this.noteDropper.loadedGltf) {
       this.noteDropper = this.noteDropper.delete();
     }
-    this.lifeCounter.delete();
     this.squisher.delete();
   }
 
-  play(gltfName, midiName, mp3Name) {
+  play(mapName, midiName, mp3Name) {
     this.deleteGraphics();
     this.cameraController.craneDown();
     this.midiAndMp3Player = new MidiAndMp3Player(this, midiName, mp3Name);
@@ -109,26 +105,26 @@ export default class Game {
     );
     this.noteDropper = new NoteDropper(
       this.loadedGltf,
-      gltfName,
+      mapName,
       this.scene,
       this.camera,
       this.renderer,
       this.score,
       this.lifeCounter
     );
-    this.loadGraphics(gltfName);
+    this.loadGraphics(mapName);
     this.gameIsPlaying = true;
     this.selectedCharacter.object3D.visible = true;
     this.score.reset();
     this.lifeCounter.reset();
-    this.lights.reset()
-    this.noteDropper.reset()
+    this.lights.reset();
+    this.noteDropper.reset();
     this.midiAndMp3Player.startTrack();
   }
 
   replay() {
-    this.noteDropper.noteDropperGroup.visible = true
-    this.noteDropper.textGroup.visible = true
+    this.noteDropper.noteDropperGroup.visible = true;
+    this.noteDropper.textGroup.visible = true;
     this.gameIsPlaying = true;
     this.resize();
     this.cameraController.craneDown();
@@ -136,17 +132,17 @@ export default class Game {
     this.squisher.delete();
     this.score.reset();
     this.lifeCounter.reset();
-    this.lights.reset()
-    this.noteDropper.reset()
+    this.lights.reset();
+    this.noteDropper.reset();
     this.midiAndMp3Player.startTrack();
   }
 
-  loseGame(){
-    this.noteDropper.noteDropperGroup.visible = false
-    this.noteDropper.textGroup.visible = false
-    this.lights.triggerDangerLights()
+  loseGame() {
+    this.noteDropper.noteDropperGroup.visible = false;
+    this.noteDropper.textGroup.visible = false;
+    this.lights.triggerDangerLights();
     this.squisher.squish().then(() => {
-      this.cameraController.craneUp()
+      this.cameraController.craneUp();
       this.selectedCharacter.explode();
       this.midiAndMp3Player.stopTrack();
     });
@@ -159,6 +155,9 @@ export default class Game {
     TWEEN.update();
     this.mixer.update(delta);
     this.characterSelector.characterSelectorGroup.rotateY(0.01);
+    this.noteDropper.fallingGroup.children.forEach((object3D) => {
+      object3D.rotateY(0.07)
+    })
     this.renderer.render(this.scene, this.camera);
     // this.stats.end();
   }

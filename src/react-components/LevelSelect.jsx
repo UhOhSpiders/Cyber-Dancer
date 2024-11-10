@@ -4,14 +4,14 @@ const LevelSelect = ({ setSelectedLevel, isDead, game, songs }) => {
   const handleClick = (e) => {
     game.lights.reset()
     setSelectedLevel(songs[e.target.id]);
+    game.background.create(songs[e.target.id].map)
   };
   const levelList = songs.map((level, index) => {
     return (
       <div className="level-card" key={index} onClick={handleClick} id={index}>
         <div>
           <h3>{level.name}</h3>
-          <h3>by {level.artist}</h3>
-          <p>{level.blurb}</p>
+          <h3>{level.blurb}</h3>
         </div>
         <img src={level.thumbnail} />
       </div>

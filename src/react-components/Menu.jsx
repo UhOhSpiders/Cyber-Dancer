@@ -4,6 +4,7 @@ import StartGameMenu from "./StartGameMenu";
 import LevelCompleteMenu from "./LevelCompleteMenu";
 import LevelSelect from "./LevelSelect";
 import EndOfGameNavButtons from "./EndOfGameNavButtons";
+import HUD from "./HUD";
 
 const Menu = ({ game, songs }) => {
   const [playing, setPlaying] = useState(false);
@@ -43,10 +44,12 @@ const Menu = ({ game, songs }) => {
   const handleClickPlay = () => {
     game.play(selectedLevel.map, selectedLevel.midiName, selectedLevel.mp3Name);
     setPlaying(true);
+    setIsDead(false);
   };
 
   const handleClickReplay = () => {
     setPlaying(true);
+    setIsDead(false);
     setScoreDetails(null);
     game.replay(selectedLevel.midiName, selectedLevel.mp3Name);
   };
@@ -85,7 +88,10 @@ const Menu = ({ game, songs }) => {
             />
           </>
         ) : (
-          <StartGameMenu handleClickPlay={handleClickPlay} />
+          <StartGameMenu
+            handleClickPlay={handleClickPlay}
+            handleResetLevel={handleResetLevel}
+          />
         )}
       </>
     );
@@ -121,7 +127,11 @@ const Menu = ({ game, songs }) => {
       </div>
     );
   }
-  return null;
+  return (
+    
+      <HUD/>
+    
+  );
 };
 
 export default Menu;

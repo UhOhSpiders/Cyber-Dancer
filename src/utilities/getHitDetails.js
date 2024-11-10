@@ -19,7 +19,7 @@ export function getHitDetails(noteAttempt, hitMargin, noteTargetPosition) {
 
   let hitDetails = {
     isHit: isHit,
-    isGood: isGood,
+    isGood: isPerfect ? false : isGood,
     isPerfect: isPerfect,
     pitch: noteAttempt.name.split("_")[0],
     name: noteAttempt.name,

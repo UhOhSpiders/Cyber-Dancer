@@ -31,22 +31,9 @@ Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhyt
 
 #### DynamoDB, GraphQL & Continuous Deployment with AWS Amplify
 - The highscore leaderboard is built with a NoSQL DynamoDB database, alongside a GraphQL API.
-- After defining an apropriate GraphQL schema, these resources were generated and deployed via the AWS Amplify CLI.
+- After defining an appropriate GraphQL schema, these resources were generated and deployed via the AWS Amplify CLI.
 - This repository is deployed continuously via AWS Amplify.
 
 #### Asset Authoring
 - Graphics are created with [Blender](https://www.blender.org/). Blurbs for each character were also authored in Blender via a custom text property. This text can be displayed during character selection.
 - MIDI tracks are created with [Reaper](https://www.reaper.fm/) - although there are a wide variety of DAWs which offer this functionality.
-
-## To-dos
-### General:
-- Rename gltfName
-### Animation:
-- Add stumble animation
-- Animate more moves
-- Add baseline looping dance throughout track
-### Game logic:
-- Streak bonus
-- Perfect hit bonus
-### Display:
-- Bind score display position to camera position

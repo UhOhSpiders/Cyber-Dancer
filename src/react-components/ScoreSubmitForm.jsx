@@ -14,7 +14,6 @@ const ScoreSubmitForm = ({
   });
 
   const handleChange = (event) => {
-    console.log(event);
     const copyScoreSubmission = { ...scoreSubmission };
     copyScoreSubmission.user = event.target.value;
     setScoreSubmission(copyScoreSubmission);
@@ -27,7 +26,7 @@ const ScoreSubmitForm = ({
     });
   };
   return (
-    <div className="score-submit-form">
+    <div className="score-submit-form-container">
       {!scoreIsSubmitted ? (
         <>
           <form onSubmit={handleSubmit}>
@@ -35,6 +34,7 @@ const ScoreSubmitForm = ({
               placeholder="insert disco alias here"
               onChange={handleChange}
               value={scoreSubmission.user}
+              maxLength={25}
               required
             ></input>
             <button type="submit">submit yr score</button>

@@ -93,6 +93,5 @@ export default class Character {
 
   explode() {
     this.object3D.visible = false;
-    console.log("explodes");
   }
 }
