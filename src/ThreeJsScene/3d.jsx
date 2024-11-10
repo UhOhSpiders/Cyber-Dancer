@@ -58,12 +58,27 @@ export default class Game {
     let checkedHit = this.noteDropper.checkHit(e);
     if (checkedHit.isHit) {
       this.selectedCharacter.dance(checkedHit.name);
-      this.lifeCounter.reset()
+      this.lifeCounter.reset();
       this.score.increase(checkedHit);
     } else {
       this.selectedCharacter.stumble();
       this.lifeCounter.loseLife();
       this.score.breakStreak();
+    }
+  }
+
+  touchDeviceHitAttempt(e) {
+    switch (e.touches.length) {
+      case 1:
+        e.touches[0].type = "touchstart";
+        this.hitAttempt(e.touches[0]);
+        break;
+      case 2:
+        e.touches[0].type = "touchstart";
+        e.touches[1].type = "touchstart";
+        this.hitAttempt(e.touches[0]);
+        this.hitAttempt(e.touches[1]);
+        break;
     }
   }
 
@@ -156,8 +171,8 @@ export default class Game {
     this.mixer.update(delta);
     this.characterSelector.characterSelectorGroup.rotateY(0.01);
     this.noteDropper.fallingGroup.children.forEach((object3D) => {
-      object3D.rotateY(0.07)
-    })
+      object3D.rotateY(0.07);
+    });
     this.renderer.render(this.scene, this.camera);
     // this.stats.end();
   }
@@ -166,7 +181,9 @@ export default class Game {
     if (container) {
       this.input = document.querySelector("body");
       this.input.addEventListener("keydown", (e) => this.hitAttempt(e));
-      this.input.addEventListener("mousedown", (e) => this.hitAttempt(e));
+      this.input.addEventListener("touchstart", (e) => {
+        this.touchDeviceHitAttempt(e);
+      });
       window.addEventListener("resize", () => this.resize());
       container.insertBefore(this.renderer.domElement, container.firstChild);
       this.resize();
