@@ -45,7 +45,7 @@ export default class NoteDropper {
 
     this.noteDropperGroup = new THREE.Group();
     this.fallingGroup = new THREE.Group();
-    this.fallingGroup.name = "falling group"
+    this.fallingGroup.name = "falling group";
     this.textGroup = new THREE.Group();
 
     this.noteDropperGroup.add(this.fallingGroup);
@@ -55,11 +55,16 @@ export default class NoteDropper {
     this.raycaster = new THREE.Raycaster();
 
     this.note = new Note(null, this.fallingGroup, this.scene);
-    this.hitText = new HitText(this.scene)
+    this.hitText = new HitText(this.scene);
     this.noteTarget = null;
   }
   create() {
-    this.note = new Note(this.loadedGltf, this.fallingGroup, this.scene,this.gltfName);
+    this.note = new Note(
+      this.loadedGltf,
+      this.fallingGroup,
+      this.scene,
+      this.gltfName
+    );
     this.noteTarget = new NoteTarget(
       this.loadedGltf,
       this.noteDropperGroup,
@@ -120,7 +125,7 @@ export default class NoteDropper {
     this.fallingGroup.children.shift();
   }
 
-  checkClick(e) {
+  checkTouch(e) {
     const coords = this.getNormalizedDeviceCoordinates(e);
     const intersections = this.getIntersections(coords, this.noteDropperGroup);
     return intersections.length > 0
@@ -146,7 +151,7 @@ export default class NoteDropper {
   }
 
   checkHit(e) {
-    let keyCode = e.type === "mousedown" ? this.checkClick(e) : e.code;
+    let keyCode = e.type === "touchstart" ? this.checkTouch(e) : e.code;
 
     if (this.notesToHit[keyCode]) {
       const targetResponse = this.noteDropperGroup.getObjectByName(keyCode);
@@ -158,17 +163,23 @@ export default class NoteDropper {
 
     const noteAttempt = this.scene.getObjectByName(this.notesToHit[keyCode][0]);
 
-    const hitDetails = getHitDetails(noteAttempt, this.hitMargin, this.noteTargetPosition)
+    const hitDetails = getHitDetails(
+      noteAttempt,
+      this.hitMargin,
+      this.noteTargetPosition
+    );
 
-    hitDetails.isHit ? this.note.hit(noteAttempt, hitDetails) : this.note.miss(noteAttempt);
+    hitDetails.isHit
+      ? this.note.hit(noteAttempt, hitDetails)
+      : this.note.miss(noteAttempt);
 
-    this.hitText.triggerText(hitDetails)
+    this.hitText.triggerText(hitDetails);
 
     this.notesToHit[keyCode] = this.notesToHit[keyCode].filter(
       (e) => e !== noteAttempt.name
     );
 
-    return hitDetails
+    return hitDetails;
   }
 
   forceMiss(noteName) {
