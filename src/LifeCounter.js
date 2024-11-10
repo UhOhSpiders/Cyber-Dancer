@@ -32,7 +32,7 @@ export default class LifeCounter {
   dispatchLifeCounterEvent() {
     const lifeCounterEvent = new CustomEvent("HUDEvent", {
       detail: {
-        key: "lifeCounter",
+        type: "lifeCounter",
         lifeCountPercentage: (this.currentLifeCount / this.maxLives) * 100,
         barColor: "red",
         barBackgroundColor: "pink",

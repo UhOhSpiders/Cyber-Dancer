@@ -37,15 +37,3 @@ Cyber Dancer is a web game written in JavaScript, with gameplay inspired by rhyt
 #### Asset Authoring
 - Graphics are created with [Blender](https://www.blender.org/). Blurbs for each character were also authored in Blender via a custom text property. This text can be displayed during character selection.
 - MIDI tracks are created with [Reaper](https://www.reaper.fm/) - although there are a wide variety of DAWs which offer this functionality.
-
-## To-dos
-### Game logic:
-- Add glow effects to indicate streaks
-- Debug level complete menu appearing if level is incomplete 
-### Animation:
-- Add stumble animation
-- Animate more moves
-- Add baseline looping dance throughout track
-### UI/UX:
-- Improve miss logic (?)
-- Add a multitouch event listener for better mobile gameplay. Only exact taps register as clicks at the minute. Slight dragging/swiping & simultaneous taps don't register.
