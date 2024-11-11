@@ -1,6 +1,5 @@
 export default class Score {
-  constructor(scene) {
-    this.scene = scene;
+  constructor() {
     this.scoreDetails = {
       total: 0,
       notesMissed: 0,

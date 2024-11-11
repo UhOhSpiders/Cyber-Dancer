@@ -1,49 +1,34 @@
-import { Text } from "troika-three-text";
-import * as THREE from "three";
-import { characterPosition } from "./constants/constants";
-import { createFadeTween } from "./utilities/tweens/createFadeTween";
 export default class HitText {
-  constructor(scene) {
-    this.scene = scene;
-    this.text = new Text();
-    this.text.fontSize = 0.02;
-    this.text.anchorX = "center";
-    this.text.anchorY = "middle";
-    this.text.fontWeight = "bold";
-    this.text.material.transparent = true;
+  constructor() {
   }
   triggerText(hitDetails) {
     switch (true) {
       case hitDetails.isPerfect:
-        this.createHitText(hitDetails.note.position, "perfect!", 0x52014a);
+        const perfectHitTextEvent = this.createHitText("perfect!");
+        document.dispatchEvent(perfectHitTextEvent);
         break;
       case hitDetails.isGood:
-        this.createHitText(hitDetails.note.position, "good!", 0x52014a);
+        const goodHitTextEvent = this.createHitText("good!");
+        document.dispatchEvent(goodHitTextEvent);
         break;
       case hitDetails.isHit:
-        this.createHitText(hitDetails.note.position, "hit!", 0x52014a);
+        const basicHitTextEvent = this.createHitText("hit!");
+        document.dispatchEvent(basicHitTextEvent);
         break;
       default:
-        this.createHitText(hitDetails.note.position, "miss!", 0x52014a);
+        const missHitTextEvent = this.createHitText("miss!");
+        document.dispatchEvent(missHitTextEvent);
     }
   }
 
-  createHitText(position, textContent, color) {
-    const text = this.text.clone();
-    text.text = textContent;
-    text.material = new THREE.MeshBasicMaterial({
-      color: color,
-      transparent: true,
-      opacity: 1,
+  createHitText(text) {
+    const hitTextEvent = new CustomEvent("HUDEvent", {
+      detail: {
+        type: "hitText",
+        text: text,
+        isVisible: true
+      },
     });
-    text.position.set(position.x, position.y, position.z + 0.05);
-    text.tween = createFadeTween(text, 1, 0, 1000);
-    text.sync();
-    this.scene.add(text);
-    text.tween.start().onComplete(() => {
-      this.scene.children = this.scene.children.filter(
-        (item) => item.id !== text.id
-      );
-    });
+    return hitTextEvent;
   }
 }

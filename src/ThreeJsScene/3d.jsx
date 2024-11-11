@@ -34,7 +34,7 @@ export default class Game {
       this.noteDropper.noteColumns
     );
     this.selectedCharacter = null;
-    this.score = new Score(this.scene, this.cameraController.gameplayPosition);
+    this.score = new Score();
     this.lifeCounter = new LifeCounter();
     this.lights = new Lights(this.scene);
 
@@ -111,11 +111,6 @@ export default class Game {
     this.cameraController.craneDown();
     this.midiAndMp3Player = new MidiAndMp3Player(this, midiName, mp3Name);
     this.lifeCounter = new LifeCounter(
-      this.selectedCharacter,
-      this.scene,
-      this.midiAndMp3Player,
-      this.squisher,
-      this.cameraController,
       this
     );
     this.noteDropper = new NoteDropper(
