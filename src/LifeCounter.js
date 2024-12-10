@@ -1,17 +1,5 @@
 export default class LifeCounter {
-  constructor(
-    character,
-    scene,
-    midiAndMp3Player,
-    squisher,
-    cameraController,
-    game
-  ) {
-    this.character = character;
-    this.scene = scene;
-    this.midiAndMp3Player = midiAndMp3Player;
-    this.squisher = squisher;
-    this.cameraController = cameraController;
+  constructor(game) {
     this.game = game;
     this.maxLives = 8;
     this.currentLifeCount = this.maxLives;
@@ -50,6 +38,6 @@ export default class LifeCounter {
   reset() {
     this.currentLifeCount = this.maxLives;
     this.isDead = false;
-    this.dispatchLifeCounterEvent()
+    this.dispatchLifeCounterEvent();
   }
 }

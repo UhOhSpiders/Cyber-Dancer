@@ -40,11 +40,6 @@ export default class Character {
         idleAction.play();
       });
     }
-    if (character.name == "anvil_character") {
-      let bmap = new THREE.TextureLoader().load("disco_anvil_bump.png");
-      bmap.flipY = false;
-      character.material.bumpMap = bmap;
-    }
   }
 
   getDanceMoves() {
