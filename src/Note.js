@@ -1,22 +1,23 @@
 import * as THREE from "three";
 import { createFallTween } from "./utilities/tweens/createFallTween";
 import { createHitEffect } from "./utilities/createHitEffect";
+import { HIT_COLORS } from "./constants/constants";
 export default class Note {
   constructor(loadedGltf, fallingGroup, scene, gltfName) {
     this.fallingGroup = fallingGroup;
     this.scene = scene;
     this.gltfName = gltfName;
     this.noteHitMaterial = new THREE.MeshPhongMaterial({
-      color: "green",
+      color: HIT_COLORS.hit,
     });
     this.noteGoodHitMaterial = new THREE.MeshPhongMaterial({
-      color: "blue",
+      color: HIT_COLORS.good,
     });
     this.notePerfectHitMaterial = new THREE.MeshPhongMaterial({
-      color: "red",
+      color: HIT_COLORS.perfect,
     });
     this.noteMissedMaterial = new THREE.MeshBasicMaterial({
-      color: "grey",
+      color: HIT_COLORS.miss,
       transparent: true,
       opacity: 0.5,
     });

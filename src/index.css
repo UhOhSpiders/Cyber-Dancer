@@ -312,19 +312,23 @@ input {
   animation-fill-mode: forwards;
 }
 
-@keyframes textFade {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-    
-  }
+.shiny {
+  text-align: center;
+  background: linear-gradient(to right, #FFF 20%, #FF0 40%, #FF0 60%, #FFF 80%);
+  background-size: 200% auto;
+  
+  color: #000;
+  background-clip: text;
+  /* text-fill-color: transparent; */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  animation: shine 0.3s ease-in-out infinite;
 }
-
-.hit-text{
-  animation: textFade 1s forwards;
-  background-color: red;
+@keyframes shine {
+  to { 
+    background-position: 200% center;
+  }
 }
 
 @media only screen and (max-width: 1500px) {

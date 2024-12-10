@@ -7,7 +7,7 @@ const StartGameMenu = ({ handleClickPlay, handleResetLevel }) => {
         <button className="back-button" onClick={handleResetLevel}>
           &larr; Go Back
         </button>
-        <h1>Are You Ready?</h1>
+        <h1 >Are You Ready?</h1>
         <ol>
           <li>Don't miss 8 notes in a row</li>
           <li>Double points for a perfect hit</li>

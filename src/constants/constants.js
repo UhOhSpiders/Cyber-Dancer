@@ -10,6 +10,13 @@ export const HIT_MARGIN = {
   DESKTOP: { upper: 0.07, lower: -0.07 },
 };
 
+export const HIT_COLORS = {
+  perfect: "red",
+  good: "blue",
+  hit: "green",
+  miss: "grey"
+}
+
 
 export const TARGET_SCALE = {
   MOBILE: new THREE.Vector3(0.4, 0.4, 0.4),

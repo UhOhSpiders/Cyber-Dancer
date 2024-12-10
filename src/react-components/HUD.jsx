@@ -16,6 +16,8 @@ const HUD = () => {
   });
   const [hitText, setHitText] = useState({
     text: null,
+    color: null,
+    isShiney: null
   });
 
   useEffect(() => {

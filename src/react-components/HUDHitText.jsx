@@ -27,8 +27,12 @@ const HUDHitText = ({ hitText }) => {
           opacity: isVisible ? 1 : 0,
           transition: "opacity 0.2s ease-out",
           marginBottom: "10rem",
-          fontSize:"2rem"
+          fontSize:"2rem",
+          color: hitText.color,
+          fontWeight: "bolder",
+          textShadow: "1px 1px 1px white"
         }}
+        className={hitText.isShiny?"shiny":null}
       >
         {hitText.text}
       </h3>
