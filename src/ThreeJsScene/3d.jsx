@@ -125,6 +125,7 @@ export default class Game {
     this.loadGraphics(mapName);
     this.gameIsPlaying = true;
     this.selectedCharacter.object3D.visible = true;
+    this.selectedCharacter.startLoopingDance();
     this.score.reset();
     this.lifeCounter.reset();
     this.lights.reset();

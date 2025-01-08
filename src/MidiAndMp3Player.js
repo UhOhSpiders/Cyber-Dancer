@@ -29,6 +29,7 @@ export default class MidiAndMp3Player {
             },
           });
           this.game.gameIsPlaying = false;
+          this.game.selectedCharacter.stopLoopingDance();
           document.dispatchEvent(playerStoppedEvent);
           Tone.getDraw().cancel(now - 2);
         },
