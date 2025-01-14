@@ -1,3 +1,5 @@
+import { COMBO_COLORS } from "./constants/constants";
+
 export default class Score {
   constructor() {
     this.scoreDetails = {
@@ -10,14 +12,7 @@ export default class Score {
     this.currentStreak = 0;
     this.streakMultiplier = 1;
     this.streakProgressPercentage = 0;
-    this.barColors = [
-      "white",
-      "#ffbe0b",
-      "#1aff00",
-      "#0320FF",
-      "#e100ff",
-      "#FF0000",
-    ];
+    this.barColors = COMBO_COLORS;
     this.maxStreak = (this.barColors.length - 1) * 10;
     this.dispatchScoreEvent();
   }

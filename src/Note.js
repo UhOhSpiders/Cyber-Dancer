@@ -21,6 +21,10 @@ export default class Note {
       transparent: true,
       opacity: 0.5,
     });
+    this.glowingMaterial = new THREE.MeshPhongMaterial({
+      emissive: "yellow",
+      emissiveIntensity: 10
+    })
     this.object3D =
       loadedGltf && loadedGltf.scene.getObjectByName(`${this.gltfName}_note`)
         ? loadedGltf.scene.getObjectByName(`${this.gltfName}_note`)
@@ -38,12 +42,16 @@ export default class Note {
       })
     );
     this.effectSphere.scale.set(0.2, 0.2, 0.2);
+    this.hasGlowEffect = false;
   }
 
   add(position, targetPosition, pitch, time) {
     const object3D = this.object3D.clone();
     object3D.position.set(position.x, position.y, position.z);
     object3D.name = `${pitch}_${time}`;
+    if(this.hasGlowEffect){
+      this.changeMaterial(object3D, this.glowingMaterial)
+    }
     this.fallingGroup.add(object3D);
     const fallTween = createFallTween(object3D, targetPosition);
     fallTween.start();
@@ -51,6 +59,7 @@ export default class Note {
   }
 
   hit(note, hitDetails) {
+    if(this.hasGlowEffect)return;
     hitDetails.isPerfect
       ? this.perfectHit(note)
       : hitDetails.isGood

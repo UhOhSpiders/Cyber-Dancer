@@ -14,9 +14,17 @@ export const HIT_COLORS = {
   perfect: "red",
   good: "blue",
   hit: "green",
-  miss: "grey"
-}
+  miss: "grey",
+};
 
+export const COMBO_COLORS = [
+  "#ffffff",
+  "#ffbe0b",
+  "#1aff00",
+  "#0320FF",
+  "#e100ff",
+  "#FF0000",
+];
 
 export const TARGET_SCALE = {
   MOBILE: new THREE.Vector3(0.4, 0.4, 0.4),
@@ -30,8 +38,8 @@ export const NOTE_SCALE = {
 
 export const NOTE_START_POSITION = {
   MOBILE: new THREE.Vector3(0, 1, 0.5),
-  DESKTOP: new THREE.Vector3(0, 0.2, 0.5)
-}
+  DESKTOP: new THREE.Vector3(0, 0.2, 0.5),
+};
 
 export const NOTE_DROPPER_GROUP_SCALE = {
   MOBILE: new THREE.Vector3(0.45, 0.45, 0.45),

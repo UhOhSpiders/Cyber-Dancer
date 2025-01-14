@@ -24,7 +24,8 @@ export default class NoteDropper {
     camera,
     renderer,
     score,
-    lifeCounter
+    lifeCounter,
+    game
   ) {
     this.loadedGltf = loadedGltf;
     this.gltfName = gltfName;
@@ -34,6 +35,7 @@ export default class NoteDropper {
     this.renderer = renderer;
     this.score = score;
     this.lifeCounter = lifeCounter;
+    this.game = game;
     this.hitMargin = HIT_MARGIN.DESKTOP;
     this.noteStartPosition = NOTE_START_POSITION.DESKTOP;
     this.noteTargetPosition = new THREE.Vector3(0, -0.35, 0.5);
@@ -94,6 +96,7 @@ export default class NoteDropper {
   }
 
   reset() {
+    this.note.hasGlowEffect = false;
     this.notesToHit = this.keys.reduce(
       (acc, curr) => ((acc[curr] = []), acc),
       {}
@@ -123,6 +126,13 @@ export default class NoteDropper {
 
   deleteNote() {
     this.fallingGroup.children.shift();
+  }
+
+  toggleGlowEffect(){
+    this.note.hasGlowEffect = !this.note.hasGlowEffect
+    this.fallingGroup.children.forEach((fallingNote) => {
+      fallingNote.material = this.note.hasGlowEffect ? this.note.glowingMaterial : fallingNote.material;
+    })
   }
 
   checkTouch(e) {
@@ -187,8 +197,7 @@ export default class NoteDropper {
       const array = this.notesToHit[key];
       const index = array.indexOf(noteName);
       if (index !== -1) {
-        this.score.breakStreak();
-        this.lifeCounter.loseLife();
+        this.game.miss()
         array.splice(index, 1);
       }
     }

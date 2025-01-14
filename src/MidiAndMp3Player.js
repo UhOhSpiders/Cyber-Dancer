@@ -22,15 +22,7 @@ export default class MidiAndMp3Player {
         onerror: (err) => reject(err),
         autostart: "true",
         onstop: () => {
-          const playerStoppedEvent = new CustomEvent("playerStopped", {
-            detail: {
-              scoreDetails: this.game.score.getScoreDetails(),
-              isDead: this.game.lifeCounter.isDead,
-            },
-          });
-          this.game.gameIsPlaying = false;
-          this.game.selectedCharacter.stopLoopingDance();
-          document.dispatchEvent(playerStoppedEvent);
+          this.game.levelComplete();
           Tone.getDraw().cancel(now - 2);
         },
       });

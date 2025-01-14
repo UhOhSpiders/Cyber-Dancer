@@ -6,64 +6,41 @@ export default class Character {
     this.object3D = object3D;
     this.scene = scene;
     this.animationMixer = animationMixer;
-    this.idle = null;
-    this.danceMoves = this.getDanceMoves();
+    this.idle = this.getCharacterAnimationByCategory("idle");
+    this.danceMoves = this.getCharacterAnimationsByCategory("dance");
     this.loopingDance = this.danceMoves[0];
     this.isDancing = false;
     this.currentDanceMove = null;
-    this.stumbleAnimation = this.getStumbleAnimation();
+    this.stumbleAnimations = this.getCharacterAnimationsByCategory("stumble");
     this.create();
   }
   create() {
     let character = this.object3D;
-    const idleClip = THREE.AnimationClip.findByName(
-      this.object3D.animations,
-      `${this.object3D.name.split("_")[0]}_idle`
-    );
     character.position.set(
       characterPosition.x,
       characterPosition.y,
       characterPosition.z
     );
     character.scale.set(0.3, 0.3, 0.3);
-    if (idleClip) {
-      const idleAction = this.animationMixer.clipAction(
-        idleClip,
-        this.object3D
-      );
-      idleAction.loop = THREE.LoopPingPong;
-      this.idle = idleAction;
+
+    if (this.idle) {
+      this.idle.setLoop(THREE.LoopPingPong);
       this.idle.play();
-      this.animationMixer.addEventListener("finished", () => {
-        // add check here to only affect the selected character
-        this.isDancing = false;
+    }
+    this.animationMixer.addEventListener("finished", () => {
+      this.isDancing = false;
+      if (
+        this.scene.getObjectByName(this.object3D.name) &&
+        this.object3D.visible
+      ) {
         this.loopingDance.reset();
         this.loopingDance.fadeIn(0.1);
         this.loopingDance.play();
-      });
-    }
-  }
-
-  getDanceMoves() {
-    let danceMoves = []
-    this.object3D.animations.forEach((animation) => {
-      if (
-        !animation.name.includes("idle") &&
-        !animation.name.includes("stumble") &&
-        animation.name.includes(this.object3D.name.split("_")[0])
-      ) {
-        let clip = THREE.AnimationClip.findByName(
-          this.object3D.animations,
-          animation.name
-        );
-        let action = this.animationMixer.clipAction(clip, this.object3D);
-        danceMoves.push(action);
       }
     });
-    return danceMoves;
   }
 
-  getCharacterAnimationByCategory(category){
+  getCharacterAnimationsByCategory(category) {
     let animations = [];
     this.object3D.animations.forEach((animation) => {
       if (
@@ -78,17 +55,12 @@ export default class Character {
         animations.push(action);
       }
     });
-    return animations ? animations : null;
+    return animations.length ? animations : null;
   }
 
-  getStumbleAnimation() {
-    let stumbles = this.getCharacterAnimationByCategory("stumble");
-    if (stumbles[0]){
-      stumbles[0].setLoop(THREE.LoopOnce);
-      return stumbles[0];
-    }else{
-      return null;
-    }
+  getCharacterAnimationByCategory(category) {
+    let clips = this.getCharacterAnimationsByCategory(category);
+    return clips ? clips[0] : null;
   }
 
   delete() {
@@ -98,7 +70,7 @@ export default class Character {
     return null;
   }
 
-  startLoopingDance(){
+  startLoopingDance() {
     this.loopingDance.setLoop(THREE.LoopRepeat);
     this.idle.fadeOut(0.1);
     this.loopingDance.reset();
@@ -106,7 +78,8 @@ export default class Character {
     this.loopingDance.play();
   }
 
-  stopLoopingDance(){
+  stopLoopingDance() {
+    this.loopingDance.reset();
     this.loopingDance.fadeOut(0.1);
     this.idle.reset();
     this.idle.fadeIn(0.1);
@@ -126,20 +99,21 @@ export default class Character {
     }
   }
   stumble() {
-    if(!this.stumbleAnimation){
-      return;
+    if (this.stumbleAnimations) {
+      if (this.isDancing) {
+        this.currentDanceMove.fadeOut(0.1);
+      } else {
+        this.idle.fadeOut(0.1);
+      }
+      this.stumbleAnimations[0].reset();
+      this.stumbleAnimations[0].fadeIn(0.1);
+      this.stumbleAnimations[0].setLoop(THREE.LoopOnce);
+      this.stumbleAnimations[0].play();
     }
-    if (this.isDancing) {
-      this.currentDanceMove.fadeOut(0.1);
-    } else {
-      this.idle.fadeOut(0.1);
-    }
-    this.stumbleAnimation.reset();
-    this.stumbleAnimation.fadeIn(0.1);
-    this.stumbleAnimation.play();
   }
 
   explode() {
     this.object3D.visible = false;
+    this.loopingDance.stop();
   }
 }
