@@ -12,7 +12,7 @@ export default class Score {
     this.currentStreak = 0;
     this.streakMultiplier = 1;
     this.streakProgressPercentage = 0;
-    this.barColors = COMBO_COLORS;
+    this.barColors = COMBO_COLORS.map((color) => color.HUD);
     this.maxStreak = (this.barColors.length - 1) * 10;
     this.dispatchScoreEvent();
   }

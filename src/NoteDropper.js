@@ -7,6 +7,7 @@ import {
   NOTE_START_POSITION,
   MOBILE_BREAKPOINT,
   TARGET_SCALE,
+  COMBO_COLORS,
 } from "./constants/constants";
 import { getColumnXPositions } from "./utilities/getColumnXPositions";
 import { assignNotesToColumns } from "./utilities/assignNotesToColumns.js";
@@ -128,12 +129,20 @@ export default class NoteDropper {
     this.fallingGroup.children.shift();
   }
 
-  toggleGlowEffect(){
-    this.note.hasGlowEffect = !this.note.hasGlowEffect
-    this.fallingGroup.children.forEach((fallingNote) => {
-      fallingNote.material = this.note.hasGlowEffect ? this.note.glowingMaterial : fallingNote.material;
-    })
+  glowEffect(colorHex) {
+    if (this.note.glowingMaterial.emissive.getHex() != colorHex) {
+      this.note.glowingMaterial.emissive.setHex(colorHex);
+      this.note.glowingMaterial.emissiveIntensity =
+        2 * this.score.streakMultiplier;
+      this.note.hasGlowEffect = true;
+    }
   }
+
+  resetGlowEffect(){
+    this.note.hasGlowEffect = false;
+    this.note.resetFallingGroupGlows();
+  }
+
 
   checkTouch(e) {
     const coords = this.getNormalizedDeviceCoordinates(e);
@@ -197,7 +206,7 @@ export default class NoteDropper {
       const array = this.notesToHit[key];
       const index = array.indexOf(noteName);
       if (index !== -1) {
-        this.game.miss()
+        this.game.miss();
         array.splice(index, 1);
       }
     }

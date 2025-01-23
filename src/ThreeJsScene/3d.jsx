@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import * as TWEEN from "@tweenjs/tween.js";
 import Stats from "stats.js";
+import { COMBO_COLORS } from "../constants/constants.js";
 import NoteDropper from "../NoteDropper.js";
 import CharacterSelector from "../CharacterSelector.js";
 import Score from "../Score.js";
@@ -13,9 +14,9 @@ import CameraController from "../CameraController.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
-import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
-import { COMBO_COLORS } from "../constants/constants";
+import { SMAAPass } from "three/addons/postprocessing/SMAAPass.js";
 
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 export default class Game {
   constructor(loadedGltf) {
@@ -50,6 +51,12 @@ export default class Game {
     );
     this.composer.addPass(this.outputPass);
 
+    this.antialiasPass = new SMAAPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight)
+    );
+
+    this.composer.addPass(this.antialiasPass);
+
     this.background = new Background(this.scene, loadedGltf, "psych_test");
     this.squisher = new Squisher(loadedGltf, this.scene);
     this.noteDropper = new NoteDropper();
@@ -79,6 +86,8 @@ export default class Game {
     window.game = this;
   }
 
+  // input logic
+
   hitAttempt(e) {
     if (!this.gameIsPlaying) return;
     let checkedHit = this.noteDropper.checkHit(e);
@@ -86,13 +95,17 @@ export default class Game {
       this.selectedCharacter.dance(checkedHit.name);
       this.lifeCounter.reset();
       this.score.increase(checkedHit);
-      if (this.score.streakMultiplier >= 2 && !this.lights.streakLightsActive) {
-        this.lights.triggerStreakLights();
-        this.noteDropper.toggleGlowEffect();
+      if (this.score.streakMultiplier >= 2) {
+        // change how the constant is formatted rather than slicing it here ?
+        let lightsColorHex =
+          "0x" + COMBO_COLORS[this.score.streakMultiplier - 1].lights.slice(1);
+        let noteGlowColorHex =
+          "0x" +
+          COMBO_COLORS[this.score.streakMultiplier - 1].noteGlow.slice(1);
+
+        this.lights.changeColor(lightsColorHex);
+        this.noteDropper.glowEffect(noteGlowColorHex);
       }
-      let colorHex = "0x" + COMBO_COLORS[this.score.streakMultiplier - 1].slice(1)
-      this.noteDropper.note.glowingMaterial.emissive.setHex(colorHex)
-      this.noteDropper.note.glowingMaterial.emissiveIntensity = 2 * this.score.streakMultiplier;
     } else {
       this.miss();
     }
@@ -101,10 +114,8 @@ export default class Game {
   miss() {
     this.selectedCharacter.stumble();
     this.lifeCounter.loseLife();
-    if (this.score.streakMultiplier >= 2) {
-      this.noteDropper.toggleGlowEffect();
-    }
     this.score.breakStreak();
+    this.noteDropper.resetGlowEffect();
     this.lights.reset();
   }
 
@@ -123,18 +134,7 @@ export default class Game {
     }
   }
 
-  resize() {
-    const container = this.renderer.domElement.parentNode;
-    if (container) {
-      const width = container.offsetWidth;
-      const height = container.offsetHeight;
-      this.renderer.setSize(width, height);
-      this.composer.setSize(width, height);
-      this.camera.aspect = width / height;
-      this.camera.updateProjectionMatrix();
-      this.noteDropper.setSize(width);
-    }
-  }
+  // game state management
 
   loadGraphics(mapName) {
     this.noteDropper.create();
@@ -212,6 +212,21 @@ export default class Game {
     this.lights.reset();
     this.selectedCharacter.stopLoopingDance();
     document.dispatchEvent(playerStoppedEvent);
+  }
+
+  // rendering & setup
+
+  resize() {
+    const container = this.renderer.domElement.parentNode;
+    if (container) {
+      const width = container.offsetWidth;
+      const height = container.offsetHeight;
+      this.renderer.setSize(width, height);
+      this.composer.setSize(width, height);
+      this.camera.aspect = width / height;
+      this.camera.updateProjectionMatrix();
+      this.noteDropper.setSize(width);
+    }
   }
 
   animation(time) {

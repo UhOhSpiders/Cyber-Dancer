@@ -18,12 +18,12 @@ export const HIT_COLORS = {
 };
 
 export const COMBO_COLORS = [
-  "#ffffff",
-  "#ffbe0b",
-  "#1aff00",
-  "#0320FF",
-  "#e100ff",
-  "#FF0000",
+  { HUD: "#ffffff", noteGlow: "#ffffff", lights: "#ffffff" },
+  { HUD: "#ffbe0b", noteGlow: "#ffbe0b", lights: "#6f2100" },
+  { HUD: "#1aff00", noteGlow: "#00949f", lights: "#7628a6" },
+  { HUD: "#0320FF", noteGlow: "#009912", lights: "#00320c" },
+  { HUD: "#e100ff", noteGlow: "#5100ff", lights: "#7d018e" },
+  { HUD: "#FF0000", noteGlow: "#FF0000", lights: "#ff4949" },
 ];
 
 export const TARGET_SCALE = {

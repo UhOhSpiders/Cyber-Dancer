@@ -28,8 +28,6 @@ export default class Squisher {
           );
           bmap.flipY = false;
           object3D.material.bumpMap = bmap;
-          object3D.material.emissive.set("green")
-          object3D.material.emissiveIntensity = 28;
         }
         object3D.position.set(0, 2, 0);
         object3D.scale.set(0.3, 0.3, 0.3);

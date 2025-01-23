@@ -23,8 +23,8 @@ export default class Note {
     });
     this.glowingMaterial = new THREE.MeshPhongMaterial({
       emissive: "yellow",
-      emissiveIntensity: 10
-    })
+      emissiveIntensity: 10,
+    });
     this.object3D =
       loadedGltf && loadedGltf.scene.getObjectByName(`${this.gltfName}_note`)
         ? loadedGltf.scene.getObjectByName(`${this.gltfName}_note`)
@@ -49,8 +49,8 @@ export default class Note {
     const object3D = this.object3D.clone();
     object3D.position.set(position.x, position.y, position.z);
     object3D.name = `${pitch}_${time}`;
-    if(this.hasGlowEffect){
-      this.changeMaterial(object3D, this.glowingMaterial)
+    if (this.hasGlowEffect) {
+      this.addGlowToMaterial(object3D);
     }
     this.fallingGroup.add(object3D);
     const fallTween = createFallTween(object3D, targetPosition);
@@ -59,12 +59,12 @@ export default class Note {
   }
 
   hit(note, hitDetails) {
-    if(this.hasGlowEffect)return;
+    if (this.hasGlowEffect) return;
     hitDetails.isPerfect
       ? this.perfectHit(note)
       : hitDetails.isGood
       ? this.goodHit(note)
-      : (this.changeMaterial(note, this.noteHitMaterial));
+      : this.changeMaterial(note, this.noteHitMaterial);
   }
 
   perfectHit(note) {
@@ -81,12 +81,42 @@ export default class Note {
   }
 
   changeMaterial(note, material) {
-    if (note.children.length) {
+    if (note.children) {
       note.children.forEach((mesh) => {
         mesh.material = material;
       });
     } else {
       note.material = material;
     }
+  }
+
+  addGlowToMaterial(note) {
+    if (note.children.length) {
+      note.children.forEach((mesh) => {
+        mesh.material.emissiveIntensity = 2;
+        mesh.material.emissive = this.glowingMaterial.emissive;
+      });
+    } else {
+      note.material.emissiveIntensity = this.glowingMaterial.emissiveIntensity;
+      note.material.emissive = this.glowingMaterial.emissive;
+    }
+  }
+
+  resetFallingGroupGlows() {
+    this.fallingGroup.children.forEach((note) => {
+      if (note.children.length) {
+        note.children.forEach((mesh) => {
+          if (mesh.material.emissive) {
+            mesh.material.emissiveIntensity = 0;
+            mesh.material.emissive.setRGB(0, 0, 0);
+          }
+        });
+      } else {
+        if (note.material.emissive) {
+          note.material.emissive.setRGB(0, 0, 0);
+          note.material.emissiveIntensity = 0;
+        }
+      }
+    });
   }
 }
