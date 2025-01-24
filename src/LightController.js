@@ -12,44 +12,52 @@ export default class LightController {
     this.scene.add(this.targetObject);
     this.defaultLights = createDefaultLights(this.targetObject);
     this.streakLights = createDefaultLights(this.targetObject);
+    this.streakLights.visible = false;
+    this.defaultLights.visible = true;
     this.dangerLights = createSpotLight(0xff7070, { x: 0, y: 0.7, z: 0.2 });
-    this.streakLightsActive = false;
+    this.dangerLights.visible = false;
+    this.lights.add(this.dangerLights);
     this.lights.add(this.defaultLights);
+    this.lights.add(this.streakLights);
     this.scene.add(this.lights);
   }
 
   triggerDangerLights() {
-    this.defaultLights.children.forEach((light) => {
-      light.fadeOutTween.start();
-    });
-    this.lights.add(this.dangerLights);
-    this.dangerLights.children[0].fadeTween
-      .easing(TWEEN.Easing.Exponential.Out)
-      .start();
- 
+    this.dangerLights.visible = true;
+    this.defaultLights.visible = false
   }
 
-  changeColor(hexColor){
-    this.streakLightsActive = true;
-    this.streakLights.children.forEach((light) => {
-      if(light.type == "DirectionalLight"){
-        light.color.setHex(hexColor);
-      }
-      if(light.type == "HemisphereLight"){
-        light.fadeOutTween.start();
-      }
-    })
-    this.lights.children = [];
-    this.lights.add(this.streakLights);
+  fadeOutDefaultLights() {
+    // this.defaultLights.children.forEach((light) => {
+    //   // light.fadeOutTween.start();
+    //   light.visible = false;
+    // });
+    this.defaultLights.visible = false;
+  }
+
+  changeColor(hexColor) {
+    if (this.streakLights.children[1].color.getHex() != hexColor) {
+      this.fadeOutDefaultLights();
+      this.streakLights.visible = true;
+      this.streakLights.children.forEach((light) => {
+        if (light.type == "DirectionalLight") {
+          light.color.setHex(hexColor);
+        }
+        if (light.type == "HemisphereLight") {
+          light.fadeOutTween.start();
+        }
+      });
+    }
   }
 
   reset() {
-    if (!this.streakLightsActive) return;
-    this.streakLightsActive = false;
-    this.lights.children = [];
-    this.lights.add(this.defaultLights);
-    this.defaultLights.children.forEach((light) => {
-      light.fadeInTween.start();
-    });
+    if (!this.defaultLights.visible) {
+      this.streakLights.visible = false;
+      this.dangerLights.visible = false;
+      this.defaultLights.visible = true;
+      this.defaultLights.children.forEach((light) => {
+        light.fadeInTween.start();
+      });
+    }
   }
 }

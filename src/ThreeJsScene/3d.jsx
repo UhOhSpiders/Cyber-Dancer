@@ -116,7 +116,9 @@ export default class Game {
     this.lifeCounter.loseLife();
     this.score.breakStreak();
     this.noteDropper.resetGlowEffect();
-    this.lights.reset();
+    if (this.gameIsPlaying) {
+      this.lights.reset();
+    }
   }
 
   touchDeviceHitAttempt(e) {
@@ -193,6 +195,7 @@ export default class Game {
   loseGame() {
     this.noteDropper.noteDropperGroup.visible = false;
     this.noteDropper.textGroup.visible = false;
+    this.gameIsPlaying = false;
     this.lights.triggerDangerLights();
     this.squisher.squish().then(() => {
       this.cameraController.craneUp();
@@ -209,7 +212,6 @@ export default class Game {
       },
     });
     this.gameIsPlaying = false;
-    this.lights.reset();
     this.selectedCharacter.stopLoopingDance();
     document.dispatchEvent(playerStoppedEvent);
   }

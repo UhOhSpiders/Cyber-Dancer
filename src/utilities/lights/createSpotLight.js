@@ -9,7 +9,7 @@ export function createSpotLight(color, position) {
   spotLight.position.set(position.x, position.y, position.z);
   spotLight.penumbra = 0.7;
   spotLight.angle = Math.PI / 5;
-  spotLight.intensity = 0;
+  spotLight.intensity = 3;
   spotLight.fadeTween = createLightFade(spotLight, 0, 3, 3000);
   spotLights.add(spotLight);
   spotLights.add(directionalLight3);
