@@ -50,8 +50,6 @@ export default class LightController {
     }
   }
 
- 
-
   reset() {
     if (!this.defaultLights.visible) {
       this.streakLights.visible = false;

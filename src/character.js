@@ -1,14 +1,17 @@
 import * as THREE from "three";
 import { characterPosition } from "./constants/constants";
+import * as TWEEN from "@tweenjs/tween.js";
+import { createRotateTween } from "./utilities/tweens/createRotateTween";
 
 export default class Character {
   constructor(object3D, scene, animationMixer) {
     this.object3D = object3D;
+    console.log(this.object3D.quaternion._y);
     this.scene = scene;
     this.animationMixer = animationMixer;
     this.idle = this.getCharacterAnimationByCategory("idle");
     this.danceMoves = this.getCharacterAnimationsByCategory("dance");
-    this.loopingDance = this.danceMoves[0];
+    this.loopingDance = this.getCharacterAnimationByCategory("loopDance");
     this.isDancing = false;
     this.currentDanceMove = null;
     this.stumbleAnimations = this.getCharacterAnimationsByCategory("stumble");
@@ -96,6 +99,21 @@ export default class Character {
       this.currentDanceMove.reset();
       this.currentDanceMove.fadeIn(0.1);
       this.currentDanceMove.play();
+      if (this.currentDanceMove._clip.name.includes("jump")) {
+        let targetQuaternion = this.object3D.quaternion.clone();
+
+        const rotationEuler = new THREE.Euler(0, Math.PI, 0);
+
+        const rotationQuaternion = new THREE.Quaternion().setFromEuler(
+          rotationEuler
+        );
+
+        targetQuaternion.multiply(rotationQuaternion);
+
+        let rotateTween = createRotateTween(this.object3D, targetQuaternion, 500);
+        rotateTween.easing(TWEEN.Easing.Quintic.InOut)
+        rotateTween.start();
+      }
     }
   }
   stumble() {

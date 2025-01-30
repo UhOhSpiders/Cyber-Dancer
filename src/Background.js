@@ -4,8 +4,8 @@ export default class Background {
     this.gltf = gltf;
     this.backgrounds = [];
     this.getBackgrounds(this.gltf);
-    this.scene.add(this.backgrounds[0]);
-    this.activeBackground = this.backgrounds[0];
+    this.scene.add(this.backgrounds[1]);
+    this.activeBackground = this.backgrounds[1];
   }
 
   getBackgrounds(gltf) {
