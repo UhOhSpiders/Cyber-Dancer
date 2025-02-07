@@ -16,7 +16,7 @@ export default class LightController {
     this.strobeLight = createStrobeLight();
     this.streakLights.visible = false;
     this.defaultLights.visible = true;
-    this.dangerLights = createSpotLight(0xff7070, { x: 0, y: 0.7, z: 0.2 });
+    this.dangerLights = createSpotLight(0xff7070, { x: 0, y: 2, z: 0.2 });
     this.dangerLights.visible = false;
     this.lights.add(this.strobeLight);
     this.lights.add(this.dangerLights);

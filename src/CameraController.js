@@ -6,8 +6,8 @@ export default class CameraController {
   constructor(camera, scene) {
     this.camera = camera;
     this.scene = scene;
-    this.craneUpPosition = new THREE.Vector3(0, 0.1, 2.3);
-    this.gameplayPosition = new THREE.Vector3(0, -0.2, 1);
+    this.craneUpPosition = new THREE.Vector3(0, 0.1, 3);
+    this.gameplayPosition = new THREE.Vector3(0, 0.3, 3);
     this.shakeOffsetPosition = new THREE.Vector3(
       this.gameplayPosition.x,
       this.gameplayPosition.y + 0.02,

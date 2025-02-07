@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { loadGltf } from "../utilities/loadGltf";
+import { loadAllAssets } from "../utilities/loadAllAssets";
 import Game from "../ThreeJsScene/3d";
 import fetchSongs from "../utilities/api-helpers/fetchSongs";
 
@@ -11,10 +11,9 @@ const useLoadGame = () => {
 
   const handleLoadGame = () => {
     setIsLoading(true);
-
-    Promise.all([loadGltf(), fetchSongs()])
-      .then(([gltf, songData]) => {
-        setGame(new Game(gltf));
+    Promise.all([loadAllAssets(), fetchSongs()])
+      .then(([graphics, songData]) => {
+        setGame(new Game(graphics));
         setSongs(songData);
       })
       .catch((error) => {

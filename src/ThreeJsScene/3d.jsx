@@ -18,7 +18,7 @@ import { SMAAPass } from "three/addons/postprocessing/SMAAPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 export default class Game {
-  constructor(loadedGltf) {
+  constructor(loadedGltfs) {
     this.camera = new THREE.PerspectiveCamera(42, 1, 0.01, 10);
 
     this.scene = new THREE.Scene();
@@ -56,13 +56,17 @@ export default class Game {
 
     this.composer.addPass(this.antialiasPass);
 
-    this.background = new Background(this.scene, loadedGltf, "psych_test");
-    this.squisher = new Squisher(loadedGltf, this.scene);
+    this.background = new Background(this.scene, loadedGltfs.backgrounds[1]);
+    this.squisher = new Squisher(
+      loadedGltfs.squishers,
+      loadedGltfs.misc,
+      this.scene
+    );
     this.noteDropper = new NoteDropper();
     this.midiAndMp3Player = new MidiAndMp3Player();
     this.selectedCharacter = null;
     this.characterSelector = new CharacterSelector(
-      loadedGltf,
+      loadedGltfs.characters,
       this.scene,
       this.mixer,
       this.selectedCharacter
@@ -71,7 +75,7 @@ export default class Game {
     this.lifeCounter = new LifeCounter();
     this.lights = new LightController(this.scene);
 
-    this.loadedGltf = loadedGltf;
+    this.loadedGltfs = loadedGltfs;
 
     // this.stats = new Stats();
     // this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
@@ -95,7 +99,6 @@ export default class Game {
       this.lifeCounter.reset();
       this.score.increase(checkedHit);
       if (this.score.streakMultiplier >= 2) {
-        // change how the constant is formatted rather than slicing it here ?
         let lightsColorHex =
           "0x" + COMBO_COLORS[this.score.streakMultiplier - 1].lights.slice(1);
         let noteGlowColorHex =
@@ -137,34 +140,51 @@ export default class Game {
 
   // game state management
 
-  loadGraphics(mapName) {
-    this.noteDropper.create();
-    this.resize();
-  }
-
-  deleteGraphics() {
-    if (this.noteDropper.loadedGltf) {
-      this.noteDropper = this.noteDropper.delete();
-    }
-    this.squisher.delete();
-  }
-
-  play(mapName, midiName, mp3Name) {
-    this.deleteGraphics();
-    this.cameraController.craneDown();
-    this.midiAndMp3Player = new MidiAndMp3Player(this, midiName, mp3Name);
-    this.lifeCounter = new LifeCounter(this);
+  loadGraphics(levelName) {
+    let levelTarget = this.loadedGltfs.targets.find((target) =>
+      target.name.includes(levelName)
+    );
+    let levelNote = this.loadedGltfs.notes.find((note) =>
+      note.name.includes(levelName)
+    );
     this.noteDropper = new NoteDropper(
-      this.loadedGltf,
-      mapName,
+      levelTarget,
+      levelNote,
       this.scene,
       this.camera,
       this.renderer,
       this.score,
       this.lifeCounter,
-      this
+      this.miss.bind(this)
     );
-    this.loadGraphics(mapName);
+    this.noteDropper.create();
+    let levelBackground = this.loadedGltfs.backgrounds.find((bg) =>
+      bg.name.includes(levelName)
+    );
+    this.background = new Background(this.scene, levelBackground);
+    this.resize();
+  }
+
+  deleteGraphics() {
+    this.noteDropper.delete() 
+    this.background.delete();
+    this.squisher.delete();
+  }
+
+  previewLevel(levelName) {
+    this.deleteGraphics();
+    this.cameraController.craneDown();
+    this.loadGraphics(levelName);
+  }
+
+  play(midiName, mp3Name) {
+    this.midiAndMp3Player = new MidiAndMp3Player(
+      this.noteDropper,
+      midiName,
+      mp3Name,
+      this.levelComplete.bind(this)
+    );
+    this.lifeCounter = new LifeCounter(this);
     this.gameIsPlaying = true;
     this.selectedCharacter.object3D.visible = true;
     this.selectedCharacter.startLoopingDance();

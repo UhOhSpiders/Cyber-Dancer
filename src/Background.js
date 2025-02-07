@@ -1,36 +1,18 @@
 export default class Background {
-  constructor(scene, gltf) {
+  constructor(scene, mesh) {
     this.scene = scene;
-    this.gltf = gltf;
-    this.backgrounds = [];
-    this.getBackgrounds(this.gltf);
-    this.scene.add(this.backgrounds[1]);
-    this.activeBackground = this.backgrounds[1];
+    this.mesh = mesh;
+    this.mesh.position.set(0, -0.55, 1);
+    this.create()
   }
 
-  getBackgrounds(gltf) {
-    gltf.scene.children.forEach((object3D) => {
-      if (object3D.name.includes("background")) {
-        object3D.position.set(0, -0.55, 1);
-        this.backgrounds.push(object3D);
-      }
-    });
-  }
-  create(mapName) {
-    this.delete()
-    this.backgrounds.forEach((background) => {
-      if (background.name.includes(mapName)) {
-        this.scene.add(background);
-        this.activeBackground = background;
-      }
-    });
+  create() {
+    this.scene.add(this.mesh);
   }
 
   delete() {
-    if (this.activeBackground) {
-      this.scene.children = this.scene.children.filter(
-        (item) => item.id !== this.activeBackground.id
-      );
-    }
+    this.scene.children = this.scene.children.filter(
+      (item) => item.id !== this.mesh.id
+    );
   }
 }

@@ -1,17 +1,18 @@
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-export function loadGltf(){
-    const loader = new GLTFLoader();
-return new Promise((resolve, reject) => {
+export function loadGltf(path) {
+  const loader = new GLTFLoader();
+  return new Promise((resolve, reject) => {
     loader.load(
-      `/graphics.gltf`,
+      path,
       (gltf) => {
-          resolve(gltf);
+        gltf.scene.children[0].animations = gltf.animations;
+        resolve(gltf.scene.children[0]);
       },
       undefined,
       (error) => {
-        reject(error)
-        
+        reject(error);
       }
     );
-  });}
+  });
+}

@@ -42,7 +42,7 @@ const Menu = ({ game, songs }) => {
   }, [playing]);
 
   const handleClickPlay = () => {
-    game.play(selectedLevel.map, selectedLevel.midiName, selectedLevel.mp3Name);
+    game.play(selectedLevel.midiName, selectedLevel.mp3Name);
     setPlaying(true);
     setIsDead(false);
   };

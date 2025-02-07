@@ -4,7 +4,7 @@ const LevelSelect = ({ setSelectedLevel, isDead, game, songs }) => {
   const handleClick = (e) => {
     game.lights.reset()
     setSelectedLevel(songs[e.target.id]);
-    game.background.create(songs[e.target.id].map)
+    game.previewLevel(songs[e.target.id].map);
   };
   const levelList = songs.map((level, index) => {
     return (

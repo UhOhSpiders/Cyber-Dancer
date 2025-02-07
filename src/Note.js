@@ -3,10 +3,10 @@ import { createFallTween } from "./utilities/tweens/createFallTween";
 import { createHitEffect } from "./utilities/createHitEffect";
 import { HIT_COLORS } from "./constants/constants";
 export default class Note {
-  constructor(loadedGltf, fallingGroup, scene, gltfName) {
+  constructor(loadedGltf, fallingGroup, scene, levelName) {
     this.fallingGroup = fallingGroup;
     this.scene = scene;
-    this.gltfName = gltfName;
+    this.levelName = levelName;
     this.noteHitMaterial = new THREE.MeshPhongMaterial({
       color: HIT_COLORS.hit,
     });
@@ -25,14 +25,8 @@ export default class Note {
       emissive: "yellow",
       emissiveIntensity: 10,
     });
-    this.object3D =
-      loadedGltf && loadedGltf.scene.getObjectByName(`${this.gltfName}_note`)
-        ? loadedGltf.scene.getObjectByName(`${this.gltfName}_note`)
-        : new THREE.Mesh(
-            new THREE.BoxGeometry(),
-            new THREE.MeshBasicMaterial({ color: "red" })
-          );
-    this.object3D.scale.set(0.2, 0.2, 0.2);
+    this.object3D = this.getNote(loadedGltf);
+
     this.effectSphere = new THREE.Mesh(
       new THREE.SphereGeometry(0.01, 32, 16),
       new THREE.MeshPhongMaterial({
@@ -43,6 +37,19 @@ export default class Note {
     );
     this.effectSphere.scale.set(0.2, 0.2, 0.2);
     this.hasGlowEffect = false;
+  }
+
+  getNote(loadedGltf) {
+    let object3D;
+    if (loadedGltf) {
+      object3D = loadedGltf;
+    } else {
+      object3D = new THREE.Mesh(
+        new THREE.BoxGeometry(),
+        new THREE.MeshBasicMaterial({ color: "red" })
+      );
+    }
+    return object3D;
   }
 
   add(position, targetPosition, pitch, time) {

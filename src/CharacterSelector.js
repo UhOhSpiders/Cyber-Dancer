@@ -2,27 +2,26 @@ import Character from "./character";
 import * as THREE from "three";
 
 export default class CharacterSelector {
-  constructor(loadedGltf, scene, mixer) {
-    this.loadedGltf = loadedGltf;
+  constructor(loadedGltfs, scene, mixer) {
+    this.loadedGltfs = loadedGltfs;
     this.scene = scene;
     this.mixer = mixer;
-    this.characters = [];
+    this.characters = this.getCharacters(loadedGltfs);
     this.displayedCharacterIndex = 0;
-    this.getCharacters(loadedGltf);
     this.characterSelectorGroup = new THREE.Group();
-    this.characterSelectorGroup.scale.set(0.7, 0.7, 0.7);
-    this.characterSelectorGroup.position.set(0, -0.05, 0);
+    this.characterSelectorGroup.scale.set(0.8, 0.8, 0.8);
+    this.characterSelectorGroup.position.set(0, 0.1, 0);
     this.scene.add(this.characterSelectorGroup);
     this.characterSelectorGroup.add(this.characters[0].object3D);
   }
-  getCharacters(gltf) {
-    gltf.scene.children.forEach((object3D) => {
-      if (object3D.name.includes("character")) {
-        object3D.animations = this.loadedGltf.animations;
-        const character = new Character(object3D, this.scene, this.mixer);
-        this.characters.push(character);
-      }
+  getCharacters(gltfs) {
+    let charactersTemp = []
+    gltfs.forEach((gltf) => {
+      // gltf.scene.children[0].animations = gltf.animations
+      const character = new Character(gltf, this.scene, this.mixer);
+      charactersTemp.push(character);
     });
+    return charactersTemp;
   }
 
   incrementPreview(i) {

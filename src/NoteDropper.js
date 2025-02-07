@@ -19,24 +19,26 @@ import HitText from "./HitText.js";
 
 export default class NoteDropper {
   constructor(
-    loadedGltf,
-    gltfName,
+    targetObject3D,
+    loadedNotes,
+    // levelName,
     scene,
     camera,
     renderer,
     score,
     lifeCounter,
-    game
+    onMiss
   ) {
-    this.loadedGltf = loadedGltf;
-    this.gltfName = gltfName;
-    this.width = 0.5;
+    this.targetObject3D = targetObject3D;
+    this.loadedNotes = loadedNotes;
+    // this.levelName = levelName;
+    this.width = 2.5;
     this.scene = scene;
     this.camera = camera;
     this.renderer = renderer;
     this.score = score;
     this.lifeCounter = lifeCounter;
-    this.game = game;
+    this.onMiss = onMiss;
     this.hitMargin = HIT_MARGIN.DESKTOP;
     this.noteStartPosition = NOTE_START_POSITION.DESKTOP;
     this.noteTargetPosition = new THREE.Vector3(0, -0.35, 0.5);
@@ -63,16 +65,16 @@ export default class NoteDropper {
   }
   create() {
     this.note = new Note(
-      this.loadedGltf,
+      this.loadedNotes,
       this.fallingGroup,
-      this.scene,
-      this.gltfName
+      this.scene
+      // this.levelName
     );
     this.noteTarget = new NoteTarget(
-      this.loadedGltf,
+      this.targetObject3D,
       this.noteDropperGroup,
-      this.textGroup,
-      this.gltfName
+      this.textGroup
+      // this.levelName
     );
     for (let step = 0; step < this.columnXPositions.length; step++) {
       const position = new THREE.Vector3(
@@ -87,13 +89,13 @@ export default class NoteDropper {
   }
 
   delete() {
+    if (!this.targetObject3D) return;
     this.scene.children = this.scene.children.filter(
       (item) => item.id !== this.noteDropperGroup.id
     );
     this.scene.children = this.scene.children.filter(
       (item) => item.id !== this.textGroup.id
     );
-    return null;
   }
 
   reset() {
@@ -138,11 +140,10 @@ export default class NoteDropper {
     }
   }
 
-  resetGlowEffect(){
+  resetGlowEffect() {
     this.note.hasGlowEffect = false;
     this.note.resetFallingGroupGlows();
   }
-
 
   checkTouch(e) {
     const coords = this.getNormalizedDeviceCoordinates(e);
@@ -206,7 +207,7 @@ export default class NoteDropper {
       const array = this.notesToHit[key];
       const index = array.indexOf(noteName);
       if (index !== -1) {
-        this.game.miss();
+        this.onMiss();
         array.splice(index, 1);
       }
     }

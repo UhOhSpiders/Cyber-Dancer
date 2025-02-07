@@ -3,10 +3,11 @@ import { FALL_TIME } from "./constants/constants";
 import { Midi } from "@tonejs/midi";
 
 export default class MidiAndMp3Player {
-  constructor(game, midiName, mp3Name) {
-    this.game = game;
+  constructor(noteDropper, midiName, mp3Name, levelComplete) {
+    this.noteDropper = noteDropper;
     this.midiName = midiName;
     this.mp3Name = mp3Name;
+    this.levelComplete = levelComplete;
     this.player = null;
     this.midiTrack = null;
   }
@@ -22,7 +23,7 @@ export default class MidiAndMp3Player {
         onerror: (err) => reject(err),
         autostart: "true",
         onstop: () => {
-          this.game.levelComplete();
+          this.levelComplete();
           Tone.getDraw().cancel(now - 2);
         },
       });
@@ -35,7 +36,7 @@ export default class MidiAndMp3Player {
         Tone.getDraw().schedule(
           function () {
             if (track.name === "dance_moves") {
-              this.game.noteDropper.addNote(note.name, note.time);
+              this.noteDropper.addNote(note.name, note.time);
             }
           }.bind(this),
           now + note.time - FALL_TIME
@@ -45,7 +46,9 @@ export default class MidiAndMp3Player {
         Tone.getDraw().schedule(
           function () {
             if (track.name === "dance_moves") {
-              this.game.noteDropper.forceMiss(`${note.name}_${note.time}`);
+              // this.miss(`${note.name}_${note.time}`);
+              this.noteDropper.forceMiss(`${note.name}_${note.time}`)
+              
             }
           }.bind(this),
           now + note.time + 0.4
@@ -55,7 +58,7 @@ export default class MidiAndMp3Player {
         Tone.getDraw().schedule(
           function () {
             if (track.name === "dance_moves") {
-              this.game.noteDropper.deleteNote();
+              this.noteDropper.deleteNote();
             }
           }.bind(this),
           now + note.time + 0.5

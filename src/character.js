@@ -6,7 +6,6 @@ import { createRotateTween } from "./utilities/tweens/createRotateTween";
 export default class Character {
   constructor(object3D, scene, animationMixer) {
     this.object3D = object3D;
-    console.log(this.object3D.quaternion._y);
     this.scene = scene;
     this.animationMixer = animationMixer;
     this.idle = this.getCharacterAnimationByCategory("idle");
@@ -18,13 +17,14 @@ export default class Character {
     this.create();
   }
   create() {
+    // get rid of this character variable
     let character = this.object3D;
     character.position.set(
       characterPosition.x,
       characterPosition.y,
       characterPosition.z
     );
-    character.scale.set(0.3, 0.3, 0.3);
+    character.scale.set(0.9, 0.9, 0.9);
 
     if (this.idle) {
       this.idle.setLoop(THREE.LoopPingPong);

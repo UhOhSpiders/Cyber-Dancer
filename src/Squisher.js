@@ -4,55 +4,55 @@ import { createTransformPositionTween } from "./utilities/tweens/createTransform
 import * as Tone from "tone";
 
 export default class Squisher {
-  constructor(gltf, scene) {
-    this.gltf = gltf;
+  constructor(gltfs, miscs, scene) {
     this.scene = scene;
-    this.squishers = [];
-    this.splat = null;
     this.activeSquisher = null;
     this.landingPosition = new THREE.Vector3(
       characterPosition.x,
       characterPosition.y,
       characterPosition.z
     );
+    this.squishers = this.getSquishers(gltfs);
+    this.splat = this.getSplat(miscs);
     this.sound = new Tone.Player(`../squish.wav`).toDestination();
-    this.getSquishers(this.gltf);
-    this.getSplat(this.gltf);
   }
-  getSquishers(gltf) {
-    gltf.scene.children.forEach((object3D) => {
-      if (object3D.name.includes("squisher")) {
-        if (object3D.userData.has_bump_map) {
-          let bmap = new THREE.TextureLoader().load(
-            `${object3D.name}_bump.png`
-          );
-          bmap.flipY = false;
-          object3D.material.bumpMap = bmap;
-        }
-        object3D.position.set(0, 2, 0);
-        object3D.scale.set(0.3, 0.3, 0.3);
-        object3D.tween = createTransformPositionTween(
-          object3D,
-          this.landingPosition,
-          700
+  getSquishers(gltfs) {
+    let squishersTemp = [];
+
+    gltfs.forEach((mesh) => {
+      if (mesh.userData.has_bump_map) {
+        let bmap = new THREE.TextureLoader().load(
+          `${mesh.userData.name}_bump.png`
         );
-        this.squishers.push(object3D);
+        bmap.flipY = false;
+        mesh.material.bumpMap = bmap;
       }
+      mesh.position.set(0, 3, 0);
+      mesh.scale.set(0.5, 0.5, 0.5);
+      mesh.tween = createTransformPositionTween(
+        mesh,
+        this.landingPosition,
+        700
+      );
+      squishersTemp.push(mesh);
     });
+    return squishersTemp;
   }
 
-  getSplat(gltf) {
-    gltf.scene.children.forEach((object3D) => {
-      if (object3D.name.includes("splat")) {
-        object3D.position.set(
+  getSplat(gltfs) {
+    let splat
+    gltfs.forEach((mesh) => {
+      if (mesh.name == "splat") {
+        mesh.position.set(
           this.landingPosition.x,
           this.landingPosition.y,
           this.landingPosition.z
         );
-        object3D.scale.set(0.3, 0.3, 0.3);
-        this.splat = object3D;
+        mesh.scale.set(0.7, 0.7, 0.7);
       }
+      splat = mesh
     });
+    return splat
   }
 
   delete() {
