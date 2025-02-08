@@ -3,20 +3,19 @@ import { FALL_TIME } from "./constants/constants";
 import { Midi } from "@tonejs/midi";
 
 export default class MidiAndMp3Player {
-  constructor(noteDropper, midiName, mp3Name, levelComplete) {
+  constructor(noteDropper, trackName, levelComplete) {
     this.noteDropper = noteDropper;
-    this.midiName = midiName;
-    this.mp3Name = mp3Name;
+    this.trackName = trackName
     this.levelComplete = levelComplete;
     this.player = null;
     this.midiTrack = null;
   }
 
   async startTrack() {
-    this.midiTrack = await Midi.fromUrl(`../${this.midiName}`);
+    this.midiTrack = await Midi.fromUrl(`../songs/${this.trackName}/${this.trackName}.MID`);
     this.player = await new Promise((resolve, reject) => {
       const player = new Tone.Player({
-        url: `../${this.mp3Name}`,
+        url: `../songs/${this.trackName}/${this.trackName}.mp3`,
         onload: () => {
           resolve(player.toDestination());
         },

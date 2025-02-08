@@ -1,19 +1,19 @@
 import React from "react";
+import {LEVELS} from "../constants/levels"
 
 const LevelSelect = ({ setSelectedLevel, isDead, game, songs }) => {
   const handleClick = (e) => {
     game.lights.reset()
-    setSelectedLevel(songs[e.target.id]);
-    game.previewLevel(songs[e.target.id].map);
+    setSelectedLevel(LEVELS[e.target.id]);
+    game.previewLevel(LEVELS[e.target.id].assetName);
   };
-  const levelList = songs.map((level, index) => {
+  const levelList = LEVELS.map((level, index) => {
     return (
       <div className="level-card" key={index} onClick={handleClick} id={index}>
         <div>
           <h3>{level.name}</h3>
-          <h3>{level.blurb}</h3>
         </div>
-        <img src={level.thumbnail} />
+        <img src={`./thumbnails/${level.assetName}_thumbnail.png`} />
       </div>
     );
   });

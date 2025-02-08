@@ -22,7 +22,7 @@ export default class Squisher {
     gltfs.forEach((mesh) => {
       if (mesh.userData.has_bump_map) {
         let bmap = new THREE.TextureLoader().load(
-          `${mesh.userData.name}_bump.png`
+          `graphics/bump_maps/${mesh.userData.name}_bump.png`
         );
         bmap.flipY = false;
         mesh.material.bumpMap = bmap;

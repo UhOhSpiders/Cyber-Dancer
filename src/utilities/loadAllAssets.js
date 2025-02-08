@@ -1,10 +1,11 @@
 import Background from "three/examples/jsm/renderers/common/Background.js";
 import { loadGltf } from "./loadGltf";
+import {LEVELS} from "../constants/levels"
 
 export async function loadAllAssets() {
   const assetGroups = {
     characters: ["plink", "hoot", "blarf"],
-    levels: ["neoprene", "psych_test"],
+    levels: LEVELS,
     squishers: ["anvil"],
     misc: ["splat"],
   };
@@ -29,17 +30,17 @@ export async function loadAllAssets() {
     ),
     Promise.all(
       assetGroups.levels.map((n) =>
-        loadGltf(`/graphics/levels/notes/${n}_note.gltf`)
+        loadGltf(`/graphics/levels/notes/${n.assetName}_note.gltf`)
       )
     ),
     Promise.all(
       assetGroups.levels.map((t) =>
-        loadGltf(`/graphics/levels/targets/${t}_target.gltf`)
+        loadGltf(`/graphics/levels/targets/${t.assetName}_target.gltf`)
       )
     ),
     Promise.all(
       assetGroups.levels.map((b) =>
-        loadGltf(`/graphics/levels/backgrounds/${b}_background.gltf`)
+        loadGltf(`/graphics/levels/backgrounds/${b.assetName}_background.gltf`)
       )
     ),
     Promise.all(

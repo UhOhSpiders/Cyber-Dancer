@@ -42,7 +42,7 @@ const Menu = ({ game, songs }) => {
   }, [playing]);
 
   const handleClickPlay = () => {
-    game.play(selectedLevel.midiName, selectedLevel.mp3Name);
+    game.play(selectedLevel.assetName);
     setPlaying(true);
     setIsDead(false);
   };
@@ -51,7 +51,7 @@ const Menu = ({ game, songs }) => {
     setPlaying(true);
     setIsDead(false);
     setScoreDetails(null);
-    game.replay(selectedLevel.midiName, selectedLevel.mp3Name);
+    game.replay(selectedLevel.assetName);
   };
 
   const handleResetLevel = () => {

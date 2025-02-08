@@ -19,7 +19,7 @@ import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 export default class Game {
   constructor(loadedGltfs) {
-    this.camera = new THREE.PerspectiveCamera(42, 1, 0.01, 10);
+    this.camera = new THREE.PerspectiveCamera(42, 1, 0.01, 15);
 
     this.scene = new THREE.Scene();
     this.cameraController = new CameraController(this.camera, this.scene);
@@ -56,7 +56,7 @@ export default class Game {
 
     this.composer.addPass(this.antialiasPass);
 
-    this.background = new Background(this.scene, loadedGltfs.backgrounds[1]);
+    this.background = new Background(this.scene, loadedGltfs.backgrounds[0]);
     this.squisher = new Squisher(
       loadedGltfs.squishers,
       loadedGltfs.misc,
@@ -177,11 +177,10 @@ export default class Game {
     this.loadGraphics(levelName);
   }
 
-  play(midiName, mp3Name) {
+  play(assetName) {
     this.midiAndMp3Player = new MidiAndMp3Player(
       this.noteDropper,
-      midiName,
-      mp3Name,
+      assetName,
       this.levelComplete.bind(this)
     );
     this.lifeCounter = new LifeCounter(this);
