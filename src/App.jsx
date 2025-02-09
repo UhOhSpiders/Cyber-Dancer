@@ -5,7 +5,7 @@ import LoadingScreen from "./react-components/LoadingScreen.jsx";
 import NavBar from "./react-components/NavBar.jsx";
 
 function App() {
-  const { game, songs, isLoading, error } = useLoadGame();
+  const { game, isLoading, error } = useLoadGame();
   return (
     <>
       <NavBar />
@@ -20,7 +20,7 @@ function App() {
       ) : (
         <div className="game-container">
           <div className="menu-container fade-in"></div>
-          <Menu game={game} songs={songs}/>
+          <Menu game={game} />
           <MemoizedThreeJsScene />
           
         </div>

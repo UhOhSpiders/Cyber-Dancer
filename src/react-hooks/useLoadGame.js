@@ -5,16 +5,14 @@ import fetchSongs from "../utilities/api-helpers/fetchSongs";
 
 const useLoadGame = () => {
   const [game, setGame] = useState();
-  const [songs, setSongs] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const handleLoadGame = () => {
     setIsLoading(true);
-    Promise.all([loadAllAssets(), fetchSongs()])
-      .then(([graphics, songData]) => {
+    Promise.all([loadAllAssets()])
+      .then(([graphics]) => {
         setGame(new Game(graphics));
-        setSongs(songData);
       })
       .catch((error) => {
         setError(error);
@@ -28,6 +26,6 @@ const useLoadGame = () => {
     handleLoadGame();
   }, []);
 
-  return { game, songs, isLoading, error };
+  return { game, isLoading, error };
 };
 export default useLoadGame;

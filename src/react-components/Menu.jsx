@@ -6,7 +6,7 @@ import LevelSelect from "./LevelSelect";
 import EndOfGameNavButtons from "./EndOfGameNavButtons";
 import HUD from "./HUD";
 
-const Menu = ({ game, songs }) => {
+const Menu = ({ game }) => {
   const [playing, setPlaying] = useState(false);
   const [scoreDetails, setScoreDetails] = useState(null);
   const [isCharacterSelected, setIsCharacterSelected] = useState(false);
@@ -84,7 +84,6 @@ const Menu = ({ game, songs }) => {
               setSelectedLevel={setSelectedLevel}
               isDead={isDead}
               game={game}
-              songs={songs}
             />
           </>
         ) : (
