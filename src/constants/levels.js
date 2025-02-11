@@ -1,14 +1,14 @@
 export const LEVELS = [
   {
-    name: "Wild Juke (test track)", // orange drips
+    name: "Wild Juke (test track)", // orange drips DONE
     assetName: "wild",
   },
   {
-    name: "Neoprene Chukka (Vibram Upgrade)", // apples (fix background)
+    name: "Neoprene Chukka (Vibram Upgrade)", // DONE
     assetName: "neoprene",
   },
   {
-    name: "Dongle (test track)", // venus flytraps (give targets more volume)
+    name: "Dongle (test track)", // DONE
     assetName: "dongle",
   },
   {
@@ -20,15 +20,15 @@ export const LEVELS = [
     assetName: "radio",
   },
   {
-    name: "Liquid Polymer (test track)", // sharks (fix background)
+    name: "Liquid Polymer (test track)", // sharks DONE
     assetName: "liquid",
   },
   {
-    name: "Grip (test track)", // meatballs (fix background)
+    name: "Grip (test track)", // meatballs DONE
     assetName: "grip",
   },
   {
-    name: "Debossed (Rebossed) (test track)", // craters (fix targets to have a diff internal color from other craters)
+    name: "Debossed (Rebossed) (test track)", // craters DONE
     assetName: "debossed",
   },
 ];
