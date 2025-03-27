@@ -1,46 +1,34 @@
-export const levels = [
+export const LEVELS = [
   {
-    name: "test track",
-    artist: "MGMT",
-    blurb: "This test track is a clip of an MGMT song.",
-    midiName: "midi-to-click-test.MID",
-    mp3Name: "midi-to-click-test.mp3",
-    map: "psych_test",
-    thumbnail: "/test-thumbnail.jpeg",
-  },{
-    name: "the same test track",
-    artist: "MGMT",
-    blurb: "This test track is a clip of an MGMT song.",
-    midiName: "midi-to-click-test.MID",
-    mp3Name: "midi-to-click-test.mp3",
-    map: "psych_test",
-    thumbnail: "/test-thumbnail.jpeg",
+    name: "Wild Juke (test track)", // orange drips DONE
+    assetName: "wild",
   },
   {
-    name: "i have copy and pasted this test track",
-    artist: "MGMT",
-    blurb: "This test track is a clip of an MGMT song.",
-    midiName: "midi-to-click-test.MID",
-    mp3Name: "midi-to-click-test.mp3",
-    map: "psych_test",
-    thumbnail: "/test-thumbnail.jpeg",
+    name: "Neoprene Chukka (Vibram Upgrade)", // DONE
+    assetName: "neoprene",
   },
   {
-    name: "i have copy and pasted this test track",
-    artist: "MGMT",
-    blurb: "This test track is a clip of an MGMT song.",
-    midiName: "midi-to-click-test.MID",
-    mp3Name: "midi-to-click-test.mp3",
-    map: "psych_test",
-    thumbnail: "/test-thumbnail.jpeg",
+    name: "Dongle (test track)", // DONE
+    assetName: "dongle",
   },
   {
-    name: "i have copy and pasted this test track",
-    artist: "MGMT",
-    blurb: "This test track is a clip of an MGMT song.",
-    midiName: "midi-to-click-test.MID",
-    mp3Name: "midi-to-click-test.mp3",
-    map: "psych_test",
-    thumbnail: "/test-thumbnail.jpeg",
-  }
+    name: "Fruit (hyper)", // CDs and Toasters (add bread and CDs in background)
+    assetName: "fruit",
+  },
+  {
+    name: "Radio Korea (test track)", // crystal cave (more detail to bg?)
+    assetName: "radio",
+  },
+  {
+    name: "Liquid Polymer (test track)", // sharks DONE
+    assetName: "liquid",
+  },
+  {
+    name: "Grip (test track)", // meatballs DONE
+    assetName: "grip",
+  },
+  {
+    name: "Debossed (Rebossed) (test track)", // craters DONE
+    assetName: "debossed",
+  },
 ];

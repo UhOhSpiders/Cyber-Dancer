@@ -7,6 +7,7 @@ import {
   NOTE_START_POSITION,
   MOBILE_BREAKPOINT,
   TARGET_SCALE,
+  COMBO_COLORS,
 } from "./constants/constants";
 import { getColumnXPositions } from "./utilities/getColumnXPositions";
 import { assignNotesToColumns } from "./utilities/assignNotesToColumns.js";
@@ -18,22 +19,26 @@ import HitText from "./HitText.js";
 
 export default class NoteDropper {
   constructor(
-    loadedGltf,
-    gltfName,
+    targetObject3D,
+    loadedNotes,
+    // levelName,
     scene,
     camera,
     renderer,
     score,
-    lifeCounter
+    lifeCounter,
+    onMiss
   ) {
-    this.loadedGltf = loadedGltf;
-    this.gltfName = gltfName;
-    this.width = 0.5;
+    this.targetObject3D = targetObject3D;
+    this.loadedNotes = loadedNotes;
+    // this.levelName = levelName;
+    this.width = 2.5;
     this.scene = scene;
     this.camera = camera;
     this.renderer = renderer;
     this.score = score;
     this.lifeCounter = lifeCounter;
+    this.onMiss = onMiss;
     this.hitMargin = HIT_MARGIN.DESKTOP;
     this.noteStartPosition = NOTE_START_POSITION.DESKTOP;
     this.noteTargetPosition = new THREE.Vector3(0, -0.35, 0.5);
@@ -60,16 +65,16 @@ export default class NoteDropper {
   }
   create() {
     this.note = new Note(
-      this.loadedGltf,
+      this.loadedNotes,
       this.fallingGroup,
-      this.scene,
-      this.gltfName
+      this.scene
+      // this.levelName
     );
     this.noteTarget = new NoteTarget(
-      this.loadedGltf,
+      this.targetObject3D,
       this.noteDropperGroup,
-      this.textGroup,
-      this.gltfName
+      this.textGroup
+      // this.levelName
     );
     for (let step = 0; step < this.columnXPositions.length; step++) {
       const position = new THREE.Vector3(
@@ -84,16 +89,17 @@ export default class NoteDropper {
   }
 
   delete() {
+    if (!this.targetObject3D) return;
     this.scene.children = this.scene.children.filter(
       (item) => item.id !== this.noteDropperGroup.id
     );
     this.scene.children = this.scene.children.filter(
       (item) => item.id !== this.textGroup.id
     );
-    return null;
   }
 
   reset() {
+    this.note.hasGlowEffect = false;
     this.notesToHit = this.keys.reduce(
       (acc, curr) => ((acc[curr] = []), acc),
       {}
@@ -123,6 +129,20 @@ export default class NoteDropper {
 
   deleteNote() {
     this.fallingGroup.children.shift();
+  }
+
+  glowEffect(colorHex) {
+    if (this.note.glowingMaterial.emissive.getHex() != colorHex) {
+      this.note.glowingMaterial.emissive.setHex(colorHex);
+      this.note.glowingMaterial.emissiveIntensity =
+        2 * this.score.streakMultiplier;
+      this.note.hasGlowEffect = true;
+    }
+  }
+
+  resetGlowEffect() {
+    this.note.hasGlowEffect = false;
+    this.note.resetFallingGroupGlows();
   }
 
   checkTouch(e) {
@@ -187,8 +207,7 @@ export default class NoteDropper {
       const array = this.notesToHit[key];
       const index = array.indexOf(noteName);
       if (index !== -1) {
-        this.score.breakStreak();
-        this.lifeCounter.loseLife();
+        this.onMiss();
         array.splice(index, 1);
       }
     }

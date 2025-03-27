@@ -6,7 +6,7 @@ import LevelSelect from "./LevelSelect";
 import EndOfGameNavButtons from "./EndOfGameNavButtons";
 import HUD from "./HUD";
 
-const Menu = ({ game, songs }) => {
+const Menu = ({ game }) => {
   const [playing, setPlaying] = useState(false);
   const [scoreDetails, setScoreDetails] = useState(null);
   const [isCharacterSelected, setIsCharacterSelected] = useState(false);
@@ -42,7 +42,7 @@ const Menu = ({ game, songs }) => {
   }, [playing]);
 
   const handleClickPlay = () => {
-    game.play(selectedLevel.map, selectedLevel.midiName, selectedLevel.mp3Name);
+    game.play(selectedLevel.assetName);
     setPlaying(true);
     setIsDead(false);
   };
@@ -51,7 +51,7 @@ const Menu = ({ game, songs }) => {
     setPlaying(true);
     setIsDead(false);
     setScoreDetails(null);
-    game.replay(selectedLevel.midiName, selectedLevel.mp3Name);
+    game.replay(selectedLevel.assetName);
   };
 
   const handleResetLevel = () => {
@@ -84,7 +84,6 @@ const Menu = ({ game, songs }) => {
               setSelectedLevel={setSelectedLevel}
               isDead={isDead}
               game={game}
-              songs={songs}
             />
           </>
         ) : (

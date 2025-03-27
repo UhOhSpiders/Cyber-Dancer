@@ -50,11 +50,14 @@ const HUD = () => {
               margin: 0,
               padding: 0,
               fontSize: "2rem",
+              fontFamily:"Kode Mono",
+              textShadow: "1px 1px 1px white"
+              
             }}
           >
             x{score.streakMultiplier}
           </p>
-          <p style={{ fontSize: "1rem", padding: 0, margin: 0 }}>
+          <p style={{ fontSize: "1rem", padding: 0, margin: 0,fontFamily:"Kode Mono" }}>
             streak bonus
           </p>
         </div>

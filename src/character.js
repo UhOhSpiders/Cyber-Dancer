@@ -1,51 +1,53 @@
 import * as THREE from "three";
 import { characterPosition } from "./constants/constants";
+import * as TWEEN from "@tweenjs/tween.js";
+import { createRotateTween } from "./utilities/tweens/createRotateTween";
 
 export default class Character {
   constructor(object3D, scene, animationMixer) {
     this.object3D = object3D;
     this.scene = scene;
     this.animationMixer = animationMixer;
-    this.idle = null;
-    this.danceMoves = [];
+    this.idle = this.getCharacterAnimationByCategory("idle");
+    this.danceMoves = this.getCharacterAnimationsByCategory("dance");
+    this.loopingDance = this.getCharacterAnimationByCategory("loopDance");
     this.isDancing = false;
-    this.newDanceMoves = [];
+    this.currentDanceMove = null;
+    this.stumbleAnimations = this.getCharacterAnimationsByCategory("stumble");
     this.create();
-    this.getDanceMoves();
   }
   create() {
+    // get rid of this character variable
     let character = this.object3D;
-    const idleClip = THREE.AnimationClip.findByName(
-      this.object3D.animations,
-      `${this.object3D.name.split("_")[0]}_idle`
-    );
     character.position.set(
       characterPosition.x,
       characterPosition.y,
       characterPosition.z
     );
-    character.scale.set(0.3, 0.3, 0.3);
-    if (idleClip) {
-      const idleAction = this.animationMixer.clipAction(
-        idleClip,
-        this.object3D
-      );
-      idleAction.loop = THREE.LoopPingPong;
-      this.idle = idleAction;
+    character.scale.set(0.9, 0.9, 0.9);
+
+    if (this.idle) {
+      this.idle.setLoop(THREE.LoopPingPong);
       this.idle.play();
-      this.animationMixer.addEventListener("finished", () => {
-        this.isDancing = false;
-        idleAction.reset();
-        idleAction.fadeIn(0.1);
-        idleAction.play();
-      });
     }
+    this.animationMixer.addEventListener("finished", () => {
+      this.isDancing = false;
+      if (
+        this.scene.getObjectByName(this.object3D.name) &&
+        this.object3D.visible
+      ) {
+        this.loopingDance.reset();
+        this.loopingDance.fadeIn(0.1);
+        this.loopingDance.play();
+      }
+    });
   }
 
-  getDanceMoves() {
+  getCharacterAnimationsByCategory(category) {
+    let animations = [];
     this.object3D.animations.forEach((animation) => {
       if (
-        !animation.name.includes("idle") &&
+        animation.name.includes(category) &&
         animation.name.includes(this.object3D.name.split("_")[0])
       ) {
         let clip = THREE.AnimationClip.findByName(
@@ -53,9 +55,15 @@ export default class Character {
           animation.name
         );
         let action = this.animationMixer.clipAction(clip, this.object3D);
-        this.newDanceMoves.push(action);
+        animations.push(action);
       }
     });
+    return animations.length ? animations : null;
+  }
+
+  getCharacterAnimationByCategory(category) {
+    let clips = this.getCharacterAnimationsByCategory(category);
+    return clips ? clips[0] : null;
   }
 
   delete() {
@@ -65,28 +73,65 @@ export default class Character {
     return null;
   }
 
+  startLoopingDance() {
+    this.loopingDance.setLoop(THREE.LoopRepeat);
+    this.idle.fadeOut(0.1);
+    this.loopingDance.reset();
+    this.loopingDance.fadeIn(0.1);
+    this.loopingDance.play();
+  }
+
+  stopLoopingDance() {
+    this.loopingDance.reset();
+    this.loopingDance.fadeOut(0.1);
+    this.idle.reset();
+    this.idle.fadeIn(0.1);
+    this.idle.play();
+  }
+
   dance(notePitch) {
     if (!this.isDancing) {
       this.isDancing = true;
-      let danceMove =
-        this.newDanceMoves[
-          Math.floor(Math.random() * this.newDanceMoves.length)
-        ];
-      danceMove.setLoop(THREE.LoopOnce);
-      this.idle.fadeOut(0.1);
-      danceMove.reset();
-      danceMove.fadeIn(0.1);
-      danceMove.play();
+      this.currentDanceMove =
+        this.danceMoves[Math.floor(Math.random() * this.danceMoves.length)];
+      this.currentDanceMove.setLoop(THREE.LoopOnce);
+      this.loopingDance.fadeOut(0.1);
+      this.currentDanceMove.reset();
+      this.currentDanceMove.fadeIn(0.1);
+      this.currentDanceMove.play();
+      if (this.currentDanceMove._clip.name.includes("jump")) {
+        let targetQuaternion = this.object3D.quaternion.clone();
+
+        const rotationEuler = new THREE.Euler(0, Math.PI, 0);
+
+        const rotationQuaternion = new THREE.Quaternion().setFromEuler(
+          rotationEuler
+        );
+
+        targetQuaternion.multiply(rotationQuaternion);
+
+        let rotateTween = createRotateTween(this.object3D, targetQuaternion, 500);
+        rotateTween.easing(TWEEN.Easing.Quintic.InOut)
+        rotateTween.start();
+      }
     }
   }
   stumble() {
-    // play stumble animation
-  }
-  toggleIsDancing() {
-    this.isDancing = !this.isDancing;
+    if (this.stumbleAnimations) {
+      if (this.isDancing) {
+        this.currentDanceMove.fadeOut(0.1);
+      } else {
+        this.idle.fadeOut(0.1);
+      }
+      this.stumbleAnimations[0].reset();
+      this.stumbleAnimations[0].fadeIn(0.1);
+      this.stumbleAnimations[0].setLoop(THREE.LoopOnce);
+      this.stumbleAnimations[0].play();
+    }
   }
 
   explode() {
     this.object3D.visible = false;
+    this.loopingDance.stop();
   }
 }

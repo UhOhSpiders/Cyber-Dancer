@@ -3,33 +3,26 @@ import { FALL_TIME } from "./constants/constants";
 import { Midi } from "@tonejs/midi";
 
 export default class MidiAndMp3Player {
-  constructor(game, midiName, mp3Name) {
-    this.game = game;
-    this.midiName = midiName;
-    this.mp3Name = mp3Name;
+  constructor(noteDropper, trackName, levelComplete) {
+    this.noteDropper = noteDropper;
+    this.trackName = trackName
+    this.levelComplete = levelComplete;
     this.player = null;
     this.midiTrack = null;
   }
 
   async startTrack() {
-    this.midiTrack = await Midi.fromUrl(`../${this.midiName}`);
+    this.midiTrack = await Midi.fromUrl(`../songs/${this.trackName}/${this.trackName}.MID`);
     this.player = await new Promise((resolve, reject) => {
       const player = new Tone.Player({
-        url: `../${this.mp3Name}`,
+        url: `../songs/${this.trackName}/${this.trackName}.mp3`,
         onload: () => {
           resolve(player.toDestination());
         },
         onerror: (err) => reject(err),
         autostart: "true",
         onstop: () => {
-          const playerStoppedEvent = new CustomEvent("playerStopped", {
-            detail: {
-              scoreDetails: this.game.score.getScoreDetails(),
-              isDead: this.game.lifeCounter.isDead,
-            },
-          });
-          this.game.gameIsPlaying = false;
-          document.dispatchEvent(playerStoppedEvent);
+          this.levelComplete();
           Tone.getDraw().cancel(now - 2);
         },
       });
@@ -42,7 +35,7 @@ export default class MidiAndMp3Player {
         Tone.getDraw().schedule(
           function () {
             if (track.name === "dance_moves") {
-              this.game.noteDropper.addNote(note.name, note.time);
+              this.noteDropper.addNote(note.name, note.time);
             }
           }.bind(this),
           now + note.time - FALL_TIME
@@ -52,7 +45,9 @@ export default class MidiAndMp3Player {
         Tone.getDraw().schedule(
           function () {
             if (track.name === "dance_moves") {
-              this.game.noteDropper.forceMiss(`${note.name}_${note.time}`);
+              // this.miss(`${note.name}_${note.time}`);
+              this.noteDropper.forceMiss(`${note.name}_${note.time}`)
+              
             }
           }.bind(this),
           now + note.time + 0.4
@@ -62,7 +57,7 @@ export default class MidiAndMp3Player {
         Tone.getDraw().schedule(
           function () {
             if (track.name === "dance_moves") {
-              this.game.noteDropper.deleteNote();
+              this.noteDropper.deleteNote();
             }
           }.bind(this),
           now + note.time + 0.5
