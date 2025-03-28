@@ -46,9 +46,9 @@ export default class Score {
 
   setStreakMultiplier() {
     if (this.currentStreak <= this.maxStreak) {
-      this.streakMultiplier = Math.floor(this.currentStreak / 1 + 1);
+      this.streakMultiplier = Math.floor(this.currentStreak / 10 + 1);
       this.streakProgressPercentage =
-        (1 - (this.streakMultiplier - this.currentStreak / 1)) * 100;
+        (1 - (this.streakMultiplier - this.currentStreak / 10)) * 100;
     }
   }
   breakStreak() {

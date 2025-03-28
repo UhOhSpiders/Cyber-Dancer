@@ -2,7 +2,7 @@ import { DEFAULT_COMBO_COLORS } from "./constants";
 
 export const LEVELS = [
   {
-    name: "Wild Juke (test track)", // orange drips DONE
+    name: "Wild Juke (WIP)", // WIP TRACK
     assetName: "wild",
     comboColors: [
       { HUD: "#ffffff", noteGlow: "#ffffff", lights: "#ffffff" },
@@ -19,27 +19,27 @@ export const LEVELS = [
     comboColors: DEFAULT_COMBO_COLORS
   },
   {
-    name: "Dongle (test track)", // DONE
+    name: "Dongle (WIP) ", // DONE
     assetName: "dongle",
     comboColors: DEFAULT_COMBO_COLORS
   },
   {
-    name: "Fruit (hyper)", // CDs and Toasters (add bread and CDs in background)
+    name: "Fruit (hyper) (WIP)", // WIP TRACK
     assetName: "fruit",
     comboColors: DEFAULT_COMBO_COLORS
   },
   {
-    name: "Radio Korea (test track)", // crystal cave (more detail to bg?)
+    name: "Radio Korea (WIP)", // WIP TRACK
     assetName: "radio",
     comboColors: DEFAULT_COMBO_COLORS
   },
   {
-    name: "Liquid Polymer (test track)", // sharks DONE
+    name: "Liquid Polymer (test track)", // TEST TRACK
     assetName: "liquid",
     comboColors: DEFAULT_COMBO_COLORS
   },
   {
-    name: "Grip (test track)", // meatballs DONE
+    name: "Grip (WIP)", // WIP TRACK
     assetName: "grip",
     comboColors: [
       { HUD: "#ffffff", noteGlow: "#ffffff", lights: "#ffffff" },
@@ -51,7 +51,7 @@ export const LEVELS = [
     ]
   },
   {
-    name: "Debossed (Rebossed) (test track)", // craters DONE
+    name: "Debossed (Rebossed) (test track)", // TEST TRACK
     assetName: "debossed",
     comboColors: [
       { HUD: "#ffffff", noteGlow: "#ffffff", lights: "#ffffff" },
