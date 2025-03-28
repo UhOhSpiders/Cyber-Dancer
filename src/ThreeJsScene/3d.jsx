@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import * as TWEEN from "@tweenjs/tween.js";
 import Stats from "stats.js";
-import { COMBO_COLORS } from "../constants/constants.js";
+import { DEFAULT_COMBO_COLORS } from "../constants/constants.js";
 import NoteDropper from "../NoteDropper.js";
 import CharacterSelector from "../CharacterSelector.js";
 import Score from "../Score.js";
@@ -16,6 +16,7 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { SMAAPass } from "three/addons/postprocessing/SMAAPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+import { LEVELS } from "../constants/levels.js";
 
 export default class Game {
   constructor(loadedGltfs) {
@@ -74,7 +75,7 @@ export default class Game {
     this.score = new Score();
     this.lifeCounter = new LifeCounter();
     this.lights = new LightController(this.scene);
-
+    this.comboColors = DEFAULT_COMBO_COLORS;
     this.loadedGltfs = loadedGltfs;
 
     // this.stats = new Stats();
@@ -100,10 +101,10 @@ export default class Game {
       this.score.increase(checkedHit);
       if (this.score.streakMultiplier >= 2) {
         let lightsColorHex =
-          "0x" + COMBO_COLORS[this.score.streakMultiplier - 1].lights.slice(1);
+          "0x" + this.comboColors[this.score.streakMultiplier - 1].lights.slice(1);
         let noteGlowColorHex =
           "0x" +
-          COMBO_COLORS[this.score.streakMultiplier - 1].noteGlow.slice(1);
+          this.comboColors[this.score.streakMultiplier - 1].noteGlow.slice(1);
 
         this.lights.changeColor(lightsColorHex);
         this.noteDropper.glowEffect(noteGlowColorHex);
@@ -140,12 +141,12 @@ export default class Game {
 
   // game state management
 
-  loadGraphics(levelName) {
+  loadGraphics(levelInfo) {
     let levelTarget = this.loadedGltfs.targets.find((target) =>
-      target.name.includes(levelName)
+      target.name.includes(levelInfo.assetName)
     );
     let levelNote = this.loadedGltfs.notes.find((note) =>
-      note.name.includes(levelName)
+      note.name.includes(levelInfo.assetName)
     );
     this.noteDropper = new NoteDropper(
       levelTarget,
@@ -159,9 +160,10 @@ export default class Game {
     );
     this.noteDropper.create();
     let levelBackground = this.loadedGltfs.backgrounds.find((bg) =>
-      bg.name.includes(levelName)
+      bg.name.includes(levelInfo.assetName)
     );
     this.background = new Background(this.scene, levelBackground);
+    this.comboColors = levelInfo.comboColors
     this.resize();
   }
 
@@ -171,10 +173,10 @@ export default class Game {
     this.squisher.delete();
   }
 
-  previewLevel(levelName) {
+  previewLevel(levelInfo) {
     this.deleteGraphics();
     this.cameraController.craneDown();
-    this.loadGraphics(levelName);
+    this.loadGraphics(levelInfo);
   }
 
   play(assetName) {

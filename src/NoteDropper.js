@@ -6,8 +6,7 @@ import {
   NOTE_SCALE,
   NOTE_START_POSITION,
   MOBILE_BREAKPOINT,
-  TARGET_SCALE,
-  COMBO_COLORS,
+  TARGET_SCALE
 } from "./constants/constants";
 import { getColumnXPositions } from "./utilities/getColumnXPositions";
 import { assignNotesToColumns } from "./utilities/assignNotesToColumns.js";

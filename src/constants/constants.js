@@ -17,13 +17,13 @@ export const HIT_COLORS = {
   miss: "grey",
 };
 
-export const COMBO_COLORS = [
+export const DEFAULT_COMBO_COLORS = [
   { HUD: "#ffffff", noteGlow: "#ffffff", lights: "#ffffff" },
   { HUD: "#ffbe0b", noteGlow: "#ffbe0b", lights: "#6f2100" },
   { HUD: "#1aff00", noteGlow: "#00949f", lights: "#7628a6" },
   { HUD: "#0396ff", noteGlow: "#009912", lights: "#00320c" },
   { HUD: "#e100ff", noteGlow: "#5100ff", lights: "#7d018e" },
-  { HUD: "#fffb00", noteGlow: "#FF0000", lights: "#ff4949" },
+  { HUD: "#fffb00", noteGlow: "#9200c2", lights: "#ff4949" },
 ];
 
 export const TARGET_SCALE = {
@@ -42,7 +42,7 @@ export const NOTE_START_POSITION = {
 };
 
 export const NOTE_DROPPER_GROUP_SCALE = {
-  MOBILE: new THREE.Vector3(0.45, 0.45, 0.45),
+  MOBILE: new THREE.Vector3(0.35, 0.35, 0.35),
   DESKTOP: new THREE.Vector3(1, 1, 1),
 };
 

@@ -1,4 +1,4 @@
-import { COMBO_COLORS } from "./constants/constants";
+import { DEFAULT_COMBO_COLORS } from "./constants/constants";
 
 export default class Score {
   constructor() {
@@ -12,7 +12,7 @@ export default class Score {
     this.currentStreak = 0;
     this.streakMultiplier = 1;
     this.streakProgressPercentage = 0;
-    this.barColors = COMBO_COLORS.map((color) => color.HUD);
+    this.barColors = DEFAULT_COMBO_COLORS.map((color) => color.HUD);
     this.maxStreak = (this.barColors.length - 1) * 10;
     this.dispatchScoreEvent();
   }
@@ -46,9 +46,9 @@ export default class Score {
 
   setStreakMultiplier() {
     if (this.currentStreak <= this.maxStreak) {
-      this.streakMultiplier = Math.floor(this.currentStreak / 10 + 1);
+      this.streakMultiplier = Math.floor(this.currentStreak / 1 + 1);
       this.streakProgressPercentage =
-        (1 - (this.streakMultiplier - this.currentStreak / 10)) * 100;
+        (1 - (this.streakMultiplier - this.currentStreak / 1)) * 100;
     }
   }
   breakStreak() {
