@@ -6,7 +6,7 @@ export const MOBILE_BREAKPOINT = 900;
 export const characterPosition = { x: 0, y: -0.8, z: 0 };
 
 export const HIT_MARGIN = {
-  MOBILE: { upper: 0.04, lower: -0.4 },
+  MOBILE: { upper: 0.2, lower: -0.2 },
   DESKTOP: { upper: 0.3, lower: -0.3 },
 };
 
@@ -37,17 +37,17 @@ export const NOTE_SCALE = {
 };
 
 export const NOTE_START_POSITION = {
-  MOBILE: new THREE.Vector3(0, 3.5, 0.5),
+  MOBILE: new THREE.Vector3(0, 4.5, 0.5),
   DESKTOP: new THREE.Vector3(0, 1.3, 0.5),
 };
 
 export const NOTE_DROPPER_GROUP_SCALE = {
-  MOBILE: new THREE.Vector3(0.35, 0.35, 0.35),
+  MOBILE: new THREE.Vector3(0.3, 0.3, 0.3),
   DESKTOP: new THREE.Vector3(1, 1, 1),
 };
 
 export const NOTE_DROPPER_GROUP_POSITION = {
-  MOBILE: { x: 0, y: -0.27, z: 0 },
+  MOBILE: { x: 0, y: -0.27, z: 0.5 },
   DESKTOP: { x: 0, y: 0, z: 0 },
 };
 
