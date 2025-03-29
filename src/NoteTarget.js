@@ -24,6 +24,7 @@ export default class NoteTarget {
     this.textGroup.add(text);
     text.text = KEYCODES[keystroke];
     newTarget.name = keystroke;
+    newTarget.isTarget = true
     text.position.x = position.x;
     text.position.y = position.y;
     text.position.z = position.z + 0.3;

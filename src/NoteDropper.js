@@ -6,7 +6,7 @@ import {
   NOTE_SCALE,
   NOTE_START_POSITION,
   MOBILE_BREAKPOINT,
-  TARGET_SCALE
+  TARGET_SCALE,
 } from "./constants/constants";
 import { getColumnXPositions } from "./utilities/getColumnXPositions";
 import { assignNotesToColumns } from "./utilities/assignNotesToColumns.js";
@@ -147,9 +147,16 @@ export default class NoteDropper {
   checkTouch(e) {
     const coords = this.getNormalizedDeviceCoordinates(e);
     const intersections = this.getIntersections(coords, this.noteDropperGroup);
-    return intersections.length > 0
-      ? intersections[0].object.parent.name
-      : false;
+    if (intersections.length > 0 && intersections[0].object.isTarget) {
+      return intersections[0].object.name;
+    } else if (
+      intersections.length > 0 &&
+      intersections[0].object.parent.isTarget
+    ) {
+      return intersections[0].object.parent.name;
+    } else {
+      return false;
+    }
   }
 
   getNormalizedDeviceCoordinates(e) {
